@@ -62,7 +62,10 @@ public class InviteExecutor implements CommandExecutor
 				{
 					public void run()
 					{
-						Towny.invites.remove(invite);
+						if (Towny.invites.contains(invite) && Towny.invites != null)
+						{
+							Towny.invites.remove(invite);
+						}
 					}
 				}).delay(2, TimeUnit.MINUTES).name("Teams - remove invite").submit(game.getPluginManager().getPlugin("Teams").get().getInstance());
 

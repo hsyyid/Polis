@@ -1,7 +1,8 @@
 package io.github.hsyyid.towny.cmdexecutors;
 
+import com.flowpowered.math.vector.Vector3i;
+import io.github.hsyyid.towny.Towny;
 import io.github.hsyyid.towny.utils.ConfigManager;
-import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -12,7 +13,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.source.CommandBlockSource;
 import org.spongepowered.api.util.command.source.ConsoleSource;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
-import org.spongepowered.api.world.Location;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -24,7 +24,6 @@ public class TownClaimExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-
 			String playerTeamName = null;
 			boolean playerIsAMember = false;
 
@@ -51,15 +50,15 @@ public class TownClaimExecutor implements CommandExecutor
 
 			if (playerTeamName != null)
 			{
-				DataContainer location = player.getLocation().toContainer();
-				Optional<Object> chunkX = location.get(Location.CHUNK_X);
-				Optional<Object> chunkZ = location.get(Location.CHUNK_Z);
+				Optional<Vector3i> optionalChunk = Towny.game.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
 
-				if (chunkX.isPresent() && chunkZ.isPresent())
+				if (optionalChunk.isPresent())
 				{
-					if (ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), (double) chunkX.get(), (double) chunkZ.get()))
+					Vector3i chunk = optionalChunk.get();
+					
+					if (!ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
 					{
-						ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), (double) chunkX.get(), (double) chunkZ.get());
+						ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
 						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.GOLD, "Successfully claimed this location!"));
 					}
 					else

@@ -21,9 +21,9 @@ public class PlayerMoveListener
 			Location<World> previousLocation = event.getFromTransform().getLocation();
 			Location<World> newLocation = event.getToTransform().getLocation();
 
-			if (ConfigManager.isClaimed(previousLocation) != ConfigManager.isClaimed(newLocation))
+			if (!ConfigManager.isClaimed(previousLocation).equalsIgnoreCase(ConfigManager.isClaimed(newLocation)))
 			{
-				if (ConfigManager.isClaimed(newLocation).equals("false"))
+				if (ConfigManager.isClaimed(newLocation).equalsIgnoreCase("false"))
 				{
 					player.sendMessage(Texts.of(TextColors.GOLD, "Now entering unclaimed land."));
 				}

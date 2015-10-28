@@ -1,7 +1,6 @@
 package io.github.hsyyid.towny.utils;
 
-import org.spongepowered.api.data.DataContainer;
-
+import com.flowpowered.math.vector.Vector3i;
 import io.github.hsyyid.towny.Towny;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -623,10 +622,10 @@ public class ConfigManager
 		}
 	}
 
-	public static void claim(String teamName, UUID worldUUID, double chunkX, double chunkZ)
+	public static void claim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
-		Towny.config.getNode("claims", teamName, worldUUID.toString(), chunkX, chunkZ).setValue(true);
+		Towny.config.getNode("claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ)).setValue(true);
 
 		try
 		{
@@ -639,11 +638,11 @@ public class ConfigManager
 		}
 	}
 
-	public static boolean isClaimed(String teamName, UUID worldUUID, double chunkX, double chunkZ)
+	public static boolean isClaimed(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
 		try
 		{
-			ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + chunkX + "." + chunkZ).split("\\."));
+			ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
 			return valueNode.getBoolean();
 		}
 		catch (Exception e)
@@ -657,17 +656,17 @@ public class ConfigManager
 		String claimed = "false";
 
 		UUID worldUUID = location.getExtent().getUniqueId();
-		DataContainer container = location.toContainer();
-		Optional<Object> chunkX = container.get(Location.CHUNK_X);
-		Optional<Object> chunkZ = container.get(Location.CHUNK_Z);
+		Optional<Vector3i> optionalChunk = Towny.game.getServer().getChunkLayout().toChunk(location.getBlockPosition());
 
-		if (chunkX.isPresent() && chunkZ.isPresent())
+		if (optionalChunk.isPresent())
 		{
+			Vector3i chunk = optionalChunk.get();
+			
 			for(String teamName : getTeams())
 			{
 				try
 				{
-					ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + (double) chunkX.get() + "." + (double) chunkZ.get()).split("\\."));
+					ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
 					boolean value = valueNode.getBoolean();
 
 					if(value)
