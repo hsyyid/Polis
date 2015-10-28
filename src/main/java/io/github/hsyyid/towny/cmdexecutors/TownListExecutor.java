@@ -61,7 +61,7 @@ public class TownListExecutor implements CommandExecutor
 			{
 				Text item = Texts.builder(name)
 					.onClick(TextActions.runCommand("/town " + name))
-					.onHover(TextActions.showText(Texts.of(TextColors.WHITE, "View info of team ", TextColors.GOLD, name)))
+					.onHover(TextActions.showText(Texts.of(TextColors.WHITE, "View info of town ", TextColors.GOLD, name)))
 					.color(TextColors.DARK_AQUA)
 					.style(TextStyles.UNDERLINE)
 					.build();
@@ -72,7 +72,7 @@ public class TownListExecutor implements CommandExecutor
 			// Header
 			TextBuilder header = Texts.builder();
 			header.append(Texts.of(TextColors.GREEN, "------------"));
-			header.append(Texts.of(TextColors.GREEN, " Showing Teams page " + pgNo + " of " + pList.getTotalPages() + " "));
+			header.append(Texts.of(TextColors.GREEN, " Showing Towns page " + pgNo + " of " + pList.getTotalPages() + " "));
 			header.append(Texts.of(TextColors.GREEN, "------------"));
 
 			pList.setHeader(header.build());
@@ -82,11 +82,11 @@ public class TownListExecutor implements CommandExecutor
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /teams!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /towns!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /teams!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /towns!"));
 		}
 
 		return CommandResult.success();

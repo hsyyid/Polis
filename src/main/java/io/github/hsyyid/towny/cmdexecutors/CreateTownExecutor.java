@@ -30,17 +30,17 @@ public class CreateTownExecutor implements CommandExecutor
 			}
 			catch (NullPointerException e)
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to create Team!"));
+				player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to create Town!"));
 			}
 
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addteam!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addtown!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addteam!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addtown!"));
 		}
 
 		return CommandResult.success();
