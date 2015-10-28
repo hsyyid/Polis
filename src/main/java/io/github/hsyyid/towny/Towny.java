@@ -39,7 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@Plugin(id = "Towny", name = "Towny", version = "0.1", dependencies = "required-after:TotalEconomy;")
+@Plugin(id = "Towny", name = "Towny", version = "0.1")
 public class Towny
 {
 	public static Game game;
