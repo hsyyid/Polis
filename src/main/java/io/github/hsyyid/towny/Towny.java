@@ -119,7 +119,7 @@ public class Towny
 			.executor(new InviteExecutor())
 			.build();
 
-		game.getCommandDispatcher().register(this, inviteTownCommandSpec, "invite");
+		game.getCommandDispatcher().register(this, inviteTownCommandSpec, "invite", "towninvite");
 
 		CommandSpec addEnemyCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Add Enemy Command"))
