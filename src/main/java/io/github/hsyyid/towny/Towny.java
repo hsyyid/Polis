@@ -40,10 +40,10 @@ import java.util.ArrayList;
 @Plugin(id = "Towny", name = "Towny", version = "0.1", dependencies = "required-after:TotalEconomy;")
 public class Towny
 {
-	public static Game game = null;
-	public static ConfigurationNode config = null;
+	public static Game game;
+	public static ConfigurationNode config;
 	public static ConfigurationLoader<CommentedConfigurationNode> configurationManager;
-	public static ArrayList<Invite> invites = new ArrayList<Invite>();
+	public static ArrayList<Invite> invites = new ArrayList<>();
 
 	@Inject
 	private Logger logger;
@@ -84,7 +84,7 @@ public class Towny
 		{
 			getLogger().error("The default configuration could not be loaded or created!");
 		}
-		
+
 		CommandSpec joinTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Join Town Command"))
 			.permission("towny.join")
@@ -93,7 +93,7 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, joinTownCommandSpec, "jointown");
-		
+
 		CommandSpec setHQCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Set Town HQ Command"))
 			.permission("towny.hq.set")
@@ -101,7 +101,7 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, setHQCommandSpec, "sethq");
-		
+
 		CommandSpec HQCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Teleport to Town HQ Command"))
 			.permission("towny.hq.use")
@@ -109,7 +109,7 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, HQCommandSpec, "hq");
-		
+
 		CommandSpec inviteTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Towny Invite Command"))
 			.permission("towny.invite")
@@ -127,7 +127,7 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, addEnemyCommandSpec, "addenemy");
-		
+
 		CommandSpec kickMemberCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Kick Member Command"))
 			.permission("towny.kick.use")
@@ -136,7 +136,7 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, kickMemberCommandSpec, "kickmember");
-		
+
 		CommandSpec addAllyCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Add Ally Command"))
 			.permission("towny.ally.add")
@@ -153,7 +153,7 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, leaveTownCommandSpec, "leavetown");
-		
+
 		CommandSpec deleteTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Delete Town Command"))
 			.permission("towny.delete")
@@ -199,31 +199,31 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, setLeaderCommandSpec, "setleader");
-		
+
 		CommandSpec addExecutiveCommandSpec = CommandSpec.builder()
-	            .description(Texts.of("Adds Executive of Town Command"))
-	            .permission("towny.executive.add")
-	            .arguments(GenericArguments.seq(
-	                GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
-	                GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
-	            .executor(new AddExecutiveExecutor())
-	            .build();
+			.description(Texts.of("Adds Executive of Town Command"))
+			.permission("towny.executive.add")
+			.arguments(GenericArguments.seq(
+				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
+				GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
+			.executor(new AddExecutiveExecutor())
+			.build();
 
-	    game.getCommandDispatcher().register(this, addExecutiveCommandSpec, "addexecutive");
-	    
-	    CommandSpec removeExecutiveCommandSpec = CommandSpec.builder()
-                .description(Texts.of("Remove Executive of Town Command"))
-                .permission("towny.executive.remove")
-                .arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
-                .executor(new RemoveExecutiveExecutor())
-                .build();
+		game.getCommandDispatcher().register(this, addExecutiveCommandSpec, "addexecutive");
 
-        game.getCommandDispatcher().register(this, removeExecutiveCommandSpec, "removeexec", "removeexecutive");
+		CommandSpec removeExecutiveCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Remove Executive of Town Command"))
+			.permission("towny.executive.remove")
+			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
+			.executor(new RemoveExecutiveExecutor())
+			.build();
 
-        game.getEventManager().registerListeners(this, new PlayerInteractListener());
-        game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
-        game.getEventManager().registerListeners(this, new PlayerPlaceBlockListener());
-        
+		game.getCommandDispatcher().register(this, removeExecutiveCommandSpec, "removeexec", "removeexecutive");
+
+		game.getEventManager().registerListeners(this, new PlayerInteractListener());
+		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
+		game.getEventManager().registerListeners(this, new PlayerPlaceBlockListener());
+
 		getLogger().info("-----------------------------");
 		getLogger().info("Towny was made by HassanS6000!");
 		getLogger().info("Please post all errors on the Sponge Thread or on GitHub!");
