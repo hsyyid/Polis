@@ -32,6 +32,11 @@ public class PlayerInteractListener
 						playerTeamName = team;
 						break;
 					}
+					else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
+					{
+						playerTeamName = team;
+						break;
+					}
 					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 					{
 						playerTeamName = team;

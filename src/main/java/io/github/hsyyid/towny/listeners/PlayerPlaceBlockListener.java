@@ -37,6 +37,11 @@ public class PlayerPlaceBlockListener
 							playerTeamName = team;
 							break;
 						}
+						else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
+						{
+							playerTeamName = team;
+							break;
+						}
 						else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 						{
 							playerTeamName = team;
@@ -48,15 +53,15 @@ public class PlayerPlaceBlockListener
 					{
 						if(!(isClaimed.equals(playerTeamName)))
 						{
-							event.setCancelled(true);
 							player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+							event.setCancelled(true);
 							return;
 						}
 					}
 					else
 					{
-						event.setCancelled(true);
 						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));	
+						event.setCancelled(true);
 						return;
 					}
 				}
