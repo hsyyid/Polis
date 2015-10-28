@@ -47,20 +47,18 @@ public class PlayerBreakBlockListener
 
 					if (playerTeamName != null)
 					{
-						if(isClaimed.equals(playerTeamName))
-						{
-							;
-						}
-						else
+						if(!(isClaimed.equals(playerTeamName)))
 						{
 							event.setCancelled(true);
 							player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+							return;
 						}
 					}
 					else
 					{
 						event.setCancelled(true);
 						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));	
+						return;
 					}
 				}
 			}
