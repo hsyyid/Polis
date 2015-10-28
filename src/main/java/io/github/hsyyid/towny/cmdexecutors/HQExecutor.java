@@ -42,14 +42,14 @@ public class HQExecutor implements CommandExecutor
 				{
 					if (player.getWorld().getName() == ConfigManager.getHQWorldName(townName))
 					{
-						Location<World> hq = new Location<World>(player.getWorld(), ConfigManager.getX(townName), ConfigManager.getY(townName), ConfigManager.getZ(townName));
+						Location<World> hq = new Location<World>(player.getWorld(), ConfigManager.getHQX(townName), ConfigManager.getHQY(townName), ConfigManager.getHQZ(townName));
 						player.setLocation(hq);
 						src.sendMessage(Texts.of(TextColors.GREEN, "Success! ", TextColors.YELLOW, "Teleported to HQ"));
 						return CommandResult.success();
 					}
 					else
 					{
-						Vector3d position = new Vector3d(ConfigManager.getX(townName), ConfigManager.getY(townName), ConfigManager.getZ(townName));
+						Vector3d position = new Vector3d(ConfigManager.getHQX(townName), ConfigManager.getHQY(townName), ConfigManager.getHQZ(townName));
 						player.transferToWorld(ConfigManager.getHQWorldName(townName), position);
 						src.sendMessage(Texts.of(TextColors.GREEN, "Success! ", TextColors.YELLOW, "Teleported to HQ"));
 						return CommandResult.success();

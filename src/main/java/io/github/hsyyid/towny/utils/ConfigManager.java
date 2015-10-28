@@ -1,15 +1,18 @@
 package io.github.hsyyid.towny.utils;
 
+import org.spongepowered.api.data.DataContainer;
+
 import io.github.hsyyid.towny.Towny;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.UUID;
 
 public class ConfigManager
 {
@@ -61,25 +64,25 @@ public class ConfigManager
 		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.world").split("\\."));
 		return valueNode.getString();
 	}
-	
-	public static double getX(String teamName)
+
+	public static double getHQX(String teamName)
 	{
 		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.X").split("\\."));
 		return valueNode.getDouble();
 	}
 
-	public static double getY(String teamName)
+	public static double getHQY(String teamName)
 	{
 		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.Y").split("\\."));
 		return valueNode.getDouble();
 	}
-	
-	public static double getZ(String teamName)
+
+	public static double getHQZ(String teamName)
 	{
 		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.Z").split("\\."));
 		return valueNode.getDouble();
 	}
-	
+
 	public static boolean inConfig(String teamName)
 	{
 		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.X").split("\\."));
@@ -143,48 +146,48 @@ public class ConfigManager
 
 		return membersList;
 	}
-	
+
 	public static ArrayList<String> getExecutives(String teamName)
-    {
-        ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
-        String list = valueNode.getString();
+	{
+		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
+		String list = valueNode.getString();
 
-        ArrayList<String> executivesList = new ArrayList<String>();
-        boolean finished = false;
+		ArrayList<String> executivesList = new ArrayList<String>();
+		boolean finished = false;
 
-        if (finished != true)
-        {
-            int endIndex = list.indexOf(",");
-            if (endIndex != -1)
-            {
-                String substring = list.substring(0, endIndex);
-                executivesList.add(substring);
+		if (finished != true)
+		{
+			int endIndex = list.indexOf(",");
+			if (endIndex != -1)
+			{
+				String substring = list.substring(0, endIndex);
+				executivesList.add(substring);
 
-                // If they Have More than 1
-                while (finished != true)
-                {
-                    int startIndex = endIndex;
-                    endIndex = list.indexOf(",", startIndex + 1);
-                    if (endIndex != -1)
-                    {
-                        String substrings = list.substring(startIndex + 1, endIndex);
-                        executivesList.add(substrings);
-                    }
-                    else
-                    {
-                        finished = true;
-                    }
-                }
-            }
-            else
-            {
-                executivesList.add(list);
-                finished = true;
-            }
-        }
+				// If they Have More than 1
+				while (finished != true)
+				{
+					int startIndex = endIndex;
+					endIndex = list.indexOf(",", startIndex + 1);
+					if (endIndex != -1)
+					{
+						String substrings = list.substring(startIndex + 1, endIndex);
+						executivesList.add(substrings);
+					}
+					else
+					{
+						finished = true;
+					}
+				}
+			}
+			else
+			{
+				executivesList.add(list);
+				finished = true;
+			}
+		}
 
-        return executivesList;
-    }
+		return executivesList;
+	}
 
 	public static void setHQ(String teamName, Location<World> hqLocation, String worldName)
 	{
@@ -473,30 +476,30 @@ public class ConfigManager
 			System.out.println("[Teams]: Failed to remove " + memberUUID + " from team " + teamName + "!");
 		}
 	}
-	
+
 	public static void removeExecutive(String teamName, String executiveUUID)
-    {
-        ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
 
-        ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
-        
-        if (valueNode.getValue() != null && valueNode.getString().length() > 0)
-        {
-            String teams = valueNode.getString();
-            teams = teams.replace(executiveUUID + ",", "");
-            valueNode.setValue(teams);
-        }
+		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
 
-        try
-        {
-            configManager.save(Towny.config);
-            configManager.load();
-        }
-        catch (IOException e)
-        {
-            System.out.println("[Teams]: Failed to remove executive " + executiveUUID + " from team " + teamName + "!");
-        }
-    }
+		if (valueNode.getValue() != null && valueNode.getString().length() > 0)
+		{
+			String teams = valueNode.getString();
+			teams = teams.replace(executiveUUID + ",", "");
+			valueNode.setValue(teams);
+		}
+
+		try
+		{
+			configManager.save(Towny.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			System.out.println("[Teams]: Failed to remove executive " + executiveUUID + " from team " + teamName + "!");
+		}
+	}
 
 	public static void removeEnemy(String teamName, String enemyName)
 	{
@@ -563,42 +566,42 @@ public class ConfigManager
 			System.out.println("[Teams]: Failed to set " + teamName + "'s leader!");
 		}
 	}
-	
+
 	public static void addTeamExecutive(String teamName, String executiveUUID)
-    {
-        ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
 
-        ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
-        if (valueNode.getString() != null || valueNode.getString().length() > 0)
-        {
-            String teams = valueNode.getString();
-            if (teams.contains(executiveUUID + ","))
-            {
-                ;
-            }
-            else
-            {
-                String formattedItem = (executiveUUID + ",");
-                valueNode.setValue(teams + formattedItem);
-            }
-        }
-        else
-        {
-            valueNode.setValue(executiveUUID + ",");
-        }
+		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
+		if (valueNode.getString() != null || valueNode.getString().length() > 0)
+		{
+			String teams = valueNode.getString();
+			if (teams.contains(executiveUUID + ","))
+			{
+				;
+			}
+			else
+			{
+				String formattedItem = (executiveUUID + ",");
+				valueNode.setValue(teams + formattedItem);
+			}
+		}
+		else
+		{
+			valueNode.setValue(executiveUUID + ",");
+		}
 
-        removeMember(teamName, executiveUUID);
+		removeMember(teamName, executiveUUID);
 
-        try
-        {
-            configManager.save(Towny.config);
-            configManager.load();
-        }
-        catch (IOException e)
-        {
-            System.out.println("[Teams]: Failed to add an executive to " + teamName + "!");
-        }
-    }
+		try
+		{
+			configManager.save(Towny.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			System.out.println("[Teams]: Failed to add an executive to " + teamName + "!");
+		}
+	}
 
 	public static void removeTeam(String teamName)
 	{
@@ -618,5 +621,68 @@ public class ConfigManager
 		{
 			System.out.println("[Teams]: Failed to set " + teamName + "'s leader!");
 		}
+	}
+
+	public static void claim(String teamName, UUID worldUUID, double chunkX, double chunkZ)
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		Towny.config.getNode("claims", teamName, worldUUID.toString(), chunkX, chunkZ).setValue(true);
+
+		try
+		{
+			configManager.save(Towny.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			;
+		}
+	}
+
+	public static boolean isClaimed(String teamName, UUID worldUUID, double chunkX, double chunkZ)
+	{
+		try
+		{
+			ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + chunkX + "." + chunkZ).split("\\."));
+			return valueNode.getBoolean();
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+
+	public static String isClaimed(Location<World> location)
+	{
+		String claimed = "false";
+
+		UUID worldUUID = location.getExtent().getUniqueId();
+		DataContainer container = location.toContainer();
+		Optional<Object> chunkX = container.get(Location.CHUNK_X);
+		Optional<Object> chunkZ = container.get(Location.CHUNK_Z);
+
+		if (chunkX.isPresent() && chunkZ.isPresent())
+		{
+			for(String teamName : getTeams())
+			{
+				try
+				{
+					ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + (double) chunkX.get() + "." + (double) chunkZ.get()).split("\\."));
+					boolean value = valueNode.getBoolean();
+
+					if(value)
+					{
+						claimed = teamName;
+						break;
+					}
+				}
+				catch (Exception e)
+				{
+					;
+				}
+			}
+		}
+
+		return claimed;
 	}
 }

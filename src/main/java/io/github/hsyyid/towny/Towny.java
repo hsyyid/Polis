@@ -14,6 +14,7 @@ import io.github.hsyyid.towny.cmdexecutors.LeaveTownExecutor;
 import io.github.hsyyid.towny.cmdexecutors.RemoveExecutiveExecutor;
 import io.github.hsyyid.towny.cmdexecutors.SetHQExecutor;
 import io.github.hsyyid.towny.cmdexecutors.SetLeaderExecutor;
+import io.github.hsyyid.towny.cmdexecutors.TownClaimExecutor;
 import io.github.hsyyid.towny.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.towny.cmdexecutors.TownListExecutor;
 import io.github.hsyyid.towny.listeners.PlayerBreakBlockListener;
@@ -153,6 +154,14 @@ public class Towny
 			.build();
 
 		game.getCommandDispatcher().register(this, leaveTownCommandSpec, "leavetown");
+		
+		CommandSpec claimCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Claim Command"))
+			.permission("towny.claim")
+			.executor(new TownClaimExecutor())
+			.build();
+
+		game.getCommandDispatcher().register(this, claimCommandSpec, "townclaim");
 
 		CommandSpec deleteTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Delete Town Command"))
