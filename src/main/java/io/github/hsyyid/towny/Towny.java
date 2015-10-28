@@ -19,6 +19,7 @@ import io.github.hsyyid.towny.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.towny.cmdexecutors.TownListExecutor;
 import io.github.hsyyid.towny.listeners.PlayerBreakBlockListener;
 import io.github.hsyyid.towny.listeners.PlayerInteractListener;
+import io.github.hsyyid.towny.listeners.PlayerMoveListener;
 import io.github.hsyyid.towny.listeners.PlayerPlaceBlockListener;
 import io.github.hsyyid.towny.utils.Invite;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -232,6 +233,7 @@ public class Towny
 		game.getEventManager().registerListeners(this, new PlayerInteractListener());
 		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
 		game.getEventManager().registerListeners(this, new PlayerPlaceBlockListener());
+		game.getEventManager().registerListeners(this, new PlayerMoveListener());
 
 		getLogger().info("-----------------------------");
 		getLogger().info("Towny was made by HassanS6000!");
