@@ -1,6 +1,6 @@
-package io.github.hsyyid.towny.cmdexecutors;
+package io.github.hsyyid.polis.cmdexecutors;
 
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;

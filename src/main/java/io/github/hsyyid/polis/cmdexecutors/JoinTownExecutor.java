@@ -1,9 +1,9 @@
-package io.github.hsyyid.towny.cmdexecutors;
+package io.github.hsyyid.polis.cmdexecutors;
 
-import io.github.hsyyid.towny.utils.Invite;
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.Invite;
 
-import io.github.hsyyid.towny.Towny;
+import io.github.hsyyid.polis.Polis;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -46,7 +46,7 @@ public class JoinTownExecutor implements CommandExecutor
 				try
 				{
 					Invite inv = null;
-					for (Invite invite : Towny.invites)
+					for (Invite invite : Polis.invites)
 					{
 						if (invite.getPlayerUUID().equals(player.getUniqueId().toString()))
 						{
@@ -56,7 +56,7 @@ public class JoinTownExecutor implements CommandExecutor
 					if (inv != null)
 					{
 						ConfigManager.addTeamMember(townName, player.getUniqueId().toString());
-						for(Player p : Towny.game.getServer().getOnlinePlayers())
+						for(Player p : Polis.game.getServer().getOnlinePlayers())
 						{
 							if((p.getUniqueId().toString()).equals(ConfigManager.getLeader(townName)))
 							{
@@ -64,7 +64,7 @@ public class JoinTownExecutor implements CommandExecutor
 							}
 						}
 						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.YELLOW, "Joined town " + townName));
-						Towny.invites.remove(inv);
+						Polis.invites.remove(inv);
 					}
 					else
 					{

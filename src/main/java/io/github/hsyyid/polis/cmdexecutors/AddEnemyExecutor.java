@@ -1,6 +1,6 @@
-package io.github.hsyyid.towny.cmdexecutors;
+package io.github.hsyyid.polis.cmdexecutors;
 
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
@@ -51,7 +51,7 @@ public class AddEnemyExecutor implements CommandExecutor
 					{
 						if (ConfigManager.getEnemies(playerTeamName) != null && ConfigManager.getEnemies(playerTeamName).contains(townName))
 						{
-							player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are already enemies!"));
+							player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are already enemies!"));
 							return CommandResult.success();
 						}
 					}
@@ -66,7 +66,7 @@ public class AddEnemyExecutor implements CommandExecutor
 							ConfigManager.removeAlly(playerTeamName, townName);
 							ConfigManager.removeAlly(townName, playerTeamName);
 							ConfigManager.addEnemy(playerTeamName, townName, true);
-							player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.GOLD, "Successfully set town ", TextColors.RED, townName, TextColors.GOLD, " as an enemy!"));
+							player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully set town ", TextColors.RED, townName, TextColors.GOLD, " as an enemy!"));
 							return CommandResult.success();
 						}
 					}
@@ -76,20 +76,20 @@ public class AddEnemyExecutor implements CommandExecutor
 					}
 
 					ConfigManager.addEnemy(playerTeamName, townName, true);
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.GOLD, "Successfully set town ", TextColors.RED, townName, TextColors.GOLD, " as an enemy!"));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully set town ", TextColors.RED, townName, TextColors.GOLD, " as an enemy!"));
 				}
 				else if (playerIsAMember)
 				{
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to set enemies!"));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to set enemies!"));
 				}
 				else
 				{
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not in a town!"));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not in a town!"));
 				}
 			}
 			else
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
+				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)

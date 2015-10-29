@@ -1,8 +1,9 @@
-package io.github.hsyyid.towny.cmdexecutors;
+package io.github.hsyyid.polis.cmdexecutors;
 
+import io.github.hsyyid.polis.utils.ConfigManager;
+
+import io.github.hsyyid.polis.Polis;
 import com.flowpowered.math.vector.Vector3i;
-import io.github.hsyyid.towny.Towny;
-import io.github.hsyyid.towny.utils.ConfigManager;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -50,7 +51,7 @@ public class TownClaimExecutor implements CommandExecutor
 
 			if (playerTeamName != null)
 			{
-				Optional<Vector3i> optionalChunk = Towny.game.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
+				Optional<Vector3i> optionalChunk = Polis.game.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
 
 				if (optionalChunk.isPresent())
 				{
@@ -59,21 +60,21 @@ public class TownClaimExecutor implements CommandExecutor
 					if (!ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
 					{
 						ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.GOLD, "Successfully claimed this location!"));
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location!"));
 					}
 					else
 					{
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This location is already claimed!"));
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This location is already claimed!"));
 					}
 				}
 			}
 			else if (playerIsAMember)
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader or an executive to claim!"));
+				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader or an executive to claim!"));
 			}
 			else
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not part of a town!"));
+				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not part of a town!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)

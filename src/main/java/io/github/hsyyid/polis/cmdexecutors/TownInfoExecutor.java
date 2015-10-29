@@ -1,6 +1,6 @@
-package io.github.hsyyid.towny.cmdexecutors;
+package io.github.hsyyid.polis.cmdexecutors;
 
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
@@ -66,7 +66,7 @@ public class TownInfoExecutor implements CommandExecutor
 			}
 			else
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
+				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)

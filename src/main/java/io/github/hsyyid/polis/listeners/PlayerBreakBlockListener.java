@@ -1,14 +1,14 @@
-package io.github.hsyyid.towny.listeners;
+package io.github.hsyyid.polis.listeners;
+
+import io.github.hsyyid.polis.utils.ConfigManager;
 
 import org.spongepowered.api.text.Texts;
-
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
 
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.data.Transaction;
-import io.github.hsyyid.towny.utils.ConfigManager;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
@@ -55,14 +55,14 @@ public class PlayerBreakBlockListener
 						if(!(isClaimed.equals(playerTeamName)))
 						{
 							event.setCancelled(true);
-							player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+							player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 							return;
 						}
 					}
 					else
 					{
 						event.setCancelled(true);
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));	
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));	
 						return;
 					}
 				}

@@ -1,9 +1,9 @@
-package io.github.hsyyid.towny.cmdexecutors;
+package io.github.hsyyid.polis.cmdexecutors;
 
-import io.github.hsyyid.towny.utils.Invite;
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.Invite;
 
-import io.github.hsyyid.towny.Towny;
+import io.github.hsyyid.polis.Polis;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.scheduler.SchedulerService;
@@ -24,7 +24,7 @@ public class InviteExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
-		Game game = Towny.game;
+		Game game = Polis.game;
 		Player p = ctx.<Player> getOne("player").get();
 
 		if (src instanceof Player)
@@ -52,8 +52,8 @@ public class InviteExecutor implements CommandExecutor
 			else if (teamName != null)
 			{
 				final Invite invite = new Invite(teamName, p.getUniqueId().toString());
-				Towny.invites.add(invite);
-				p.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do /jointown " + teamName + " to accept!"));
+				Polis.invites.add(invite);
+				p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do /jointown " + teamName + " to accept!"));
 
 				SchedulerService scheduler = game.getScheduler();
 				TaskBuilder taskBuilder = scheduler.createTaskBuilder();
@@ -62,14 +62,14 @@ public class InviteExecutor implements CommandExecutor
 				{
 					public void run()
 					{
-						if (Towny.invites.contains(invite) && Towny.invites != null)
+						if (Polis.invites.contains(invite) && Polis.invites != null)
 						{
-							Towny.invites.remove(invite);
+							Polis.invites.remove(invite);
 						}
 					}
 				}).delay(2, TimeUnit.MINUTES).name("Teams - remove invite").submit(game.getPluginManager().getPlugin("Teams").get().getInstance());
 
-				src.sendMessage(Texts.of(TextColors.GREEN, "[Teams]: ", TextColors.YELLOW, "Successfully Invited " + p.getName()));
+				src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully Invited " + p.getName()));
 			}
 
 		}

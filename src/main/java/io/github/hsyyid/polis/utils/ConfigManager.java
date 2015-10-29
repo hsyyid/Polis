@@ -1,7 +1,8 @@
-package io.github.hsyyid.towny.utils;
+package io.github.hsyyid.polis.utils;
+
+import io.github.hsyyid.polis.Polis;
 
 import com.flowpowered.math.vector.Vector3i;
-import io.github.hsyyid.towny.Towny;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -17,7 +18,7 @@ public class ConfigManager
 {
 	public static ArrayList<String> getTeams()
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams.teams").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
 		String list = valueNode.getString();
 
 		ArrayList<String> teamsList = new ArrayList<String>();
@@ -60,31 +61,31 @@ public class ConfigManager
 
 	public static String getHQWorldName(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.world").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".hq.world").split("\\."));
 		return valueNode.getString();
 	}
 
 	public static double getHQX(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.X").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".hq.X").split("\\."));
 		return valueNode.getDouble();
 	}
 
 	public static double getHQY(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.Y").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".hq.Y").split("\\."));
 		return valueNode.getDouble();
 	}
 
 	public static double getHQZ(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.Z").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".hq.Z").split("\\."));
 		return valueNode.getDouble();
 	}
 
 	public static boolean inConfig(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".hq.X").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".hq.X").split("\\."));
 		try
 		{
 			Object inConfig = valueNode.getValue();
@@ -105,7 +106,7 @@ public class ConfigManager
 
 	public static ArrayList<String> getMembers(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
 		String list = valueNode.getString();
 
 		ArrayList<String> membersList = new ArrayList<String>();
@@ -148,7 +149,7 @@ public class ConfigManager
 
 	public static ArrayList<String> getExecutives(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
 		String list = valueNode.getString();
 
 		ArrayList<String> executivesList = new ArrayList<String>();
@@ -190,14 +191,14 @@ public class ConfigManager
 
 	public static void setHQ(String teamName, Location<World> hqLocation, String worldName)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
-		Towny.config.getNode("teams", teamName, "hq", "world").setValue(worldName);
-		Towny.config.getNode("teams", teamName, "hq", "X").setValue(hqLocation.getX());
-		Towny.config.getNode("teams", teamName, "hq", "Y").setValue(hqLocation.getY());
-		Towny.config.getNode("teams", teamName, "hq", "Z").setValue(hqLocation.getZ());
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		Polis.config.getNode("teams", teamName, "hq", "world").setValue(worldName);
+		Polis.config.getNode("teams", teamName, "hq", "X").setValue(hqLocation.getX());
+		Polis.config.getNode("teams", teamName, "hq", "Y").setValue(hqLocation.getY());
+		Polis.config.getNode("teams", teamName, "hq", "Z").setValue(hqLocation.getZ());
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -208,7 +209,7 @@ public class ConfigManager
 
 	public static ArrayList<String> getAllies(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".allies").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".allies").split("\\."));
 		String list = valueNode.getString();
 
 		ArrayList<String> alliesList = new ArrayList<String>();
@@ -251,7 +252,7 @@ public class ConfigManager
 
 	public static ArrayList<String> getEnemies(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".enemies").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".enemies").split("\\."));
 		String list = valueNode.getString();
 
 		ArrayList<String> enemyList = new ArrayList<String>();
@@ -294,20 +295,20 @@ public class ConfigManager
 
 	public static String getLeader(String teamName)
 	{
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
 		return valueNode.getString();
 	}
 
 	public static void addTeam(String teamName, String leaderUUID)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
-		Towny.config.getNode("teams", teamName, "leader").setValue(leaderUUID);
-		Towny.config.getNode("teams", teamName, "members").setValue("");
-		Towny.config.getNode("teams", teamName, "enemies").setValue("");
-		Towny.config.getNode("teams", teamName, "allies").setValue("");
-		Towny.config.getNode("teams", teamName, "executives").setValue("");
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		Polis.config.getNode("teams", teamName, "leader").setValue(leaderUUID);
+		Polis.config.getNode("teams", teamName, "members").setValue("");
+		Polis.config.getNode("teams", teamName, "enemies").setValue("");
+		Polis.config.getNode("teams", teamName, "allies").setValue("");
+		Polis.config.getNode("teams", teamName, "executives").setValue("");
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams.teams").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
 		if (valueNode.getString() != null)
 		{
 			String items = valueNode.getString();
@@ -326,7 +327,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -337,9 +338,9 @@ public class ConfigManager
 
 	public static void addTeamMember(String teamName, String memberUUID)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
 		if (valueNode.getString() != null || valueNode.getString().length() > 0)
 		{
 			String teams = valueNode.getString();
@@ -360,7 +361,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -371,9 +372,9 @@ public class ConfigManager
 
 	public static void addEnemy(String teamName, String enemyTeamName, boolean addEnemy)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".enemies").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".enemies").split("\\."));
 		try
 		{
 			if (valueNode.getString() != null || valueNode.getString().length() > 0)
@@ -397,7 +398,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -413,9 +414,9 @@ public class ConfigManager
 
 	public static void addAlly(String teamName, String allyTeamName, boolean addAlly)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".allies").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".allies").split("\\."));
 		try
 		{
 			if (valueNode.getString() != null || valueNode.getString().length() > 0)
@@ -439,7 +440,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -455,9 +456,9 @@ public class ConfigManager
 
 	public static void removeMember(String teamName, String memberUUID)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
 		if (valueNode.getString() != null || valueNode.getString().length() > 0)
 		{
 			String teams = valueNode.getString();
@@ -467,7 +468,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -478,9 +479,9 @@ public class ConfigManager
 
 	public static void removeExecutive(String teamName, String executiveUUID)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
 
 		if (valueNode.getValue() != null && valueNode.getString().length() > 0)
 		{
@@ -491,7 +492,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -502,9 +503,9 @@ public class ConfigManager
 
 	public static void removeEnemy(String teamName, String enemyName)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".enemies").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".enemies").split("\\."));
 		if (valueNode.getString() != null || valueNode.getString().length() > 0)
 		{
 			String teams = valueNode.getString();
@@ -514,7 +515,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -525,9 +526,9 @@ public class ConfigManager
 
 	public static void removeAlly(String teamName, String allyName)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".allies").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".allies").split("\\."));
 		if (valueNode.getString() != null || valueNode.getString().length() > 0)
 		{
 			String teams = valueNode.getString();
@@ -537,7 +538,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -548,16 +549,16 @@ public class ConfigManager
 
 	public static void setTeamLeader(String teamName, String leaderUUID)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
 		valueNode.setValue(leaderUUID);
 
 		removeMember(teamName, leaderUUID);
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -568,9 +569,9 @@ public class ConfigManager
 
 	public static void addTeamExecutive(String teamName, String executiveUUID)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
 		if (valueNode.getString() != null || valueNode.getString().length() > 0)
 		{
 			String teams = valueNode.getString();
@@ -593,7 +594,7 @@ public class ConfigManager
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -604,16 +605,16 @@ public class ConfigManager
 
 	public static void removeTeam(String teamName)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
-		ConfigurationNode node = Towny.config.getNode((Object[]) ("teams." + teamName).split("\\."));
+		ConfigurationNode node = Polis.config.getNode((Object[]) ("teams." + teamName).split("\\."));
 		node.setValue("");
-		ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("teams.teams").split("\\."));
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
 		String val = valueNode.getString();
 		valueNode.setValue(val.replace(teamName + ",", ""));
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -624,12 +625,12 @@ public class ConfigManager
 
 	public static void claim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
-		ConfigurationLoader<CommentedConfigurationNode> configManager = Towny.getConfigManager();
-		Towny.config.getNode("claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ)).setValue(true);
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		Polis.config.getNode("claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ)).setValue(true);
 
 		try
 		{
-			configManager.save(Towny.config);
+			configManager.save(Polis.config);
 			configManager.load();
 		}
 		catch (IOException e)
@@ -642,7 +643,7 @@ public class ConfigManager
 	{
 		try
 		{
-			ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
+			ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
 			return valueNode.getBoolean();
 		}
 		catch (Exception e)
@@ -656,7 +657,7 @@ public class ConfigManager
 		String claimed = "false";
 
 		UUID worldUUID = location.getExtent().getUniqueId();
-		Optional<Vector3i> optionalChunk = Towny.game.getServer().getChunkLayout().toChunk(location.getBlockPosition());
+		Optional<Vector3i> optionalChunk = Polis.game.getServer().getChunkLayout().toChunk(location.getBlockPosition());
 
 		if (optionalChunk.isPresent())
 		{
@@ -666,7 +667,7 @@ public class ConfigManager
 			{
 				try
 				{
-					ConfigurationNode valueNode = Towny.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
+					ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
 					boolean value = valueNode.getBoolean();
 
 					if(value)

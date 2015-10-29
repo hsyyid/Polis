@@ -1,6 +1,6 @@
-package io.github.hsyyid.towny.cmdexecutors;
+package io.github.hsyyid.polis.cmdexecutors;
 
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
@@ -31,12 +31,12 @@ public class LeaveTownExecutor implements CommandExecutor
 				if (uuids.contains(player.getUniqueId().toString()))
 				{
 					ConfigManager.removeMember(team, player.getUniqueId().toString());
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.YELLOW, "Successfully left town " + team));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully left town " + team));
 					return CommandResult.success();
 				}
 				else if (leader.equals(player.getUniqueId().toString()))
 				{
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.YELLOW, "You are the leader of town " + team + " to leave, you must appoint a new leader by doing /setleader"));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You are the leader of town " + team + " to leave, you must appoint a new leader by doing /setleader"));
 					return CommandResult.success();
 				}
 			}

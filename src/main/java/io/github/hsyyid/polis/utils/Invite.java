@@ -1,4 +1,4 @@
-package io.github.hsyyid.towny.utils;
+package io.github.hsyyid.polis.utils;
 
 public class Invite
 {

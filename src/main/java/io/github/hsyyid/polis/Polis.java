@@ -1,27 +1,30 @@
-package io.github.hsyyid.towny;
+package io.github.hsyyid.polis;
 
+import io.github.hsyyid.polis.utils.Invite;
+
+import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
+import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
+import io.github.hsyyid.polis.listeners.PlayerInteractListener;
+import io.github.hsyyid.polis.listeners.PlayerMoveListener;
+import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
+import io.github.hsyyid.polis.cmdexecutors.AddAllyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.CreateTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.DeleteTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.DisbandTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.HQExecutor;
+import io.github.hsyyid.polis.cmdexecutors.InviteExecutor;
+import io.github.hsyyid.polis.cmdexecutors.JoinTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.KickMemberExecutor;
+import io.github.hsyyid.polis.cmdexecutors.LeaveTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.RemoveExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.SetHQExecutor;
+import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
+import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
+import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
 import com.google.inject.Inject;
-import io.github.hsyyid.towny.cmdexecutors.AddAllyExecutor;
-import io.github.hsyyid.towny.cmdexecutors.AddEnemyExecutor;
-import io.github.hsyyid.towny.cmdexecutors.AddExecutiveExecutor;
-import io.github.hsyyid.towny.cmdexecutors.CreateTownExecutor;
-import io.github.hsyyid.towny.cmdexecutors.DeleteTownExecutor;
-import io.github.hsyyid.towny.cmdexecutors.HQExecutor;
-import io.github.hsyyid.towny.cmdexecutors.InviteExecutor;
-import io.github.hsyyid.towny.cmdexecutors.JoinTownExecutor;
-import io.github.hsyyid.towny.cmdexecutors.KickMemberExecutor;
-import io.github.hsyyid.towny.cmdexecutors.LeaveTownExecutor;
-import io.github.hsyyid.towny.cmdexecutors.RemoveExecutiveExecutor;
-import io.github.hsyyid.towny.cmdexecutors.SetHQExecutor;
-import io.github.hsyyid.towny.cmdexecutors.SetLeaderExecutor;
-import io.github.hsyyid.towny.cmdexecutors.TownClaimExecutor;
-import io.github.hsyyid.towny.cmdexecutors.TownInfoExecutor;
-import io.github.hsyyid.towny.cmdexecutors.TownListExecutor;
-import io.github.hsyyid.towny.listeners.PlayerBreakBlockListener;
-import io.github.hsyyid.towny.listeners.PlayerInteractListener;
-import io.github.hsyyid.towny.listeners.PlayerMoveListener;
-import io.github.hsyyid.towny.listeners.PlayerPlaceBlockListener;
-import io.github.hsyyid.towny.utils.Invite;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -39,8 +42,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@Plugin(id = "Towny", name = "Towny", version = "0.1")
-public class Towny
+@Plugin(id = "Polis", name = "Polis", version = "0.2")
+public class Polis
 {
 	public static Game game;
 	public static ConfigurationNode config;
@@ -66,7 +69,7 @@ public class Towny
 	@Listener
 	public void onServerInit(GameInitializationEvent event)
 	{
-		getLogger().info("Towny loading...");
+		getLogger().info("Polis loading...");
 		game = event.getGame();
 
 		// Config File
@@ -171,7 +174,15 @@ public class Towny
 			.executor(new DeleteTownExecutor())
 			.build();
 
-		game.getCommandDispatcher().register(this, deleteTownCommandSpec, "deletetown", "disbandtown");
+		game.getCommandDispatcher().register(this, deleteTownCommandSpec, "deletetown");
+		
+		CommandSpec disbandTownCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Disband Town Command"))
+			.permission("towny.disband")
+			.executor(new DisbandTownExecutor())
+			.build();
+
+		game.getCommandDispatcher().register(this, disbandTownCommandSpec, "disbandtown");
 
 		CommandSpec townCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Town Info Command"))
@@ -234,13 +245,14 @@ public class Towny
 		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
 		game.getEventManager().registerListeners(this, new PlayerPlaceBlockListener());
 		game.getEventManager().registerListeners(this, new PlayerMoveListener());
+		game.getEventManager().registerListeners(this, new PlayerInteractEntityListener());
 
 		getLogger().info("-----------------------------");
-		getLogger().info("Towny was made by HassanS6000!");
+		getLogger().info("Polis was made by HassanS6000!");
 		getLogger().info("Please post all errors on the Sponge Thread or on GitHub!");
 		getLogger().info("Have fun, and enjoy! :D");
 		getLogger().info("-----------------------------");
-		getLogger().info("Towny loaded!");
+		getLogger().info("Polis loaded!");
 	}
 
 	public static ConfigurationLoader<CommentedConfigurationNode> getConfigManager()

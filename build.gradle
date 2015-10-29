@@ -5,11 +5,11 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 version = '0.1'
 group = "io.github.hsyyid"
-archivesBaseName = "Towny"
+archivesBaseName = "Polis"
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Towny',
+        attributes 'Implementation-Title': 'Polis',
                    'Implementation-Version': version
     }
 }

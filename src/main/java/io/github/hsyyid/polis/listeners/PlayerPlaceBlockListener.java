@@ -1,6 +1,7 @@
-package io.github.hsyyid.towny.listeners;
+package io.github.hsyyid.polis.listeners;
 
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
+
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.text.Texts;
@@ -53,14 +54,14 @@ public class PlayerPlaceBlockListener
 					{
 						if(!(isClaimed.equals(playerTeamName)))
 						{
-							player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+							player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 							event.setCancelled(true);
 							return;
 						}
 					}
 					else
 					{
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));	
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));	
 						event.setCancelled(true);
 						return;
 					}

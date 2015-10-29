@@ -1,4 +1,4 @@
-package io.github.hsyyid.towny.utils;
+package io.github.hsyyid.polis.utils;
 
 import java.util.ArrayList;
 import java.util.List;

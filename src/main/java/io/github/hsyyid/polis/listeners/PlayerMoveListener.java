@@ -1,6 +1,7 @@
-package io.github.hsyyid.towny.listeners;
+package io.github.hsyyid.polis.listeners;
 
-import io.github.hsyyid.towny.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.ConfigManager;
+
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.DisplaceEntityEvent;
