@@ -60,25 +60,25 @@ public class JoinTownExecutor implements CommandExecutor
 						{
 							if((p.getUniqueId().toString()).equals(ConfigManager.getLeader(townName)))
 							{
-								p.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.YELLOW, player.getName() + " has joined your Town!"));
+								p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, player.getName() + " has joined your Town!"));
 							}
 						}
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.YELLOW, "Joined town " + townName));
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Joined town " + townName));
 						Polis.invites.remove(inv);
 					}
 					else
 					{
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You don't have an invite to join that town!"));
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You don't have an invite to join that town!"));
 					}
 				}
 				catch (NullPointerException e)
 				{
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to add you to town!"));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to add you to town!"));
 				}
 			}
 			else
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Towny]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
+				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)
