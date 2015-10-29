@@ -92,7 +92,7 @@ public class Polis
 
 		CommandSpec joinTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Join Town Command"))
-			.permission("towny.join")
+			.permission("polis.join")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new JoinTownExecutor())
 			.build();
@@ -101,7 +101,7 @@ public class Polis
 
 		CommandSpec setHQCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Set Town HQ Command"))
-			.permission("towny.hq.set")
+			.permission("polis.hq.set")
 			.executor(new SetHQExecutor())
 			.build();
 
@@ -109,7 +109,7 @@ public class Polis
 
 		CommandSpec HQCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Teleport to Town HQ Command"))
-			.permission("towny.hq.use")
+			.permission("polis.hq.use")
 			.executor(new HQExecutor())
 			.build();
 
@@ -117,7 +117,7 @@ public class Polis
 
 		CommandSpec inviteTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Towny Invite Command"))
-			.permission("towny.invite")
+			.permission("polis.invite")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
 			.executor(new InviteExecutor())
 			.build();
@@ -126,7 +126,7 @@ public class Polis
 
 		CommandSpec addEnemyCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Add Enemy Command"))
-			.permission("towny.enemy.add")
+			.permission("polis.enemy.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new AddEnemyExecutor())
 			.build();
@@ -135,7 +135,7 @@ public class Polis
 
 		CommandSpec kickMemberCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Kick Member Command"))
-			.permission("towny.kick.use")
+			.permission("polis.kick.use")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
 			.executor(new KickMemberExecutor())
 			.build();
@@ -144,7 +144,7 @@ public class Polis
 
 		CommandSpec addAllyCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Add Ally Command"))
-			.permission("towny.ally.add")
+			.permission("polis.ally.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new AddAllyExecutor())
 			.build();
@@ -153,7 +153,7 @@ public class Polis
 
 		CommandSpec leaveTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Leave Town Command"))
-			.permission("towny.leave")
+			.permission("polis.leave")
 			.executor(new LeaveTownExecutor())
 			.build();
 
@@ -161,7 +161,7 @@ public class Polis
 		
 		CommandSpec claimCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Claim Command"))
-			.permission("towny.claim")
+			.permission("polis.claim")
 			.executor(new TownClaimExecutor())
 			.build();
 
@@ -169,7 +169,7 @@ public class Polis
 
 		CommandSpec deleteTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Delete Town Command"))
-			.permission("towny.delete")
+			.permission("polis.delete")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new DeleteTownExecutor())
 			.build();
@@ -178,7 +178,7 @@ public class Polis
 		
 		CommandSpec disbandTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Disband Town Command"))
-			.permission("towny.disband")
+			.permission("polis.disband")
 			.executor(new DisbandTownExecutor())
 			.build();
 
@@ -186,7 +186,7 @@ public class Polis
 
 		CommandSpec townCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Town Info Command"))
-			.permission("towny.info")
+			.permission("polis.info")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new TownInfoExecutor())
 			.build();
@@ -195,7 +195,7 @@ public class Polis
 
 		CommandSpec townListCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Town List Command"))
-			.permission("towny.list")
+			.permission("polis.list")
 			.executor(new TownListExecutor())
 			.build();
 
@@ -203,7 +203,7 @@ public class Polis
 
 		CommandSpec addTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Create Town Command"))
-			.permission("towny.add")
+			.permission("polis.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new CreateTownExecutor())
 			.build();
@@ -212,7 +212,7 @@ public class Polis
 
 		CommandSpec setLeaderCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Set Leader of Town Command"))
-			.permission("towny.leader.set")
+			.permission("polis.leader.set")
 			.arguments(GenericArguments.seq(
 				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
 				GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
@@ -223,7 +223,7 @@ public class Polis
 
 		CommandSpec addExecutiveCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Adds Executive of Town Command"))
-			.permission("towny.executive.add")
+			.permission("polis.executive.add")
 			.arguments(GenericArguments.seq(
 				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
 				GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
@@ -234,7 +234,7 @@ public class Polis
 
 		CommandSpec removeExecutiveCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Remove Executive of Town Command"))
-			.permission("towny.executive.remove")
+			.permission("polis.executive.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
 			.executor(new RemoveExecutiveExecutor())
 			.build();
