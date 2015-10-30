@@ -1,7 +1,6 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
 import io.github.hsyyid.polis.utils.ConfigManager;
-
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -23,14 +22,42 @@ public class CreateTownExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 
-			try
+			String playerTeamName = null;
+
+			for (String team : ConfigManager.getTeams())
 			{
-				ConfigManager.addTeam(townName, player.getUniqueId().toString());
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Created town " + townName));
+				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
+				{
+					playerTeamName = team;
+					break;
+				}
+				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
+				{
+					playerTeamName = team;
+					break;
+				}
+				else if(ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
+				{
+					playerTeamName = team;
+					break;
+				}
 			}
-			catch (NullPointerException e)
+
+			if(playerTeamName == null)
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to create Town!"));
+				try
+				{
+					ConfigManager.addTeam(townName, player.getUniqueId().toString());
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Created town " + townName));
+				}
+				catch (NullPointerException e)
+				{
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to create Town!"));
+				}
+			}
+			else
+			{
+				player.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are already in a town. You must leave or disband your town first."));
 			}
 
 		}
