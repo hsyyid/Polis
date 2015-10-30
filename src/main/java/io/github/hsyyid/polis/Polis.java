@@ -1,12 +1,6 @@
 package io.github.hsyyid.polis;
 
-import io.github.hsyyid.polis.utils.Invite;
-
-import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
-import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
-import io.github.hsyyid.polis.listeners.PlayerInteractListener;
-import io.github.hsyyid.polis.listeners.PlayerMoveListener;
-import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
+import com.google.inject.Inject;
 import io.github.hsyyid.polis.cmdexecutors.AddAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
@@ -18,13 +12,20 @@ import io.github.hsyyid.polis.cmdexecutors.InviteExecutor;
 import io.github.hsyyid.polis.cmdexecutors.JoinTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.KickMemberExecutor;
 import io.github.hsyyid.polis.cmdexecutors.LeaveTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.RemoveAllyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.RemoveEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
-import com.google.inject.Inject;
+import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
+import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
+import io.github.hsyyid.polis.listeners.PlayerInteractListener;
+import io.github.hsyyid.polis.listeners.PlayerMoveListener;
+import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
+import io.github.hsyyid.polis.utils.Invite;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -42,7 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@Plugin(id = "Polis", name = "Polis", version = "0.3")
+@Plugin(id = "Polis", name = "Polis", version = "0.4")
 public class Polis
 {
 	public static Game game;
@@ -133,6 +134,15 @@ public class Polis
 
 		game.getCommandDispatcher().register(this, addEnemyCommandSpec, "addenemy");
 
+		CommandSpec removeEnemyCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Remove Enemy Command"))
+			.permission("polis.enemy.remove")
+			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
+			.executor(new RemoveEnemyExecutor())
+			.build();
+
+		game.getCommandDispatcher().register(this, removeEnemyCommandSpec, "removeenemy");
+		
 		CommandSpec kickMemberCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Kick Member Command"))
 			.permission("polis.kick.use")
@@ -150,6 +160,15 @@ public class Polis
 			.build();
 
 		game.getCommandDispatcher().register(this, addAllyCommandSpec, "addally");
+		
+		CommandSpec removeAllyCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Remove Ally Command"))
+			.permission("polis.ally.remove")
+			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
+			.executor(new RemoveAllyExecutor())
+			.build();
+
+		game.getCommandDispatcher().register(this, removeAllyCommandSpec, "removeally");
 
 		CommandSpec leaveTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Leave Town Command"))
