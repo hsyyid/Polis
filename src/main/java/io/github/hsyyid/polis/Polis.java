@@ -43,7 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@Plugin(id = "Polis", name = "Polis", version = "0.4")
+@Plugin(id = "Polis", name = "Polis", version = "0.5")
 public class Polis
 {
 	public static Game game;

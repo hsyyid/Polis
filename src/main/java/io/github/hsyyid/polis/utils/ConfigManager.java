@@ -18,45 +18,52 @@ public class ConfigManager
 {
 	public static ArrayList<String> getTeams()
 	{
-		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
-		String list = valueNode.getString();
-
-		ArrayList<String> teamsList = new ArrayList<String>();
-		boolean finished = false;
-
-		// Add all homes to homeList
-		if (finished != true)
+		try
 		{
-			int endIndex = list.indexOf(",");
-			if (endIndex != -1)
-			{
-				String substring = list.substring(0, endIndex);
-				teamsList.add(substring);
+			ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
+			String list = valueNode.getString();
 
-				// If they Have More than 1
-				while (finished != true)
+			ArrayList<String> teamsList = new ArrayList<String>();
+			boolean finished = false;
+
+			if (finished != true)
+			{
+				int endIndex = list.indexOf(",");
+				
+				if (endIndex != -1)
 				{
-					int startIndex = endIndex;
-					endIndex = list.indexOf(",", startIndex + 1);
-					if (endIndex != -1)
+					String substring = list.substring(0, endIndex);
+					teamsList.add(substring);
+
+					while (finished != true)
 					{
-						String substrings = list.substring(startIndex + 1, endIndex);
-						teamsList.add(substrings);
-					}
-					else
-					{
-						finished = true;
+						int startIndex = endIndex;
+						endIndex = list.indexOf(",", startIndex + 1);
+
+						if (endIndex != -1)
+						{
+							String substrings = list.substring(startIndex + 1, endIndex);
+							teamsList.add(substrings);
+						}
+						else
+						{
+							finished = true;
+						}
 					}
 				}
+				else
+				{
+					teamsList.add(list);
+					finished = true;
+				}
 			}
-			else
-			{
-				teamsList.add(list);
-				finished = true;
-			}
-		}
 
-		return teamsList;
+			return teamsList;
+		}
+		catch (Exception e)
+		{
+			return new ArrayList<String>();
+		}
 	}
 
 	public static String getHQWorldName(String teamName)
@@ -662,15 +669,15 @@ public class ConfigManager
 		if (optionalChunk.isPresent())
 		{
 			Vector3i chunk = optionalChunk.get();
-			
-			for(String teamName : getTeams())
+
+			for (String teamName : getTeams())
 			{
 				try
 				{
 					ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
 					boolean value = valueNode.getBoolean();
 
-					if(value)
+					if (value)
 					{
 						claimed = teamName;
 						break;
