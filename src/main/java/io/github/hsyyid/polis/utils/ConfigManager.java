@@ -639,6 +639,7 @@ public class ConfigManager
 		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
 		String val = valueNode.getString();
 		valueNode.setValue(val.replace(teamName + ",", ""));
+
 		try
 		{
 			configManager.save(Polis.config);
@@ -654,6 +655,38 @@ public class ConfigManager
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 		Polis.config.getNode("claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ)).setValue(true);
+
+		try
+		{
+			configManager.save(Polis.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			;
+		}
+	}
+
+	public static void removeClaims(String teamName)
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		Polis.config.getNode("claims").removeChild(teamName);
+		
+		try
+		{
+			configManager.save(Polis.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			;
+		}
+	}
+
+	public static void unclaim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		Polis.config.getNode("claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ)).setValue(false);
 
 		try
 		{

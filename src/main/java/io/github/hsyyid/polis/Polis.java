@@ -20,6 +20,8 @@ import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
+import io.github.hsyyid.polis.cmdexecutors.TownUnclaimAllExecutor;
+import io.github.hsyyid.polis.cmdexecutors.TownUnclaimExecutor;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
@@ -43,7 +45,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@Plugin(id = "Polis", name = "Polis", version = "0.6")
+@Plugin(id = "Polis", name = "Polis", version = "0.7")
 public class Polis
 {
 	public static Game game;
@@ -185,6 +187,22 @@ public class Polis
 			.build();
 
 		game.getCommandDispatcher().register(this, claimCommandSpec, "townclaim");
+		
+		CommandSpec unClaimCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Un-Claim Command"))
+			.permission("polis.unclaim")
+			.executor(new TownUnclaimExecutor())
+			.build();
+
+		game.getCommandDispatcher().register(this, unClaimCommandSpec, "townunclaim");
+		
+		CommandSpec unClaimAllCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Un-Claim All Command"))
+			.permission("polis.unclaim.all")
+			.executor(new TownUnclaimAllExecutor())
+			.build();
+
+		game.getCommandDispatcher().register(this, unClaimAllCommandSpec, "townunclaimall");
 
 		CommandSpec deleteTownCommandSpec = CommandSpec.builder()
 			.description(Texts.of("Delete Town Command"))
