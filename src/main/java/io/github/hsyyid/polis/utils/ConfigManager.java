@@ -639,6 +639,8 @@ public class ConfigManager
 		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
 		String val = valueNode.getString();
 		valueNode.setValue(val.replace(teamName + ",", ""));
+		
+		removeClaims(teamName);
 
 		try
 		{
