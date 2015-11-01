@@ -1,8 +1,7 @@
 package io.github.hsyyid.polis.utils;
 
-import io.github.hsyyid.polis.Polis;
-
 import com.flowpowered.math.vector.Vector3i;
+import io.github.hsyyid.polis.Polis;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -29,7 +28,7 @@ public class ConfigManager
 			if (finished != true)
 			{
 				int endIndex = list.indexOf(",");
-				
+
 				if (endIndex != -1)
 				{
 					String substring = list.substring(0, endIndex);
@@ -51,7 +50,7 @@ public class ConfigManager
 						}
 					}
 				}
-				else
+				else if (!list.equals(""))
 				{
 					teamsList.add(list);
 					finished = true;
@@ -113,87 +112,101 @@ public class ConfigManager
 
 	public static ArrayList<String> getMembers(String teamName)
 	{
-		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
-		String list = valueNode.getString();
-
-		ArrayList<String> membersList = new ArrayList<String>();
-		boolean finished = false;
-
-		// Add all homes to homeList
-		if (finished != true)
+		try
 		{
-			int endIndex = list.indexOf(",");
-			if (endIndex != -1)
-			{
-				String substring = list.substring(0, endIndex);
-				membersList.add(substring);
+			ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
+			String list = valueNode.getString();
 
-				// If they Have More than 1
-				while (finished != true)
+			ArrayList<String> membersList = new ArrayList<String>();
+			boolean finished = false;
+
+			// Add all homes to homeList
+			if (finished != true)
+			{
+				int endIndex = list.indexOf(",");
+				if (endIndex != -1)
 				{
-					int startIndex = endIndex;
-					endIndex = list.indexOf(",", startIndex + 1);
-					if (endIndex != -1)
+					String substring = list.substring(0, endIndex);
+					membersList.add(substring);
+
+					// If they Have More than 1
+					while (finished != true)
 					{
-						String substrings = list.substring(startIndex + 1, endIndex);
-						membersList.add(substrings);
-					}
-					else
-					{
-						finished = true;
+						int startIndex = endIndex;
+						endIndex = list.indexOf(",", startIndex + 1);
+						if (endIndex != -1)
+						{
+							String substrings = list.substring(startIndex + 1, endIndex);
+							membersList.add(substrings);
+						}
+						else
+						{
+							finished = true;
+						}
 					}
 				}
+				else
+				{
+					membersList.add(list);
+					finished = true;
+				}
 			}
-			else
-			{
-				membersList.add(list);
-				finished = true;
-			}
-		}
 
-		return membersList;
+			return membersList;
+		}
+		catch (Exception e)
+		{
+			return new ArrayList<String>();
+		}
 	}
 
 	public static ArrayList<String> getExecutives(String teamName)
 	{
-		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
-		String list = valueNode.getString();
-
-		ArrayList<String> executivesList = new ArrayList<String>();
-		boolean finished = false;
-
-		if (finished != true)
+		try
 		{
-			int endIndex = list.indexOf(",");
-			if (endIndex != -1)
-			{
-				String substring = list.substring(0, endIndex);
-				executivesList.add(substring);
+			ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
+			String list = valueNode.getString();
 
-				// If they Have More than 1
-				while (finished != true)
+			ArrayList<String> executivesList = new ArrayList<String>();
+			boolean finished = false;
+
+			if (finished != true)
+			{
+				int endIndex = list.indexOf(",");
+				if (endIndex != -1)
 				{
-					int startIndex = endIndex;
-					endIndex = list.indexOf(",", startIndex + 1);
-					if (endIndex != -1)
+					String substring = list.substring(0, endIndex);
+					executivesList.add(substring);
+
+					// If they Have More than 1
+					while (finished != true)
 					{
-						String substrings = list.substring(startIndex + 1, endIndex);
-						executivesList.add(substrings);
-					}
-					else
-					{
-						finished = true;
+						int startIndex = endIndex;
+						endIndex = list.indexOf(",", startIndex + 1);
+						if (endIndex != -1)
+						{
+							String substrings = list.substring(startIndex + 1, endIndex);
+							executivesList.add(substrings);
+						}
+						else
+						{
+							finished = true;
+						}
 					}
 				}
+				else
+				{
+					executivesList.add(list);
+					finished = true;
+				}
 			}
-			else
-			{
-				executivesList.add(list);
-				finished = true;
-			}
-		}
 
-		return executivesList;
+			return executivesList;
+		}
+		catch (Exception e)
+		{
+			return new ArrayList<String>();
+		}
 	}
 
 	public static void setHQ(String teamName, Location<World> hqLocation, String worldName)
@@ -302,8 +315,15 @@ public class ConfigManager
 
 	public static String getLeader(String teamName)
 	{
-		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
-		return valueNode.getString();
+		try
+		{
+			ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
+			return valueNode.getString();
+		}
+		catch (Exception e)
+		{
+			return "";
+		}
 	}
 
 	public static void addTeam(String teamName, String leaderUUID)
