@@ -12,6 +12,7 @@ import io.github.hsyyid.polis.cmdexecutors.InviteExecutor;
 import io.github.hsyyid.polis.cmdexecutors.JoinTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.KickMemberExecutor;
 import io.github.hsyyid.polis.cmdexecutors.LeaveTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveExecutiveExecutor;
@@ -45,8 +46,11 @@ import org.spongepowered.api.util.command.spec.CommandSpec;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
-@Plugin(id = "Polis", name = "Polis", version = "0.8")
+@Plugin(id = "Polis", name = "Polis", version = "0.9")
 public class Polis
 {
 	public static Game game;
@@ -94,190 +98,159 @@ public class Polis
 			getLogger().error("The default configuration could not be loaded or created!");
 		}
 
-		CommandSpec joinTownCommandSpec = CommandSpec.builder()
+		HashMap<List<String>, CommandSpec> subcommands = new HashMap<List<String>, CommandSpec>();
+
+		subcommands.put(Arrays.asList("join"), CommandSpec.builder()
 			.description(Texts.of("Join Town Command"))
 			.permission("polis.join")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new JoinTownExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, joinTownCommandSpec, "jointown");
-
-		CommandSpec setHQCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("sethq"), CommandSpec.builder()
 			.description(Texts.of("Set Town HQ Command"))
 			.permission("polis.hq.set")
 			.executor(new SetHQExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, setHQCommandSpec, "sethq");
-
-		CommandSpec HQCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("hq"), CommandSpec.builder()
 			.description(Texts.of("Teleport to Town HQ Command"))
 			.permission("polis.hq.use")
 			.executor(new HQExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, HQCommandSpec, "hq");
-
-		CommandSpec inviteTownCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("invite"), CommandSpec.builder()
 			.description(Texts.of("Towny Invite Command"))
 			.permission("polis.invite")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
 			.executor(new InviteExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, inviteTownCommandSpec, "invite", "towninvite");
-
-		CommandSpec addEnemyCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("addenemy"), CommandSpec.builder()
 			.description(Texts.of("Add Enemy Command"))
 			.permission("polis.enemy.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new AddEnemyExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, addEnemyCommandSpec, "addenemy");
-
-		CommandSpec removeEnemyCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("removeenemy"), CommandSpec.builder()
 			.description(Texts.of("Remove Enemy Command"))
 			.permission("polis.enemy.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new RemoveEnemyExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, removeEnemyCommandSpec, "removeenemy");
-		
-		CommandSpec kickMemberCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("kick"), CommandSpec.builder()
 			.description(Texts.of("Kick Member Command"))
 			.permission("polis.kick.use")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
 			.executor(new KickMemberExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, kickMemberCommandSpec, "kickmember");
-
-		CommandSpec addAllyCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("addally"), CommandSpec.builder()
 			.description(Texts.of("Add Ally Command"))
 			.permission("polis.ally.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new AddAllyExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, addAllyCommandSpec, "addally");
-		
-		CommandSpec removeAllyCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("removeally"), CommandSpec.builder()
 			.description(Texts.of("Remove Ally Command"))
 			.permission("polis.ally.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new RemoveAllyExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, removeAllyCommandSpec, "removeally");
-
-		CommandSpec leaveTownCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("leave"), CommandSpec.builder()
 			.description(Texts.of("Leave Town Command"))
 			.permission("polis.leave")
 			.executor(new LeaveTownExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, leaveTownCommandSpec, "leavetown");
-		
-		CommandSpec claimCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("claim"), CommandSpec.builder()
 			.description(Texts.of("Claim Command"))
 			.permission("polis.claim")
 			.executor(new TownClaimExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, claimCommandSpec, "townclaim");
-		
-		CommandSpec unClaimCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("unclaim"), CommandSpec.builder()
 			.description(Texts.of("Un-Claim Command"))
 			.permission("polis.unclaim")
 			.executor(new TownUnclaimExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, unClaimCommandSpec, "townunclaim");
-		
-		CommandSpec unClaimAllCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("unclaimall"), CommandSpec.builder()
 			.description(Texts.of("Un-Claim All Command"))
 			.permission("polis.unclaim.all")
 			.executor(new TownUnclaimAllExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, unClaimAllCommandSpec, "townunclaimall");
-
-		CommandSpec deleteTownCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("delete"), CommandSpec.builder()
 			.description(Texts.of("Delete Town Command"))
 			.permission("polis.delete")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new DeleteTownExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, deleteTownCommandSpec, "deletetown");
-		
-		CommandSpec disbandTownCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("disband"), CommandSpec.builder()
 			.description(Texts.of("Disband Town Command"))
 			.permission("polis.disband")
 			.executor(new DisbandTownExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, disbandTownCommandSpec, "disbandtown");
-
-		CommandSpec townCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("info"), CommandSpec.builder()
 			.description(Texts.of("Town Info Command"))
 			.permission("polis.info")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new TownInfoExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, townCommandSpec, "town");
-
-		CommandSpec townListCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("list"), CommandSpec.builder()
 			.description(Texts.of("Town List Command"))
 			.permission("polis.list")
 			.executor(new TownListExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, townListCommandSpec, "towns");
-
-		CommandSpec addTownCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("create"), CommandSpec.builder()
 			.description(Texts.of("Create Town Command"))
 			.permission("polis.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name"))))
 			.executor(new CreateTownExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, addTownCommandSpec, "createtown");
-
-		CommandSpec setLeaderCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("setleader"), CommandSpec.builder()
 			.description(Texts.of("Set Leader of Town Command"))
 			.permission("polis.leader.set")
 			.arguments(GenericArguments.seq(
 				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
 				GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
 			.executor(new SetLeaderExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, setLeaderCommandSpec, "setleader");
-
-		CommandSpec addExecutiveCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("addexecutive"), CommandSpec.builder()
 			.description(Texts.of("Adds Executive of Town Command"))
 			.permission("polis.executive.add")
 			.arguments(GenericArguments.seq(
 				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
 				GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
 			.executor(new AddExecutiveExecutor())
-			.build();
+			.build());
 
-		game.getCommandDispatcher().register(this, addExecutiveCommandSpec, "addexecutive");
-
-		CommandSpec removeExecutiveCommandSpec = CommandSpec.builder()
+		subcommands.put(Arrays.asList("removeexecutive"), CommandSpec.builder()
 			.description(Texts.of("Remove Executive of Town Command"))
 			.permission("polis.executive.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
 			.executor(new RemoveExecutiveExecutor())
+			.build());
+		
+		CommandSpec polisCommandSpec = CommandSpec.builder()
+			.description(Texts.of("Polis Command"))
+			.permission("polis.use")
+			.executor(new PolisExecutor())
+			.children(subcommands)
 			.build();
 
-		game.getCommandDispatcher().register(this, removeExecutiveCommandSpec, "removeexec", "removeexecutive");
+		game.getCommandDispatcher().register(this, polisCommandSpec, "polis");
 
 		game.getEventManager().registerListeners(this, new PlayerInteractListener());
 		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
