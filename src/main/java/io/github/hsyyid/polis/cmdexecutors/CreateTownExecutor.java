@@ -21,6 +21,12 @@ public class CreateTownExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
+			
+			if(townName.equalsIgnoreCase("SafeZone"))
+			{
+				src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You may not use the name SafeZone."));
+				return CommandResult.success();
+			}
 
 			String playerTeamName = null;
 

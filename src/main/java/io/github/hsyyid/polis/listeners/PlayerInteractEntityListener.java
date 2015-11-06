@@ -24,6 +24,11 @@ public class PlayerInteractEntityListener
 
 			if (!isClaimed.equals("false"))
 			{
+				if(isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
+				{
+					return;
+				}
+				
 				String playerTeamName = null;
 
 				for (String team : ConfigManager.getTeams())

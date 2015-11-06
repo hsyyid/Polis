@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import io.github.hsyyid.polis.cmdexecutors.AddAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.CreateTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.DeleteTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.DisbandTownExecutor;
@@ -24,6 +25,8 @@ import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimAllExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimExecutor;
 import io.github.hsyyid.polis.listeners.ChatListener;
+import io.github.hsyyid.polis.listeners.EntitySpawnListener;
+import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
@@ -50,7 +53,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@Plugin(id = "Polis", name = "Polis", version = "0.9")
+@Plugin(id = "Polis", name = "Polis", version = "1.0")
 public class Polis
 {
 	public static Game game;
@@ -111,6 +114,12 @@ public class Polis
 			.description(Texts.of("Set Town HQ Command"))
 			.permission("polis.hq.set")
 			.executor(new SetHQExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("adminclaim"), CommandSpec.builder()
+			.description(Texts.of("Admin Claim Command"))
+			.permission("polis.claim.admin")
+			.executor(new AdminClaimExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("hq"), CommandSpec.builder()
@@ -250,7 +259,7 @@ public class Polis
 			.children(subcommands)
 			.build();
 
-		game.getCommandDispatcher().register(this, polisCommandSpec, "polis");
+		game.getCommandDispatcher().register(this, polisCommandSpec, "polis", "p");
 
 		game.getEventManager().registerListeners(this, new PlayerInteractListener());
 		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
@@ -258,6 +267,8 @@ public class Polis
 		game.getEventManager().registerListeners(this, new PlayerMoveListener());
 		game.getEventManager().registerListeners(this, new PlayerInteractEntityListener());
 		game.getEventManager().registerListeners(this, new ChatListener());
+		game.getEventManager().registerListeners(this, new EntitySpawnListener());
+		game.getEventManager().registerListeners(this, new ExplosionEventListener());
 
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis was made by HassanS6000!");
