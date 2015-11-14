@@ -1,13 +1,12 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
+import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import io.github.hsyyid.polis.utils.Invite;
-
-import io.github.hsyyid.polis.Polis;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.scheduler.SchedulerService;
-import org.spongepowered.api.service.scheduler.TaskBuilder;
+import org.spongepowered.api.service.scheduler.Task;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandException;
@@ -56,7 +55,7 @@ public class InviteExecutor implements CommandExecutor
 				p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do /jointown " + teamName + " to accept!"));
 
 				SchedulerService scheduler = game.getScheduler();
-				TaskBuilder taskBuilder = scheduler.createTaskBuilder();
+				Task.Builder taskBuilder = scheduler.createTaskBuilder();
 
 				taskBuilder.execute(new Runnable()
 				{
