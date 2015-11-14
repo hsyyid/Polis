@@ -29,7 +29,7 @@ public class PlayerInteractListener
 						return;
 					}
 						
-					if(isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getName()))
+					if(isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getId()))
 					{
 						return;
 					}
