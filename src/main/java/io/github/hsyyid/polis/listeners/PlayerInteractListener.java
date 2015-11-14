@@ -24,6 +24,16 @@ public class PlayerInteractListener
 
 				if (!isClaimed.equals("false"))
 				{
+					if(isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
+					{
+						return;
+					}
+						
+					if(isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getName()))
+					{
+						return;
+					}
+					
 					String playerTeamName = null;
 
 					for (String team : ConfigManager.getTeams())

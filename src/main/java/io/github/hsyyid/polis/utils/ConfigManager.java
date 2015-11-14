@@ -747,4 +747,118 @@ public class ConfigManager
 
 		return claimed;
 	}
+
+	public static boolean canUseInSafeZone(String id)
+	{
+		try
+		{
+			return getAllowedBlocksInSafeZone().contains(id);
+		}
+		catch(Exception e)
+		{
+			addUsableSafeZoneBlock("");
+			return false;
+		}
+	}
+	
+	public static void addUsableSafeZoneBlock(String id)
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
+		
+		if (valueNode.getString() != null)
+		{
+			String items = valueNode.getString();
+			if (items.contains(id + ","))
+				;
+			else
+			{
+				String formattedItem = (id + ",");
+				valueNode.setValue(items + formattedItem);
+			}
+		}
+		else
+		{
+			valueNode.setValue(id + ",");
+		}
+
+		try
+		{
+			configManager.save(Polis.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			System.out.println("[Polis]: Failed to add usable item!");
+		}
+	}
+	
+	public static void removeUsableSafeZoneBlock(String id)
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
+		
+		String val = valueNode.getString();
+		valueNode.setValue(val.replace(id + ",", ""));
+
+		try
+		{
+			configManager.save(Polis.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			System.out.println("[Polis]: Failed to remove usable SafeZone block!");
+		}
+	}
+	
+	public static ArrayList<String> getAllowedBlocksInSafeZone()
+	{
+		try
+		{
+			ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
+			String list = valueNode.getString();
+
+			ArrayList<String> teamsList = new ArrayList<String>();
+			boolean finished = false;
+
+			if (finished != true)
+			{
+				int endIndex = list.indexOf(",");
+
+				if (endIndex != -1)
+				{
+					String substring = list.substring(0, endIndex);
+					teamsList.add(substring);
+
+					while (finished != true)
+					{
+						int startIndex = endIndex;
+						endIndex = list.indexOf(",", startIndex + 1);
+
+						if (endIndex != -1)
+						{
+							String substrings = list.substring(startIndex + 1, endIndex);
+							teamsList.add(substrings);
+						}
+						else
+						{
+							finished = true;
+						}
+					}
+				}
+				else if (!list.equals(""))
+				{
+					teamsList.add(list);
+					finished = true;
+				}
+			}
+
+			return teamsList;
+		}
+		catch (Exception e)
+		{
+			return new ArrayList<String>();
+		}
+	}
 }
