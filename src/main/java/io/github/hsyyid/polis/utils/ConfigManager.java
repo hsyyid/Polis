@@ -318,7 +318,11 @@ public class ConfigManager
 		try
 		{
 			ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
-			return valueNode.getString();
+
+			if (valueNode.getValue() != null)
+				return valueNode.getString();
+			else
+				return "";
 		}
 		catch (Exception e)
 		{
@@ -639,7 +643,7 @@ public class ConfigManager
 		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.teams").split("\\."));
 		String val = valueNode.getString();
 		valueNode.setValue(val.replace(teamName + ",", ""));
-		
+
 		removeClaims(teamName);
 
 		try
@@ -673,7 +677,7 @@ public class ConfigManager
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 		Polis.config.getNode("claims").removeChild(teamName);
-		
+
 		try
 		{
 			configManager.save(Polis.config);
@@ -754,18 +758,18 @@ public class ConfigManager
 		{
 			return getAllowedBlocksInSafeZone().contains(id);
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			addUsableSafeZoneBlock("");
 			return false;
 		}
 	}
-	
+
 	public static void addUsableSafeZoneBlock(String id)
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
-		
+
 		if (valueNode.getString() != null)
 		{
 			String items = valueNode.getString();
@@ -792,12 +796,12 @@ public class ConfigManager
 			System.out.println("[Polis]: Failed to add usable item!");
 		}
 	}
-	
+
 	public static void removeUsableSafeZoneBlock(String id)
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
-		
+
 		String val = valueNode.getString();
 		valueNode.setValue(val.replace(id + ",", ""));
 
@@ -811,7 +815,7 @@ public class ConfigManager
 			System.out.println("[Polis]: Failed to remove usable SafeZone block!");
 		}
 	}
-	
+
 	public static ArrayList<String> getAllowedBlocksInSafeZone()
 	{
 		try
