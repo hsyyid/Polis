@@ -1,15 +1,14 @@
 package io.github.hsyyid.polis.listeners;
 
 import io.github.hsyyid.polis.utils.ConfigManager;
-
+import org.spongepowered.api.block.tileentity.TileEntity;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
-
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.entity.InteractEntityEvent;
 
 public class PlayerInteractEntityListener
 {
@@ -25,6 +24,11 @@ public class PlayerInteractEntityListener
 			if (!isClaimed.equals("false"))
 			{
 				if(isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
+				{
+					return;
+				}
+				
+				if(event.getTargetEntity() instanceof TileEntity && isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(((TileEntity) (event.getTargetEntity())).getBlock().getType().getId()))
 				{
 					return;
 				}

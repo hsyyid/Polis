@@ -490,6 +490,7 @@ public class ConfigManager
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 
 		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
+		
 		if (valueNode.getString() != null || valueNode.getString().length() > 0)
 		{
 			String teams = valueNode.getString();

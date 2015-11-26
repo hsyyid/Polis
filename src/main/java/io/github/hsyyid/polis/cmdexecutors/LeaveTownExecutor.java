@@ -34,6 +34,12 @@ public class LeaveTownExecutor implements CommandExecutor
 					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully left town " + team));
 					return CommandResult.success();
 				}
+				else if(ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
+				{
+					ConfigManager.removeExecutive(team, player.getUniqueId().toString());
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully left town " + team));
+					return CommandResult.success();
+				}
 				else if (leader.equals(player.getUniqueId().toString()))
 				{
 					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You are the leader of town " + team + " to leave, you must appoint a new leader by doing /setleader"));

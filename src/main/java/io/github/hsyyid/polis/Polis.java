@@ -55,7 +55,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.0")
+@Plugin(id = "Polis", name = "Polis", version = "1.1")
 public class Polis
 {
 	public static Game game;
