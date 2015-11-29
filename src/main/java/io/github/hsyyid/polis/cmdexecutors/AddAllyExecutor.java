@@ -1,7 +1,6 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
 import io.github.hsyyid.polis.utils.ConfigManager;
-
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -12,8 +11,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.source.CommandBlockSource;
 import org.spongepowered.api.util.command.source.ConsoleSource;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
-
-import java.util.ArrayList;
 
 public class AddAllyExecutor implements CommandExecutor
 {
@@ -32,8 +29,7 @@ public class AddAllyExecutor implements CommandExecutor
 
 				for (String team : ConfigManager.getTeams())
 				{
-					ArrayList<String> uuids = ConfigManager.getMembers(team);
-					if (uuids.contains(player.getUniqueId().toString()))
+					if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
 					{
 						playerIsAMember = true;
 						break;
@@ -41,6 +37,11 @@ public class AddAllyExecutor implements CommandExecutor
 					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 					{
 						playerTeamName = team;
+						break;
+					}
+					else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
+					{
+						playerIsAMember = true;
 						break;
 					}
 				}

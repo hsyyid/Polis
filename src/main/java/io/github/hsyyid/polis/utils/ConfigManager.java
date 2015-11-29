@@ -64,6 +64,27 @@ public class ConfigManager
 			return new ArrayList<String>();
 		}
 	}
+	
+	public static String getTeam(UUID playerUUID)
+	{
+		for (String team : ConfigManager.getTeams())
+		{
+			if (ConfigManager.getMembers(team).contains(playerUUID.toString()))
+			{
+				return team;
+			}
+			else if (ConfigManager.getLeader(team).equals(playerUUID.toString()))
+			{
+				return team;
+			}
+			else if (ConfigManager.getExecutives(team).contains(playerUUID.toString()))
+			{
+				return team;
+			}
+		}
+		
+		return null;
+	}
 
 	public static String getHQWorldName(String teamName)
 	{

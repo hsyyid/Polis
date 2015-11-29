@@ -1,11 +1,13 @@
 package io.github.hsyyid.polis;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import io.github.hsyyid.polis.cmdexecutors.AddAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddUsableBlockExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.AutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.CreateTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.DeleteTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.DisbandTownExecutor;
@@ -55,14 +57,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.2")
+@Plugin(id = "Polis", name = "Polis", version = "1.3")
 public class Polis
 {
 	public static Game game;
 	public static ConfigurationNode config;
 	public static ConfigurationLoader<CommentedConfigurationNode> configurationManager;
 	public static ArrayList<Invite> invites = new ArrayList<>();
+	public static Set<UUID> autoClaim = Sets.newHashSet();
 
 	@Inject
 	private Logger logger;
@@ -197,6 +202,12 @@ public class Polis
 			.description(Texts.of("Claim Command"))
 			.permission("polis.claim")
 			.executor(new TownClaimExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("autoclaim"), CommandSpec.builder()
+			.description(Texts.of("AutoClaim Command"))
+			.permission("polis.autoclaim")
+			.executor(new AutoClaimExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("unclaim"), CommandSpec.builder()
