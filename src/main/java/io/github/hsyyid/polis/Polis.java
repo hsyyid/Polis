@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import io.github.hsyyid.polis.cmdexecutors.AddAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
-import io.github.hsyyid.polis.cmdexecutors.AddUsableBlockExecutor;
+import io.github.hsyyid.polis.cmdexecutors.AddUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.CreateTownExecutor;
@@ -20,7 +20,7 @@ import io.github.hsyyid.polis.cmdexecutors.PolisExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveExecutiveExecutor;
-import io.github.hsyyid.polis.cmdexecutors.RemoveUsableBlockExecutor;
+import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
@@ -143,18 +143,18 @@ public class Polis
 			.executor(new InviteExecutor())
 			.build());
 		
-		subcommands.put(Arrays.asList("addblock"), CommandSpec.builder()
-			.description(Texts.of("Polis Add Interactable Block Command"))
-			.permission("polis.safezone.addblock")
+		subcommands.put(Arrays.asList("addusable"), CommandSpec.builder()
+			.description(Texts.of("Polis Add Interactable Command"))
+			.permission("polis.safezone.addusable")
 			.arguments(GenericArguments.onlyOne(GenericArguments.remainingJoinedStrings(Texts.of("id"))))
-			.executor(new AddUsableBlockExecutor())
+			.executor(new AddUsableExecutor())
 			.build());
 		
-		subcommands.put(Arrays.asList("removeblock"), CommandSpec.builder()
-			.description(Texts.of("Polis Remove Interactable Block Command"))
-			.permission("polis.safezone.removeblock")
+		subcommands.put(Arrays.asList("removeusable"), CommandSpec.builder()
+			.description(Texts.of("Polis Remove Interactable Command"))
+			.permission("polis.safezone.removeusable")
 			.arguments(GenericArguments.onlyOne(GenericArguments.remainingJoinedStrings(Texts.of("id"))))
-			.executor(new RemoveUsableBlockExecutor())
+			.executor(new RemoveUsableExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("addenemy"), CommandSpec.builder()

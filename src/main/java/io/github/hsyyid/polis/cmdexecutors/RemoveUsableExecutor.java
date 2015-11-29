@@ -12,7 +12,7 @@ import org.spongepowered.api.util.command.source.CommandBlockSource;
 import org.spongepowered.api.util.command.source.ConsoleSource;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-public class RemoveUsableBlockExecutor implements CommandExecutor
+public class RemoveUsableExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
@@ -22,15 +22,15 @@ public class RemoveUsableBlockExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 			ConfigManager.removeUsableSafeZoneBlock(id);
-			player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully removed interactable SafeZone block."));
+			player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully removed interactable SafeZone item."));
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis removeblock!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis removeusable!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis removeblock!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis removeusable!"));
 		}
 
 		return CommandResult.success();

@@ -28,6 +28,12 @@ public class PlayerInteractEntityListener
 					return;
 				}
 				
+				if(isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getName()))
+				{
+					return;
+				}
+				
+				
 				if(event.getTargetEntity() instanceof TileEntity && isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(((TileEntity) (event.getTargetEntity())).getBlock().getType().getId()))
 				{
 					return;
