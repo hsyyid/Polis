@@ -30,6 +30,7 @@ import io.github.hsyyid.polis.listeners.ChatListener;
 import io.github.hsyyid.polis.listeners.EntitySpawnListener;
 import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
+import io.github.hsyyid.polis.listeners.PlayerDamageEventListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
 import io.github.hsyyid.polis.listeners.PlayerMoveListener;
@@ -55,7 +56,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.1")
+@Plugin(id = "Polis", name = "Polis", version = "1.2")
 public class Polis
 {
 	public static Game game;
@@ -285,6 +286,7 @@ public class Polis
 		game.getEventManager().registerListeners(this, new ChatListener());
 		game.getEventManager().registerListeners(this, new EntitySpawnListener());
 		game.getEventManager().registerListeners(this, new ExplosionEventListener());
+		game.getEventManager().registerListeners(this, new PlayerDamageEventListener());
 
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis was made by HassanS6000!");
