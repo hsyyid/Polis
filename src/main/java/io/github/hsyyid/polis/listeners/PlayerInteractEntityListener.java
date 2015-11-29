@@ -129,7 +129,7 @@ public class PlayerInteractEntityListener
 					}
 				}
 				
-				if(targetPlayerTeamName.equals(playerTeamName))
+				if(targetPlayerTeamName != null && playerTeamName != null && targetPlayerTeamName.equals(playerTeamName))
 				{
 					player.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You cannot hurt people in your team."));
 					target.sendMessage(Texts.of(TextColors.DARK_RED, player.getName(), TextColors.RED, "Tried to hurt you."));
