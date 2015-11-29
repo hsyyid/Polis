@@ -21,8 +21,8 @@ public class CreateTownExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			
-			if(townName.equalsIgnoreCase("SafeZone"))
+
+			if (townName.equalsIgnoreCase("SafeZone"))
 			{
 				src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You may not use the name SafeZone."));
 				return CommandResult.success();
@@ -42,19 +42,26 @@ public class CreateTownExecutor implements CommandExecutor
 					playerTeamName = team;
 					break;
 				}
-				else if(ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
+				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 				{
 					playerTeamName = team;
 					break;
 				}
 			}
 
-			if(playerTeamName == null)
+			if (playerTeamName == null)
 			{
 				try
 				{
-					ConfigManager.addTeam(townName, player.getUniqueId().toString());
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Created town " + townName));
+					if (!ConfigManager.getTeams().contains(townName))
+					{
+						ConfigManager.addTeam(townName, player.getUniqueId().toString());
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Created town " + townName));
+					}
+					else
+					{
+						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "There is already a town with that name!"));
+					}
 				}
 				catch (NullPointerException e)
 				{
