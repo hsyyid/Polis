@@ -35,14 +35,14 @@ public class AdminUnClaimExecutor implements CommandExecutor
 			{
 				Vector3i chunk = optionalChunk.get();
 
-				if (!ConfigManager.isClaimed(player.getLocation()).equals("false"))
+				if (ConfigManager.isClaimed(player.getLocation()).equals("SafeZone"))
 				{
 					ConfigManager.unclaim("SafeZone", player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
 					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully un-claimed this location!"));
 				}
 				else
 				{
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This location is not claimed!"));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This location is not claimed by SafeZone!"));
 				}
 			}
 		}
