@@ -7,6 +7,7 @@ import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.AdminUnClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.CreateTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.DeleteTownExecutor;
@@ -60,7 +61,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.3")
+@Plugin(id = "Polis", name = "Polis", version = "1.4")
 public class Polis
 {
 	public static Game game;
@@ -128,6 +129,12 @@ public class Polis
 			.description(Texts.of("Admin Claim Command"))
 			.permission("polis.claim.admin")
 			.executor(new AdminClaimExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("adminunclaim"), CommandSpec.builder()
+			.description(Texts.of("Admin Un-Claim Command"))
+			.permission("polis.unclaim.admin")
+			.executor(new AdminUnClaimExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("hq"), CommandSpec.builder()
@@ -200,7 +207,7 @@ public class Polis
 
 		subcommands.put(Arrays.asList("claim"), CommandSpec.builder()
 			.description(Texts.of("Claim Command"))
-			.permission("polis.claim")
+			.permission("polis.claim.use")
 			.executor(new TownClaimExecutor())
 			.build());
 		
@@ -212,7 +219,7 @@ public class Polis
 
 		subcommands.put(Arrays.asList("unclaim"), CommandSpec.builder()
 			.description(Texts.of("Un-Claim Command"))
-			.permission("polis.unclaim")
+			.permission("polis.unclaim.use")
 			.executor(new TownUnclaimExecutor())
 			.build());
 
