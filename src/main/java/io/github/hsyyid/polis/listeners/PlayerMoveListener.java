@@ -42,6 +42,19 @@ public class PlayerMoveListener
 					}
 				}
 			}
+			
+
+			if (Polis.adminAutoClaim.contains(player.getUniqueId()) && ConfigManager.isClaimed(previousLocation).equals("false"))
+			{
+				Optional<Vector3i> optionalChunk = Polis.game.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
+
+				if (optionalChunk.isPresent())
+				{
+					Vector3i chunk = optionalChunk.get();
+					ConfigManager.claim("SafeZone", player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for SafeZone!"));
+				}
+			}
 
 			if (!ConfigManager.isClaimed(previousLocation).equalsIgnoreCase(ConfigManager.isClaimed(newLocation)))
 			{

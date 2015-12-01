@@ -6,6 +6,7 @@ import io.github.hsyyid.polis.cmdexecutors.AddAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddUsableExecutor;
+import io.github.hsyyid.polis.cmdexecutors.AdminAutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminUnClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AutoClaimExecutor;
@@ -69,6 +70,7 @@ public class Polis
 	public static ConfigurationLoader<CommentedConfigurationNode> configurationManager;
 	public static ArrayList<Invite> invites = new ArrayList<>();
 	public static Set<UUID> autoClaim = Sets.newHashSet();
+	public static Set<UUID> adminAutoClaim = Sets.newHashSet();
 
 	@Inject
 	private Logger logger;
@@ -129,6 +131,12 @@ public class Polis
 			.description(Texts.of("Admin Claim Command"))
 			.permission("polis.claim.admin")
 			.executor(new AdminClaimExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("adminautoclaim"), CommandSpec.builder()
+			.description(Texts.of("Admin Auto-Claim Command"))
+			.permission("polis.autoclaim.admin")
+			.executor(new AdminAutoClaimExecutor())
 			.build());
 		
 		subcommands.put(Arrays.asList("adminunclaim"), CommandSpec.builder()
