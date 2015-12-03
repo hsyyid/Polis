@@ -1,9 +1,8 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
+import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import io.github.hsyyid.polis.utils.Invite;
-
-import io.github.hsyyid.polis.Polis;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -14,8 +13,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.source.CommandBlockSource;
 import org.spongepowered.api.util.command.source.ConsoleSource;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
-
-import java.util.ArrayList;
 
 public class JoinTownExecutor implements CommandExecutor
 {
@@ -30,15 +27,19 @@ public class JoinTownExecutor implements CommandExecutor
 			{
 				for (String team : ConfigManager.getTeams())
 				{
-					ArrayList<String> uuids = ConfigManager.getMembers(team);
-					if (uuids.contains(player.getUniqueId().toString()))
+					if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
 					{
-						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /leavetown!"));
+						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /polis leave!"));
+						return CommandResult.success();
+					}
+					if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
+					{
+						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /polis leave!"));
 						return CommandResult.success();
 					}
 					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 					{
-						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are the leader of a town set a different leader using /setleader!"));
+						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are the leader of a town set a different leader using /polis setleader!"));
 						return CommandResult.success();
 					}
 				}
@@ -56,6 +57,7 @@ public class JoinTownExecutor implements CommandExecutor
 					if (inv != null)
 					{
 						ConfigManager.addTeamMember(townName, player.getUniqueId().toString());
+						
 						for(Player p : Polis.game.getServer().getOnlinePlayers())
 						{
 							if((p.getUniqueId().toString()).equals(ConfigManager.getLeader(townName)))
@@ -63,6 +65,7 @@ public class JoinTownExecutor implements CommandExecutor
 								p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, player.getName() + " has joined your Town!"));
 							}
 						}
+						
 						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Joined town " + townName));
 						Polis.invites.remove(inv);
 					}

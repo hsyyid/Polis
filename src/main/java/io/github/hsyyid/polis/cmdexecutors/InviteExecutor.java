@@ -32,11 +32,16 @@ public class InviteExecutor implements CommandExecutor
 
 			boolean isMember = false;
 			String teamName = null;
+			
 			for (String team : ConfigManager.getTeams())
 			{
 				if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 				{
 					teamName = team;
+				}
+				else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
+				{
+					isMember = true;
 				}
 				else if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
 				{
@@ -46,13 +51,13 @@ public class InviteExecutor implements CommandExecutor
 
 			if (isMember)
 			{
-				src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of a Town! Please ask the leader of your team to invite " + p.getName()));
+				src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of a Town! Please ask the leader of your town to invite " + p.getName()));
 			}
 			else if (teamName != null)
 			{
 				final Invite invite = new Invite(teamName, p.getUniqueId().toString());
 				Polis.invites.add(invite);
-				p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do /jointown " + teamName + " to accept!"));
+				p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do /polis join " + teamName + " to accept!"));
 
 				SchedulerService scheduler = game.getScheduler();
 				Task.Builder taskBuilder = scheduler.createTaskBuilder();

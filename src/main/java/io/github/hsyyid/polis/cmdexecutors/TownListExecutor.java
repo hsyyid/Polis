@@ -56,11 +56,11 @@ public class TownListExecutor implements CommandExecutor
 			}
 
 			// Add List
-			PaginatedList pList = new PaginatedList("/town");
+			PaginatedList pList = new PaginatedList("/polis list");
 			for (String name : towns)
 			{
 				Text item = Texts.builder(name)
-					.onClick(TextActions.runCommand("/town " + name))
+					.onClick(TextActions.runCommand("/polis info " + name))
 					.onHover(TextActions.showText(Texts.of(TextColors.WHITE, "View info of town ", TextColors.GOLD, name)))
 					.color(TextColors.DARK_AQUA)
 					.style(TextStyles.UNDERLINE)
@@ -82,11 +82,11 @@ public class TownListExecutor implements CommandExecutor
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /towns!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis list!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /towns!"));
+			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis list!"));
 		}
 
 		return CommandResult.success();
