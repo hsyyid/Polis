@@ -29,7 +29,7 @@ public class HQExecutor implements CommandExecutor
 			
 			for (String team : ConfigManager.getTeams())
 			{
-				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()) || ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
+				if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()) || ConfigManager.getMembers(team).contains(player.getUniqueId().toString()) || ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 				{
 					townName = team;
 					break;
