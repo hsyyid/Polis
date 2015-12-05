@@ -45,13 +45,13 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.util.command.args.GenericArguments;
-import org.spongepowered.api.util.command.spec.CommandSpec;
 
 import java.io.File;
 import java.io.IOException;
@@ -302,7 +302,7 @@ public class Polis
 			.children(subcommands)
 			.build();
 
-		game.getCommandDispatcher().register(this, polisCommandSpec, "polis", "p");
+		game.getCommandManager().register(this, polisCommandSpec, "polis", "p");
 
 		game.getEventManager().registerListeners(this, new PlayerInteractListener());
 		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
