@@ -71,7 +71,7 @@ public class InviteExecutor implements CommandExecutor
 							Polis.invites.remove(invite);
 						}
 					}
-				}).delay(2, TimeUnit.MINUTES).name("Polis - remove invite").submit(game.getPluginManager().getPlugin("Polis").get().getInstance());
+				}).delay(2, TimeUnit.MINUTES).name("Polis - remove invite").submit(game.getPluginManager().getPlugin("Polis").get().getInstance().get());
 
 				src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully Invited " + p.getName()));
 			}
