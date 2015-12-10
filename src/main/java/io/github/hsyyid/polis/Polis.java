@@ -62,7 +62,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.4")
+@Plugin(id = "Polis", name = "Polis", version = "1.5")
 public class Polis
 {
 	public static Game game;
