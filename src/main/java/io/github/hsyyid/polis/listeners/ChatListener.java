@@ -12,7 +12,7 @@ public class ChatListener
 	@Listener
 	public void onMessage(MessageSinkEvent.Chat event)
 	{
-		if (event.getCause().first(Player.class).isPresent())
+		if (event.getCause().first(Player.class).isPresent() && ConfigManager.getDisplayPrefix())
 		{
 			Player player = event.getCause().first(Player.class).get();
 

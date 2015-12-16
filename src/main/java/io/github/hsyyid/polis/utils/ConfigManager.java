@@ -463,7 +463,7 @@ public class ConfigManager
 			ConfigManager.addEnemy(enemyTeamName, teamName, false);
 		}
 	}
-
+	
 	public static void addAlly(String teamName, String allyTeamName, boolean addAlly)
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
@@ -675,7 +675,7 @@ public class ConfigManager
 		}
 		catch (IOException e)
 		{
-			System.out.println("[Teams]: Failed to set " + teamName + "'s leader!");
+			System.out.println("[Polis]: Failed to set " + teamName + "'s leader!");
 		}
 	}
 
@@ -683,6 +683,37 @@ public class ConfigManager
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
 		Polis.config.getNode("claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ)).setValue(true);
+
+		try
+		{
+			configManager.save(Polis.config);
+			configManager.load();
+		}
+		catch (IOException e)
+		{
+			;
+		}
+	}
+	
+	public static boolean getDisplayPrefix()
+	{
+		ConfigurationNode valueNode = Polis.config.getNode("polis", "prefix", "display");
+
+		if(valueNode.getValue() != null)
+		{
+			return valueNode.getBoolean();
+		}
+		else
+		{
+			setDisplayPrefix(true);
+			return true;
+		}
+	}
+
+	public static void setDisplayPrefix(boolean value)
+	{
+		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
+		Polis.config.getNode("polis", "prefix", "display").setValue(value);
 
 		try
 		{
