@@ -155,7 +155,7 @@ public class Polis
 		subcommands.put(Arrays.asList("invite"), CommandSpec.builder()
 			.description(Texts.of("Towny Invite Command"))
 			.permission("polis.invite")
-			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
+			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"))))
 			.executor(new InviteExecutor())
 			.build());
 		
@@ -190,7 +190,7 @@ public class Polis
 		subcommands.put(Arrays.asList("kick"), CommandSpec.builder()
 			.description(Texts.of("Kick Member Command"))
 			.permission("polis.kick.use")
-			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
+			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"))))
 			.executor(new KickMemberExecutor())
 			.build());
 
@@ -275,7 +275,7 @@ public class Polis
 			.description(Texts.of("Set Leader of Town Command"))
 			.permission("polis.leader.set")
 			.arguments(GenericArguments.seq(
-				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
+				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"))),
 				GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
 			.executor(new SetLeaderExecutor())
 			.build());
@@ -284,7 +284,7 @@ public class Polis
 			.description(Texts.of("Adds Executive of Town Command"))
 			.permission("polis.executive.add")
 			.arguments(GenericArguments.seq(
-				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)),
+				GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"))),
 				GenericArguments.onlyOne(GenericArguments.string(Texts.of("town name")))))
 			.executor(new AddExecutiveExecutor())
 			.build());
@@ -292,7 +292,7 @@ public class Polis
 		subcommands.put(Arrays.asList("removeexecutive"), CommandSpec.builder()
 			.description(Texts.of("Remove Executive of Town Command"))
 			.permission("polis.executive.remove")
-			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"), game)))
+			.arguments(GenericArguments.onlyOne(GenericArguments.player(Texts.of("player"))))
 			.executor(new RemoveExecutiveExecutor())
 			.build());
 		
