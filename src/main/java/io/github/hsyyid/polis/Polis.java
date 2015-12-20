@@ -73,6 +73,7 @@ public class Polis
 	public static ArrayList<Invite> invites = new ArrayList<>();
 	public static Set<UUID> autoClaim = Sets.newHashSet();
 	public static Set<UUID> adminAutoClaim = Sets.newHashSet();
+	public static HashMap<List<String>, CommandSpec> subcommands;
 
 	@Inject
 	private Logger logger;
@@ -114,11 +115,12 @@ public class Polis
 			getLogger().error("The default configuration could not be loaded or created!");
 		}
 
-		HashMap<List<String>, CommandSpec> subcommands = new HashMap<List<String>, CommandSpec>();
+		subcommands = new HashMap<List<String>, CommandSpec>();
 
 		subcommands.put(Arrays.asList("help"), CommandSpec.builder()
 			.description(Texts.of("Help Command"))
 			.permission("polis.help")
+			.arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page no"))))
 			.executor(new HelpExecutor())
 			.build());
 		

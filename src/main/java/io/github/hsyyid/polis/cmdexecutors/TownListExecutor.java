@@ -38,20 +38,11 @@ public class TownListExecutor implements CommandExecutor
 			}
 			
 			Optional<Integer> arguments = ctx.<Integer> getOne("page no");
-
-			int pgNo = 1;
-
-			if (arguments.isPresent())
-			{
-				pgNo = arguments.get();
-			}
-			else
-			{
-				pgNo = 1;
-			}
+			int pgNo = arguments.orElse(1);
 
 			// Add List
 			PaginatedList pList = new PaginatedList("/polis list");
+			
 			for (String name : towns)
 			{
 				Text item = Texts.builder(name)
@@ -63,7 +54,9 @@ public class TownListExecutor implements CommandExecutor
 
 				pList.add(item);
 			}
+			
 			pList.setItemsPerPage(10);
+			
 			// Header
 			TextBuilder header = Texts.builder();
 			header.append(Texts.of(TextColors.GREEN, "------------"));
