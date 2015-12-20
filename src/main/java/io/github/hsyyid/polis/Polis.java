@@ -14,6 +14,7 @@ import io.github.hsyyid.polis.cmdexecutors.CreateTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.DeleteTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.DisbandTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.HQExecutor;
+import io.github.hsyyid.polis.cmdexecutors.HelpExecutor;
 import io.github.hsyyid.polis.cmdexecutors.InviteExecutor;
 import io.github.hsyyid.polis.cmdexecutors.JoinTownExecutor;
 import io.github.hsyyid.polis.cmdexecutors.KickMemberExecutor;
@@ -115,6 +116,12 @@ public class Polis
 
 		HashMap<List<String>, CommandSpec> subcommands = new HashMap<List<String>, CommandSpec>();
 
+		subcommands.put(Arrays.asList("help"), CommandSpec.builder()
+			.description(Texts.of("Help Command"))
+			.permission("polis.help")
+			.executor(new HelpExecutor())
+			.build());
+		
 		subcommands.put(Arrays.asList("join"), CommandSpec.builder()
 			.description(Texts.of("Join Town Command"))
 			.permission("polis.join")

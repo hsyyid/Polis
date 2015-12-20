@@ -29,18 +29,14 @@ public class TownListExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 
-			ArrayList<String> towns = null;
-			
-			try
-			{
-				towns = ConfigManager.getTeams();
-			}
-			catch (NullPointerException e)
+			ArrayList<String> towns = ConfigManager.getTeams();
+
+			if(towns.size() == 0)
 			{
 				player.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "There are no towns!"));
 				return CommandResult.success();
 			}
-
+			
 			Optional<Integer> arguments = ctx.<Integer> getOne("page no");
 
 			int pgNo = 1;
