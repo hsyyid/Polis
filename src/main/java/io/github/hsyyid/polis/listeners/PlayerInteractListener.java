@@ -1,5 +1,6 @@
 package io.github.hsyyid.polis.listeners;
 
+import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 
 import org.spongepowered.api.entity.living.player.Player;
@@ -30,6 +31,11 @@ public class PlayerInteractListener
 					}
 						
 					if(isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getId()))
+					{
+						return;
+					}
+					
+					if(Polis.adminBypassMode.contains(player.getUniqueId()))
 					{
 						return;
 					}

@@ -26,6 +26,7 @@ import io.github.hsyyid.polis.cmdexecutors.RemoveExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
+import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
@@ -64,7 +65,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.6")
+@Plugin(id = "Polis", name = "Polis", version = "1.7")
 public class Polis
 {
 	public static Game game;
@@ -73,6 +74,7 @@ public class Polis
 	public static ArrayList<Invite> invites = new ArrayList<>();
 	public static Set<UUID> autoClaim = Sets.newHashSet();
 	public static Set<UUID> adminAutoClaim = Sets.newHashSet();
+	public static Set<UUID> adminBypassMode = Sets.newHashSet();
 	public static HashMap<List<String>, CommandSpec> subcommands;
 
 	@Inject
@@ -122,6 +124,12 @@ public class Polis
 			.permission("polis.help")
 			.arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page no"))))
 			.executor(new HelpExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("toggleadminbypass"), CommandSpec.builder()
+			.description(Texts.of("Toggle Admin-Bypass Command"))
+			.permission("polis.adminbypass.toggle")
+			.executor(new ToggleAdminBypassExecutor())
 			.build());
 		
 		subcommands.put(Arrays.asList("join"), CommandSpec.builder()

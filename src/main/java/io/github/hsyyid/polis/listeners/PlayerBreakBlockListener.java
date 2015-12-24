@@ -1,5 +1,6 @@
 package io.github.hsyyid.polis.listeners;
 
+import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 
 import org.spongepowered.api.text.Texts;
@@ -29,6 +30,11 @@ public class PlayerBreakBlockListener
 				if(!isClaimed.equals("false"))
 				{
 					if(isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
+					{
+						return;
+					}
+					
+					if(Polis.adminBypassMode.contains(player.getUniqueId()))
 					{
 						return;
 					}
