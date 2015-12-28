@@ -12,44 +12,44 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.ArrayList;
-
 public class RemoveExecutiveExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
 		Player player = ctx.<Player> getOne("player").get();
-		
+
 		if (src instanceof Player)
 		{
 			Player p = (Player) src;
-			
+			String foundTeam = null;
+
 			for (String team : ConfigManager.getTeams())
 			{
-				ArrayList<String> uuids = ConfigManager.getExecutives(team);
-				String leader = ConfigManager.getLeader(team);
-				
-				if (leader.equals(p.getUniqueId().toString()))
+				if (ConfigManager.getLeader(team).equals(p.getUniqueId().toString()))
 				{
-					if (uuids.contains(player.getUniqueId().toString()))
-					{
-						ConfigManager.removeExecutive(team, player.getUniqueId().toString());
-						p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully remove executive status from " + player.getName()));
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You have been demoted by the leader of " + team));
-						return CommandResult.success();
-					}
-					else
-					{
-						src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This person is not a executive of your town!"));
-					}
+					foundTeam = team;
+					break;
+				}
+			}
+
+			if (foundTeam != null)
+			{
+				if (ConfigManager.getExecutives(foundTeam).contains(player.getUniqueId().toString()))
+				{
+					ConfigManager.removeExecutive(foundTeam, player.getUniqueId().toString());
+					p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully remove executive status from " + player.getName()));
+					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You have been demoted by the leader of " + foundTeam));
+					return CommandResult.success();
 				}
 				else
 				{
-					src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of this town!"));
+					src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This person is not a executive of your town!"));
 				}
 			}
-			
-			src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not in a town!"));
+			else
+			{
+				src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not the leader of  a town!"));
+			}
 		}
 		else if (src instanceof ConsoleSource)
 		{
