@@ -550,7 +550,7 @@ public class ConfigManager
 		}
 		catch (IOException e)
 		{
-			System.out.println("[Teams]: Failed to remove executive " + executiveUUID + " from team " + teamName + "!");
+			System.out.println("[Polis]: Failed to remove executive " + executiveUUID + " from team " + teamName + "!");
 		}
 	}
 

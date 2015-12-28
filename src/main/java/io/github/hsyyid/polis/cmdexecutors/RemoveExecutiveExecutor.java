@@ -26,7 +26,7 @@ public class RemoveExecutiveExecutor implements CommandExecutor
 			
 			for (String team : ConfigManager.getTeams())
 			{
-				ArrayList<String> uuids = ConfigManager.getMembers(team);
+				ArrayList<String> uuids = ConfigManager.getExecutives(team);
 				String leader = ConfigManager.getLeader(team);
 				
 				if (leader.equals(p.getUniqueId().toString()))
@@ -40,7 +40,7 @@ public class RemoveExecutiveExecutor implements CommandExecutor
 					}
 					else
 					{
-						src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This person is not a member of your town!"));
+						src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This person is not a executive of your town!"));
 					}
 				}
 				else
@@ -48,6 +48,7 @@ public class RemoveExecutiveExecutor implements CommandExecutor
 					src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of this town!"));
 				}
 			}
+			
 			src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not in a town!"));
 		}
 		else if (src instanceof ConsoleSource)
