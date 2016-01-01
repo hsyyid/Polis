@@ -9,7 +9,7 @@ import org.spongepowered.api.command.source.CommandBlockSource;
 import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 public class TownInfoExecutor implements CommandExecutor
@@ -24,57 +24,57 @@ public class TownInfoExecutor implements CommandExecutor
 			
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				player.sendMessage(Texts.of(TextColors.GOLD, "Town: " + townName));
-				player.sendMessage(Texts.of(TextColors.BLUE, "The leader of ", TextColors.RED, townName, TextColors.BLUE, " is " + ConfigManager.getLeader(townName)));
+				player.sendMessage(Text.of(TextColors.GOLD, "Town: " + townName));
+				player.sendMessage(Text.of(TextColors.BLUE, "The leader of ", TextColors.RED, townName, TextColors.BLUE, " is " + ConfigManager.getLeader(townName)));
 
 				try
 				{
-					player.sendMessage(Texts.of(TextColors.DARK_GRAY, "Executives: ", TextColors.GRAY, ConfigManager.getExecutives(townName).toString()));
+					player.sendMessage(Text.of(TextColors.DARK_GRAY, "Executives: ", TextColors.GRAY, ConfigManager.getExecutives(townName).toString()));
 				}
 				catch (NullPointerException e)
 				{
-					player.sendMessage(Texts.of(TextColors.DARK_GRAY, "Executives: ", TextColors.GRAY, "[]"));
-				}
-
-				try
-				{
-					player.sendMessage(Texts.of(TextColors.DARK_BLUE, "Members: ", TextColors.BLUE, ConfigManager.getMembers(townName).toString()));
-				}
-				catch (NullPointerException e)
-				{
-					player.sendMessage(Texts.of(TextColors.GRAY, "Members: ", TextColors.BLUE, "[]"));
+					player.sendMessage(Text.of(TextColors.DARK_GRAY, "Executives: ", TextColors.GRAY, "[]"));
 				}
 
 				try
 				{
-					player.sendMessage(Texts.of(TextColors.DARK_GREEN, "Allies: ", TextColors.GREEN, ConfigManager.getAllies(townName).toString()));
+					player.sendMessage(Text.of(TextColors.DARK_BLUE, "Members: ", TextColors.BLUE, ConfigManager.getMembers(townName).toString()));
 				}
 				catch (NullPointerException e)
 				{
-					player.sendMessage(Texts.of(TextColors.DARK_GREEN, "Allies: ", TextColors.GREEN, "[]"));
+					player.sendMessage(Text.of(TextColors.GRAY, "Members: ", TextColors.BLUE, "[]"));
 				}
 
 				try
 				{
-					player.sendMessage(Texts.of(TextColors.DARK_RED, "Enemies: ", TextColors.RED, ConfigManager.getEnemies(townName).toString()));
+					player.sendMessage(Text.of(TextColors.DARK_GREEN, "Allies: ", TextColors.GREEN, ConfigManager.getAllies(townName).toString()));
 				}
 				catch (NullPointerException e)
 				{
-					player.sendMessage(Texts.of(TextColors.DARK_RED, "Enemies: ", TextColors.RED, "[]"));
+					player.sendMessage(Text.of(TextColors.DARK_GREEN, "Allies: ", TextColors.GREEN, "[]"));
+				}
+
+				try
+				{
+					player.sendMessage(Text.of(TextColors.DARK_RED, "Enemies: ", TextColors.RED, ConfigManager.getEnemies(townName).toString()));
+				}
+				catch (NullPointerException e)
+				{
+					player.sendMessage(Text.of(TextColors.DARK_RED, "Enemies: ", TextColors.RED, "[]"));
 				}
 			}
 			else
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis info!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis info!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis info!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis info!"));
 		}
 
 		return CommandResult.success();

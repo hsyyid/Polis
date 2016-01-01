@@ -9,7 +9,7 @@ import org.spongepowered.api.command.source.CommandBlockSource;
 import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
@@ -30,30 +30,30 @@ public class LeaveTownExecutor implements CommandExecutor
 				if (uuids.contains(player.getUniqueId().toString()))
 				{
 					ConfigManager.removeMember(team, player.getUniqueId().toString());
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully left town " + team));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully left town " + team));
 					return CommandResult.success();
 				}
 				else if(ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
 				{
 					ConfigManager.removeExecutive(team, player.getUniqueId().toString());
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully left town " + team));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully left town " + team));
 					return CommandResult.success();
 				}
 				else if (leader.equals(player.getUniqueId().toString()))
 				{
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You are the leader of town " + team + " to leave, you must appoint a new leader by doing /setleader"));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You are the leader of town " + team + " to leave, you must appoint a new leader by doing /setleader"));
 					return CommandResult.success();
 				}
 			}
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not in a town!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not in a town!"));
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointeam!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointeam!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointeam!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointeam!"));
 		}
 
 		return CommandResult.success();

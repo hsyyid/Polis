@@ -7,7 +7,7 @@ import io.github.hsyyid.polis.utils.ConfigManager;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.DisplaceEntityEvent;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -38,7 +38,7 @@ public class PlayerMoveListener
 					{
 						Vector3i chunk = optionalChunk.get();
 						ConfigManager.claim(team, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location!"));
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location!"));
 					}
 				}
 			}
@@ -52,7 +52,7 @@ public class PlayerMoveListener
 				{
 					Vector3i chunk = optionalChunk.get();
 					ConfigManager.claim("SafeZone", player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for SafeZone!"));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for SafeZone!"));
 				}
 			}
 
@@ -60,11 +60,11 @@ public class PlayerMoveListener
 			{
 				if (ConfigManager.isClaimed(newLocation).equalsIgnoreCase("false"))
 				{
-					player.sendMessage(Texts.of(TextColors.GOLD, "Now entering unclaimed land."));
+					player.sendMessage(Text.of(TextColors.GOLD, "Now entering unclaimed land."));
 				}
 				else
 				{
-					player.sendMessage(Texts.of(TextColors.GOLD, "Now entering the land of: ", TextColors.GRAY, ConfigManager.isClaimed(newLocation)));
+					player.sendMessage(Text.of(TextColors.GOLD, "Now entering the land of: ", TextColors.GRAY, ConfigManager.isClaimed(newLocation)));
 				}
 			}
 		}

@@ -10,8 +10,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.TextBuilder;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.HashMap;
@@ -30,11 +28,11 @@ public class HelpExecutor implements CommandExecutor
 			List<Text> commandHelp = Lists.newArrayList();
 			CommandSpec commandSpec = polisSubCommands.get(aliases);
 			
-			commandHelp.add(Texts.of(TextColors.BLUE, "------------"));
-			commandHelp.add(Texts.of(TextColors.GRAY, "Command Aliases: ", aliases.toString()));
-			commandHelp.add(Texts.builder().append(Texts.of(TextColors.GOLD, "Command Description: "), commandSpec.getShortDescription(src).get()).build());
-			commandHelp.add(Texts.builder().append(Texts.of(TextColors.GOLD, "Command Arguments: "), commandSpec.getUsage(src)).build());
-			commandHelp.add(Texts.of(TextColors.BLUE, "------------"));
+			commandHelp.add(Text.of(TextColors.BLUE, "------------"));
+			commandHelp.add(Text.of(TextColors.GRAY, "Command Aliases: ", aliases.toString()));
+			commandHelp.add(Text.builder().append(Text.of(TextColors.GOLD, "Command Description: "), commandSpec.getShortDescription(src).get()).build());
+			commandHelp.add(Text.builder().append(Text.of(TextColors.GOLD, "Command Arguments: "), commandSpec.getUsage(src)).build());
+			commandHelp.add(Text.of(TextColors.BLUE, "------------"));
 			
 			helpList.add(commandHelp);
 		}
@@ -56,10 +54,10 @@ public class HelpExecutor implements CommandExecutor
 			pgNo = 1;
 		
 		// Header
-		TextBuilder header = Texts.builder();
-		header.append(Texts.of(TextColors.AQUA, "------------"));
-		header.append(Texts.of(TextColors.AQUA, " Showing Polis Help page " + pgNo + " of " + pList.getTotalPages() + " "));
-		header.append(Texts.of(TextColors.AQUA, "------------"));
+		Text.Builder header = Text.builder();
+		header.append(Text.of(TextColors.AQUA, "------------"));
+		header.append(Text.of(TextColors.AQUA, " Showing Polis Help page " + pgNo + " of " + pList.getTotalPages() + " "));
+		header.append(Text.of(TextColors.AQUA, "------------"));
 
 		pList.setHeader(header.build());
 		

@@ -3,14 +3,14 @@ package io.github.hsyyid.polis.listeners;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.command.MessageSinkEvent;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.event.message.MessageChannelEvent;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 public class ChatListener
 {
 	@Listener
-	public void onMessage(MessageSinkEvent.Chat event)
+	public void onMessage(MessageChannelEvent.Chat event)
 	{
 		if (event.getCause().first(Player.class).isPresent() && ConfigManager.getDisplayPrefix())
 		{
@@ -45,23 +45,23 @@ public class ChatListener
 			{
 				if (playerIsMember)
 				{
-					event.setMessage(Texts.builder()
-						.append(Texts.of(TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
-						.append(event.getMessage())
+					event.setMessage(Text.builder()
+						.append(Text.of(TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
+						.append(event.getMessage().orElse(Text.of()))
 						.build());
 				}
 				else if (playerIsExecutive)
 				{
-					event.setMessage(Texts.builder()
-						.append(Texts.of(TextColors.GREEN, "+", TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
-						.append(event.getMessage())
+					event.setMessage(Text.builder()
+						.append(Text.of(TextColors.GREEN, "+", TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
+						.append(event.getMessage().orElse(Text.of()))
 						.build());
 				}
 				else
 				{
-					event.setMessage(Texts.builder()
-						.append(Texts.of(TextColors.GREEN, "*", TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
-						.append(event.getMessage())
+					event.setMessage(Text.builder()
+						.append(Text.of(TextColors.GREEN, "*", TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
+						.append(event.getMessage().orElse(Text.of()))
 						.build());
 				}
 			}

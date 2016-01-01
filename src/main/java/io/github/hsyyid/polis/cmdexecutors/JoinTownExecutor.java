@@ -11,7 +11,7 @@ import org.spongepowered.api.command.source.CommandBlockSource;
 import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 public class JoinTownExecutor implements CommandExecutor
@@ -29,17 +29,17 @@ public class JoinTownExecutor implements CommandExecutor
 				{
 					if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
 					{
-						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /polis leave!"));
+						src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /polis leave!"));
 						return CommandResult.success();
 					}
 					if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
 					{
-						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /polis leave!"));
+						src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /polis leave!"));
 						return CommandResult.success();
 					}
 					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
 					{
-						src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are the leader of a town set a different leader using /polis setleader!"));
+						src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are the leader of a town set a different leader using /polis setleader!"));
 						return CommandResult.success();
 					}
 				}
@@ -62,35 +62,35 @@ public class JoinTownExecutor implements CommandExecutor
 						{
 							if((p.getUniqueId().toString()).equals(ConfigManager.getLeader(townName)))
 							{
-								p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, player.getName() + " has joined your Town!"));
+								p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, player.getName() + " has joined your Town!"));
 							}
 						}
 						
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Joined town " + townName));
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Joined town " + townName));
 						Polis.invites.remove(inv);
 					}
 					else
 					{
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You don't have an invite to join that town!"));
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You don't have an invite to join that town!"));
 					}
 				}
 				catch (NullPointerException e)
 				{
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to add you to town!"));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to add you to town!"));
 				}
 			}
 			else
 			{
-				player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointown!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointown!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointown!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /jointown!"));
 		}
 
 		return CommandResult.success();

@@ -14,7 +14,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Scheduler;
 import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.concurrent.TimeUnit;
@@ -51,13 +51,13 @@ public class InviteExecutor implements CommandExecutor
 
 			if (isMember)
 			{
-				src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of a Town! Please ask the leader of your town to invite " + p.getName()));
+				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of a Town! Please ask the leader of your town to invite " + p.getName()));
 			}
 			else if (teamName != null)
 			{
 				final Invite invite = new Invite(teamName, p.getUniqueId().toString());
 				Polis.invites.add(invite);
-				p.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do /polis join " + teamName + " to accept!"));
+				p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do /polis join " + teamName + " to accept!"));
 
 				Scheduler scheduler = game.getScheduler();
 				Task.Builder taskBuilder = scheduler.createTaskBuilder();
@@ -73,17 +73,17 @@ public class InviteExecutor implements CommandExecutor
 					}
 				}).delay(2, TimeUnit.MINUTES).name("Polis - remove invite").submit(game.getPluginManager().getPlugin("Polis").get().getInstance().get());
 
-				src.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully Invited " + p.getName()));
+				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully Invited " + p.getName()));
 			}
 
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /invite!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /invite!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /invite!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /invite!"));
 		}
 
 		return CommandResult.success();

@@ -5,7 +5,7 @@ import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
@@ -66,14 +66,14 @@ public class PlayerInteractEntityListener
 					if (!(isClaimed.equals(playerTeamName)))
 					{
 						event.setCancelled(true);
-						player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 						return;
 					}
 				}
 				else
 				{
 					event.setCancelled(true);
-					player.sendMessage(Texts.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 					return;
 				}
 			}
@@ -137,8 +137,8 @@ public class PlayerInteractEntityListener
 				
 				if(targetPlayerTeamName != null && playerTeamName != null && targetPlayerTeamName.equals(playerTeamName))
 				{
-					player.sendMessage(Texts.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You cannot hurt people in your team."));
-					target.sendMessage(Texts.of(TextColors.DARK_RED, player.getName(), TextColors.RED, "Tried to hurt you."));
+					player.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You cannot hurt people in your team."));
+					target.sendMessage(Text.of(TextColors.DARK_RED, player.getName(), TextColors.RED, "Tried to hurt you."));
 					event.setCancelled(true);
 				}
 			}
