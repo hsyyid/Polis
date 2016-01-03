@@ -32,7 +32,8 @@ public class AddExecutiveExecutor implements CommandExecutor
 						if (ConfigManager.getMembers(townName).contains(p.getUniqueId().toString()))
 						{
 							ConfigManager.addTeamExecutive(townName, p.getUniqueId().toString());
-							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Added " + p.getName() + " as an exeuctive of town " + townName));
+							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Added " + p.getName() + " as an executive of town " + townName));
+							p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You have been promoted by the leader of " + townName));
 						}
 						else
 						{

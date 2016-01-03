@@ -37,7 +37,7 @@ public class RemoveExecutiveExecutor implements CommandExecutor
 				if (ConfigManager.getExecutives(foundTeam).contains(player.getUniqueId().toString()))
 				{
 					ConfigManager.removeExecutive(foundTeam, player.getUniqueId().toString());
-					p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully remove executive status from " + player.getName()));
+					p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully removed executive status from " + player.getName()));
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You have been demoted by the leader of " + foundTeam));
 					return CommandResult.success();
 				}

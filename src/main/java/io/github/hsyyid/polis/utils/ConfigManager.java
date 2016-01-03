@@ -533,14 +533,13 @@ public class ConfigManager
 	public static void removeExecutive(String teamName, String executiveUUID)
 	{
 		ConfigurationLoader<CommentedConfigurationNode> configManager = Polis.getConfigManager();
-
 		ConfigurationNode valueNode = Polis.config.getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
 
 		if (valueNode.getValue() != null && valueNode.getString().length() > 0)
 		{
-			String teams = valueNode.getString();
-			teams = teams.replace(executiveUUID + ",", "");
-			valueNode.setValue(teams);
+			String executives = valueNode.getString();
+			executives = executives.replace(executiveUUID + ",", "");
+			valueNode.setValue(executives);
 		}
 
 		try
