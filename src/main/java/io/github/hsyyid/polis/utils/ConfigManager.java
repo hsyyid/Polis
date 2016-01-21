@@ -694,7 +694,7 @@ public class ConfigManager
 		}
 	}
 	
-	public static boolean getDisplayPrefix()
+	public static boolean displayPrefix()
 	{
 		ConfigurationNode valueNode = Polis.config.getNode("polis", "prefix", "display");
 

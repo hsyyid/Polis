@@ -13,69 +13,65 @@ import java.util.ArrayList;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
+import org.spongepowered.api.event.filter.cause.First;
 
 public class PlayerPlaceBlockListener
-{	
+{
 	@Listener
-	public void onPlayerPlaceBlock(ChangeBlockEvent.Place event)
+	public void onPlayerPlaceBlock(ChangeBlockEvent.Place event, @First Player player)
 	{
-		if (event.getCause().first(Player.class).isPresent())
+		for (Transaction<BlockSnapshot> transaction : event.getTransactions())
 		{
-			Player player = (Player) event.getCause().first(Player.class).get();
-			
-			for (Transaction<BlockSnapshot> transaction : event.getTransactions())
+			String isClaimed = ConfigManager.isClaimed(transaction.getFinal().getLocation().get());
+
+			if (!isClaimed.equals("false"))
 			{
-				String isClaimed = ConfigManager.isClaimed(transaction.getFinal().getLocation().get());
-					
-				if(!isClaimed.equals("false"))
+				if (isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
 				{
-					if(isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
-					{
-						return;
-					}
-					
-					if(Polis.adminBypassMode.contains(player.getUniqueId()))
-					{
-						return;
-					}
-					
-					String playerTeamName = null;
+					return;
+				}
 
-					for (String team : ConfigManager.getTeams())
-					{
-						ArrayList<String> uuids = ConfigManager.getMembers(team);
-						if (uuids.contains(player.getUniqueId().toString()))
-						{
-							playerTeamName = team;
-							break;
-						}
-						else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-						{
-							playerTeamName = team;
-							break;
-						}
-						else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-						{
-							playerTeamName = team;
-							break;
-						}
-					}
+				if (Polis.adminBypassMode.contains(player.getUniqueId()))
+				{
+					return;
+				}
 
-					if (playerTeamName != null)
+				String playerTeamName = null;
+
+				for (String team : ConfigManager.getTeams())
+				{
+					ArrayList<String> uuids = ConfigManager.getMembers(team);
+					if (uuids.contains(player.getUniqueId().toString()))
 					{
-						if(!(isClaimed.equals(playerTeamName)))
-						{
-							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
-							event.setCancelled(true);
-							return;
-						}
+						playerTeamName = team;
+						break;
 					}
-					else
+					else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
 					{
-						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));	
+						playerTeamName = team;
+						break;
+					}
+					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
+					{
+						playerTeamName = team;
+						break;
+					}
+				}
+
+				if (playerTeamName != null)
+				{
+					if (!(isClaimed.equals(playerTeamName)))
+					{
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 						event.setCancelled(true);
 						return;
 					}
+				}
+				else
+				{
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+					event.setCancelled(true);
+					return;
 				}
 			}
 		}

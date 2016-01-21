@@ -3,6 +3,7 @@ package io.github.hsyyid.polis.listeners;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -10,12 +11,10 @@ import org.spongepowered.api.text.format.TextColors;
 public class ChatListener
 {
 	@Listener
-	public void onMessage(MessageChannelEvent.Chat event)
+	public void onMessage(MessageChannelEvent.Chat event, @First Player player)
 	{
-		if (event.getCause().first(Player.class).isPresent() && ConfigManager.getDisplayPrefix())
+		if (ConfigManager.displayPrefix())
 		{
-			Player player = event.getCause().first(Player.class).get();
-
 			String playerTeamName = null;
 			boolean playerIsMember = false;
 			boolean playerIsExecutive = false;
