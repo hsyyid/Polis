@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class PlayerInteractListener
 {
 	@Listener
-	public void onPlayerInteractBlock(InteractBlockEvent.Secondary event, @First Player player)
+	public void onPlayerInteractBlock(InteractBlockEvent event, @First Player player)
 	{
 		try
 		{
