@@ -2,23 +2,21 @@ package io.github.hsyyid.polis.listeners;
 
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
-import org.spongepowered.api.block.BlockSnapshot;
-import org.spongepowered.api.data.Transaction;
+import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.block.ChangeBlockEvent;
-import org.spongepowered.api.event.filter.cause.First;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.event.block.CollideBlockEvent;
 
-public class PlayerPlaceBlockListener
+public class CollisionBlockEventListener
 {
 	@Listener
-	public void onPlayerPlaceBlock(ChangeBlockEvent.Place event, @First Player player)
+	public void onCollide(CollideBlockEvent event)
 	{
-		for (Transaction<BlockSnapshot> transaction : event.getTransactions())
+		if (event.getCause().first(Player.class).isPresent() && event.getCause().first(Item.class).isPresent())
 		{
-			String isClaimed = ConfigManager.isClaimed(transaction.getFinal().getLocation().get());
+			Player player = event.getCause().first(Player.class).get();
+			Item item = event.getCause().first(Item.class).get();
+			String isClaimed = ConfigManager.isClaimed(event.getTargetLocation());
 
 			if (!isClaimed.equals("false"))
 			{
@@ -57,16 +55,12 @@ public class PlayerPlaceBlockListener
 				{
 					if (!(isClaimed.equals(playerTeamName)))
 					{
-						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
-						event.setCancelled(true);
-						return;
+						item.remove();
 					}
 				}
 				else
 				{
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
-					event.setCancelled(true);
-					return;
+					item.remove();
 				}
 			}
 		}

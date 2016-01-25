@@ -33,10 +33,12 @@ import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimAllExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimExecutor;
 import io.github.hsyyid.polis.listeners.ChatListener;
+import io.github.hsyyid.polis.listeners.CollisionBlockEventListener;
 import io.github.hsyyid.polis.listeners.EntitySpawnListener;
 import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
 import io.github.hsyyid.polis.listeners.PlayerDamageEventListener;
+import io.github.hsyyid.polis.listeners.PlayerDropItemListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
 import io.github.hsyyid.polis.listeners.PlayerMoveListener;
@@ -65,7 +67,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.8")
+@Plugin(id = "Polis", name = "Polis", version = "1.9")
 public class Polis
 {
 	public static Game game;
@@ -331,6 +333,8 @@ public class Polis
 		game.getEventManager().registerListeners(this, new EntitySpawnListener());
 		game.getEventManager().registerListeners(this, new ExplosionEventListener());
 		game.getEventManager().registerListeners(this, new PlayerDamageEventListener());
+		game.getEventManager().registerListeners(this, new CollisionBlockEventListener());
+		game.getEventManager().registerListeners(this, new PlayerDropItemListener());
 
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis was made by HassanS6000!");
