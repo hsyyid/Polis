@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class PlayerInteractEntityListener
 {
 	@Listener
-	public void onPlayerRightClick(InteractEntityEvent.Secondary event, @First Player player)
+	public void onPlayerRightClick(InteractEntityEvent event, @First Player player)
 	{
 		String isClaimed = ConfigManager.isClaimed(event.getTargetEntity().getLocation());
 
