@@ -1,22 +1,23 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
+import com.google.common.collect.Lists;
 import io.github.hsyyid.polis.utils.ConfigManager;
-import io.github.hsyyid.polis.utils.PaginatedList;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.CommandBlockSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.service.pagination.PaginationBuilder;
+import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 public class TownListExecutor implements CommandExecutor
 {
@@ -29,18 +30,14 @@ public class TownListExecutor implements CommandExecutor
 
 			ArrayList<String> towns = ConfigManager.getTeams();
 
-			if(towns.size() == 0)
+			if (towns.size() == 0)
 			{
 				player.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "There are no towns!"));
 				return CommandResult.success();
 			}
-			
-			Optional<Integer> arguments = ctx.<Integer> getOne("page no");
-			int pgNo = arguments.orElse(1);
 
-			// Add List
-			PaginatedList pList = new PaginatedList("/polis list");
-			
+			List<Text> townList = Lists.newArrayList();
+
 			for (String name : towns)
 			{
 				Text item = Text.builder(name)
@@ -50,27 +47,14 @@ public class TownListExecutor implements CommandExecutor
 					.style(TextStyles.UNDERLINE)
 					.build();
 
-				pList.add(item);
+				townList.add(item);
 			}
-			
-			pList.setItemsPerPage(10);
-			
-			// Header
-			Text.Builder header = Text.builder();
-			header.append(Text.of(TextColors.GREEN, "------------"));
-			header.append(Text.of(TextColors.GREEN, " Showing Towns page " + pgNo + " of " + pList.getTotalPages() + " "));
-			header.append(Text.of(TextColors.GREEN, "------------"));
 
-			pList.setHeader(header.build());
-			// Send List
-			src.sendMessage(pList.getPage(pgNo));
-
+			PaginationService paginationService = Sponge.getServiceManager().provide(PaginationService.class).get();
+			PaginationBuilder paginationBuilder = paginationService.builder().title(Text.of(TextColors.GREEN, "Showing Towns")).paddingString("-").contents(townList);
+			paginationBuilder.sendTo(src);
 		}
-		else if (src instanceof ConsoleSource)
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis list!"));
-		}
-		else if (src instanceof CommandBlockSource)
+		else
 		{
 			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis list!"));
 		}
