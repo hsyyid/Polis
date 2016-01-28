@@ -32,8 +32,9 @@ import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimAllExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimExecutor;
+import io.github.hsyyid.polis.config.Config;
+import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
-import io.github.hsyyid.polis.listeners.CollisionBlockEventListener;
 import io.github.hsyyid.polis.listeners.EntitySpawnListener;
 import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
@@ -44,22 +45,20 @@ import io.github.hsyyid.polis.listeners.PlayerInteractListener;
 import io.github.hsyyid.polis.listeners.PlayerMoveListener;
 import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
 import io.github.hsyyid.polis.utils.Invite;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,9 +69,14 @@ import java.util.UUID;
 @Plugin(id = "Polis", name = "Polis", version = "1.9")
 public class Polis
 {
+	protected Polis()
+	{
+		;
+	}
+
+	private static Polis polis;
+
 	public static Game game;
-	public static ConfigurationNode config;
-	public static ConfigurationLoader<CommentedConfigurationNode> configurationManager;
 	public static ArrayList<Invite> invites = new ArrayList<>();
 	public static Set<UUID> autoClaim = Sets.newHashSet();
 	public static Set<UUID> adminAutoClaim = Sets.newHashSet();
@@ -88,36 +92,52 @@ public class Polis
 	}
 
 	@Inject
-	@DefaultConfig(sharedRoot = true)
-	private File dConfig;
+	@ConfigDir(sharedRoot = false)
+	private Path configDir;
 
-	@Inject
-	@DefaultConfig(sharedRoot = true)
-	private ConfigurationLoader<CommentedConfigurationNode> confManager;
+	public static Polis getPolis()
+	{
+		return polis;
+	}
 
 	@Listener
 	public void onServerInit(GameInitializationEvent event)
 	{
 		getLogger().info("Polis loading...");
+		polis = this;
 		game = Sponge.getGame();
 
 		// Config File
-		try
+		// Create Config Directory for Polis
+		if (!Files.exists(configDir))
 		{
-			if (!dConfig.exists())
+			try
 			{
-				dConfig.createNewFile();
-				config = confManager.load();
-				confManager.save(config);
+				Files.createDirectories(configDir);
 			}
-			configurationManager = confManager;
-			config = confManager.load();
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 
-		}
-		catch (IOException exception)
+		// Create data Directory for Polis
+		if (!Files.exists(configDir.resolve("data")))
 		{
-			getLogger().error("The default configuration could not be loaded or created!");
+			try
+			{
+				Files.createDirectories(configDir.resolve("data"));
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
+
+		// Create config.conf
+		Config.getConfig().setup();
+		// Create teams.conf
+		TeamsConfig.getConfig().setup();
 
 		subcommands = new HashMap<List<String>, CommandSpec>();
 
@@ -127,13 +147,13 @@ public class Polis
 			.arguments(GenericArguments.optional(GenericArguments.integer(Text.of("page no"))))
 			.executor(new HelpExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("toggleadminbypass"), CommandSpec.builder()
 			.description(Text.of("Toggle Admin-Bypass Command"))
 			.permission("polis.adminbypass.toggle")
 			.executor(new ToggleAdminBypassExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("join"), CommandSpec.builder()
 			.description(Text.of("Join Town Command"))
 			.permission("polis.join")
@@ -146,19 +166,19 @@ public class Polis
 			.permission("polis.hq.set")
 			.executor(new SetHQExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("adminclaim"), CommandSpec.builder()
 			.description(Text.of("Admin Claim Command"))
 			.permission("polis.claim.admin")
 			.executor(new AdminClaimExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("adminautoclaim"), CommandSpec.builder()
 			.description(Text.of("Admin Auto-Claim Command"))
 			.permission("polis.autoclaim.admin")
 			.executor(new AdminAutoClaimExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("adminunclaim"), CommandSpec.builder()
 			.description(Text.of("Admin Un-Claim Command"))
 			.permission("polis.unclaim.admin")
@@ -177,14 +197,14 @@ public class Polis
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
 			.executor(new InviteExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("addusable"), CommandSpec.builder()
 			.description(Text.of("Polis Add Interactable Command"))
 			.permission("polis.safezone.addusable")
 			.arguments(GenericArguments.onlyOne(GenericArguments.remainingJoinedStrings(Text.of("id"))))
 			.executor(new AddUsableExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("removeusable"), CommandSpec.builder()
 			.description(Text.of("Polis Remove Interactable Command"))
 			.permission("polis.safezone.removeusable")
@@ -238,7 +258,7 @@ public class Polis
 			.permission("polis.claim.use")
 			.executor(new TownClaimExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("autoclaim"), CommandSpec.builder()
 			.description(Text.of("AutoClaim Command"))
 			.permission("polis.autoclaim")
@@ -293,18 +313,14 @@ public class Polis
 		subcommands.put(Arrays.asList("setleader"), CommandSpec.builder()
 			.description(Text.of("Set Leader of Town Command"))
 			.permission("polis.leader.set")
-			.arguments(GenericArguments.seq(
-				GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))),
-				GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))))
+			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))), GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))))
 			.executor(new SetLeaderExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("addexecutive"), CommandSpec.builder()
 			.description(Text.of("Adds Executive of Town Command"))
 			.permission("polis.executive.add")
-			.arguments(GenericArguments.seq(
-				GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))),
-				GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))))
+			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
 			.executor(new AddExecutiveExecutor())
 			.build());
 
@@ -314,7 +330,7 @@ public class Polis
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
 			.executor(new RemoveExecutiveExecutor())
 			.build());
-		
+
 		CommandSpec polisCommandSpec = CommandSpec.builder()
 			.description(Text.of("Polis Command"))
 			.permission("polis.use")
@@ -333,7 +349,6 @@ public class Polis
 		game.getEventManager().registerListeners(this, new EntitySpawnListener());
 		game.getEventManager().registerListeners(this, new ExplosionEventListener());
 		game.getEventManager().registerListeners(this, new PlayerDamageEventListener());
-		game.getEventManager().registerListeners(this, new CollisionBlockEventListener());
 		game.getEventManager().registerListeners(this, new PlayerDropItemListener());
 
 		getLogger().info("-----------------------------");
@@ -344,8 +359,8 @@ public class Polis
 		getLogger().info("Polis loaded!");
 	}
 
-	public static ConfigurationLoader<CommentedConfigurationNode> getConfigManager()
+	public Path getConfigDir()
 	{
-		return configurationManager;
+		return configDir;
 	}
 }

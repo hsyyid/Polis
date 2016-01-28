@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class PlayerInteractEntityListener
 {
 	@Listener
-	public void onPlayerRightClick(InteractEntityEvent event, @First Player player)
+	public void onPlayerRightClick(InteractEntityEvent.Secondary event, @First Player player)
 	{
 		String isClaimed = ConfigManager.isClaimed(event.getTargetEntity().getLocation());
 
@@ -81,13 +81,22 @@ public class PlayerInteractEntityListener
 		if (event.getTargetEntity() instanceof Player)
 		{
 			Player target = (Player) event.getTargetEntity();
+			String isClaimed = ConfigManager.isClaimed(event.getTargetEntity().getLocation());
+
+			if (!isClaimed.equals("false"))
+			{
+				if (isClaimed.equals("SafeZone") && !player.hasPermission("polis.claim.admin.modify"))
+				{
+					event.setCancelled(true);
+					return;
+				}
+			}
 
 			String playerTeamName = null;
 
 			for (String team : ConfigManager.getTeams())
 			{
-				ArrayList<String> uuids = ConfigManager.getMembers(team);
-				if (uuids.contains(player.getUniqueId().toString()))
+				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
 				{
 					playerTeamName = team;
 					break;
@@ -108,8 +117,7 @@ public class PlayerInteractEntityListener
 
 			for (String team : ConfigManager.getTeams())
 			{
-				ArrayList<String> uuids = ConfigManager.getMembers(team);
-				if (uuids.contains(target.getUniqueId().toString()))
+				if (ConfigManager.getMembers(team).contains(target.getUniqueId().toString()))
 				{
 					targetPlayerTeamName = team;
 					break;

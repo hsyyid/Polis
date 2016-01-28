@@ -17,14 +17,15 @@ public class AddExecutiveExecutor implements CommandExecutor
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
 		Player p = ctx.<Player> getOne("player").get();
-		String townName = ctx.<String> getOne("town name").get();
 
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
 			
-			if (ConfigManager.getTeams().contains(townName))
+			if (ConfigManager.getTeam(player.getUniqueId()) != null)
 			{
+				String townName = ConfigManager.getTeam(player.getUniqueId());
+				
 				if (ConfigManager.getLeader(townName).equals(player.getUniqueId().toString()))
 				{
 					try
