@@ -28,6 +28,7 @@ import io.github.hsyyid.polis.cmdexecutors.SetHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
 import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.TownDepositExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimAllExecutor;
@@ -53,7 +54,9 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.text.Text;
 
 import java.io.IOException;
@@ -63,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -82,6 +86,7 @@ public class Polis
 	public static Set<UUID> adminAutoClaim = Sets.newHashSet();
 	public static Set<UUID> adminBypassMode = Sets.newHashSet();
 	public static HashMap<List<String>, CommandSpec> subcommands;
+	public static EconomyService economyService;
 
 	@Inject
 	private Logger logger;
@@ -258,6 +263,13 @@ public class Polis
 			.permission("polis.claim.use")
 			.executor(new TownClaimExecutor())
 			.build());
+		
+		subcommands.put(Arrays.asList("deposit"), CommandSpec.builder()
+			.description(Text.of("Polis Deposit Command"))
+			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("amount"))))
+			.permission("polis.deposit.use")
+			.executor(new TownDepositExecutor())
+			.build());
 
 		subcommands.put(Arrays.asList("autoclaim"), CommandSpec.builder()
 			.description(Text.of("AutoClaim Command"))
@@ -357,6 +369,21 @@ public class Polis
 		getLogger().info("Have fun, and enjoy! :D");
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis loaded!");
+	}
+	
+	@Listener
+	public void onGamePostInit(GamePostInitializationEvent event)
+	{
+		Optional<EconomyService> econService = Sponge.getServiceManager().provide(EconomyService.class);
+		
+		if(econService.isPresent())
+		{
+			economyService = econService.get();
+		}
+		else
+		{
+			getLogger().error("No economy plugin was found! Polis will not work correctly!");
+		}
 	}
 
 	public Path getConfigDir()

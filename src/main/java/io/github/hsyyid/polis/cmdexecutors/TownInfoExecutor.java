@@ -26,7 +26,8 @@ public class TownInfoExecutor implements CommandExecutor
 			{
 				player.sendMessage(Text.of(TextColors.GOLD, "Town: " + townName));
 				player.sendMessage(Text.of(TextColors.BLUE, "The leader of ", TextColors.RED, townName, TextColors.BLUE, " is " + ConfigManager.getLeader(townName)));
-
+				player.sendMessage(Text.of(TextColors.DARK_PURPLE, "Total Balance: ", TextColors.LIGHT_PURPLE, ConfigManager.getBalance(townName)));
+				
 				try
 				{
 					player.sendMessage(Text.of(TextColors.DARK_GRAY, "Executives: ", TextColors.GRAY, ConfigManager.getExecutives(townName).toString()));

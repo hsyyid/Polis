@@ -11,6 +11,7 @@ import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
@@ -89,6 +90,36 @@ public class ConfigManager
 		}
 
 		return null;
+	}
+
+	public static BigDecimal getBalance(String teamName)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".balance").split("\\."));
+
+		if (valueNode != null)
+			return new BigDecimal(valueNode.getDouble());
+		else
+			return new BigDecimal(0);
+	}
+
+	public static void depositToTownBank(BigDecimal amount, String teamName)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".balance").split("\\."));
+
+		if (valueNode.getValue() != null)
+			Configs.setValue(teamConfig, valueNode.getPath(), valueNode.getDouble() + amount.doubleValue());
+		else
+			Configs.setValue(teamConfig, valueNode.getPath(), amount.doubleValue());
+	}
+
+	public static void withdrawFromTownBank(BigDecimal amount, String teamName)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".balance").split("\\."));
+
+		if (valueNode.getValue() != null)
+			Configs.setValue(teamConfig, valueNode.getPath(), valueNode.getDouble() - amount.doubleValue());
+		else
+			Configs.setValue(teamConfig, valueNode.getPath(), -amount.doubleValue());
 	}
 
 	public static String getHQWorldName(String teamName)
