@@ -15,30 +15,9 @@ public class ChatListener
 	{
 		if (ConfigManager.displayPrefix())
 		{
-			String playerTeamName = null;
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 			boolean playerIsMember = false;
 			boolean playerIsExecutive = false;
-
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-				{
-					playerIsMember = true;
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-				{
-					playerIsExecutive = true;
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-			}
 
 			if (playerTeamName != null)
 			{

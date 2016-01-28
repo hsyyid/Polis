@@ -28,26 +28,7 @@ public class CreateTownExecutor implements CommandExecutor
 				return CommandResult.success();
 			}
 
-			String playerTeamName = null;
-
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-			}
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
 			if (playerTeamName == null)
 			{

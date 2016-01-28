@@ -19,23 +19,8 @@ public class DisbandTownExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-
-			String playerTeamName = null;
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 			boolean playerIsAMember = false;
-			
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()) || ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-				{
-					playerIsAMember = true;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-			}
 			
 			if (playerTeamName != null)
 			{

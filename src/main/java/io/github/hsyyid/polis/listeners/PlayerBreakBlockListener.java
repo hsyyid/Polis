@@ -2,18 +2,14 @@ package io.github.hsyyid.polis.listeners;
 
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
-
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-
-import java.util.ArrayList;
-
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.filter.cause.First;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 public class PlayerBreakBlockListener
 {
@@ -36,27 +32,7 @@ public class PlayerBreakBlockListener
 					return;
 				}
 
-				String playerTeamName = null;
-
-				for (String team : ConfigManager.getTeams())
-				{
-					ArrayList<String> uuids = ConfigManager.getMembers(team);
-					if (uuids.contains(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-					else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-				}
+				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
 				if (playerTeamName != null)
 				{

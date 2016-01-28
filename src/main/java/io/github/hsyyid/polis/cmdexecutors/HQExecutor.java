@@ -23,17 +23,7 @@ public class HQExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-
-			String townName = null;
-			
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()) || ConfigManager.getMembers(team).contains(player.getUniqueId().toString()) || ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					townName = team;
-					break;
-				}
-			}
+			String townName = ConfigManager.getTeam(player.getUniqueId());
 
 			if (townName != null)
 			{

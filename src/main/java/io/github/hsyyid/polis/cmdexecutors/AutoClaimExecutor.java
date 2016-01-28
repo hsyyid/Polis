@@ -20,32 +20,13 @@ public class AutoClaimExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			
-			String playerTeamName = null;
+
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 			boolean playerIsAMember = false;
 
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-				{
-					playerIsAMember = true;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-			}
-			
 			if (playerTeamName != null && !playerIsAMember)
 			{
-				if(Polis.autoClaim.contains(player.getUniqueId()))
+				if (Polis.autoClaim.contains(player.getUniqueId()))
 				{
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Auto-Claim: ", TextColors.GRAY, "disabled."));
 					Polis.autoClaim.remove(player.getUniqueId());
@@ -56,7 +37,7 @@ public class AutoClaimExecutor implements CommandExecutor
 					Polis.autoClaim.add(player.getUniqueId());
 				}
 			}
-			else if(playerIsAMember)
+			else if (playerIsAMember)
 			{
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to claim!"));
 			}

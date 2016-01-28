@@ -9,8 +9,6 @@ import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.ArrayList;
-
 public class PlayerInteractListener
 {
 	@Listener
@@ -37,27 +35,7 @@ public class PlayerInteractListener
 					return;
 				}
 
-				String playerTeamName = null;
-
-				for (String team : ConfigManager.getTeams())
-				{
-					ArrayList<String> uuids = ConfigManager.getMembers(team);
-					if (uuids.contains(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-					else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-				}
+				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
 				if (playerTeamName != null)
 				{

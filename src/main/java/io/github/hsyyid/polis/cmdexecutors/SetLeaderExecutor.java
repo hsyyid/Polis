@@ -22,9 +22,10 @@ public class SetLeaderExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
+			
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				if(ConfigManager.getLeader(townName).equals(player.getUniqueId().toString()))
+				if (ConfigManager.getLeader(townName).equals(player.getUniqueId().toString()))
 				{
 					try
 					{

@@ -19,30 +19,14 @@ public class SetHQExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
+			String teamName = ConfigManager.getTeam(player.getUniqueId());
 
-			boolean isAMember = false;
-			String teamName = null;
-			
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					teamName = team;
-					break;
-				}
-				else if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-				{
-					isAMember = true;
-					break;
-				}
-			}
-			
-			if (teamName != null)
+			if (teamName != null && !ConfigManager.getMembers(teamName).contains(player.getUniqueId().toString()))
 			{
 				ConfigManager.setHQ(teamName, player.getLocation(), player.getWorld().getName());
 				src.sendMessage(Text.of(TextColors.GREEN, "Success: ", TextColors.YELLOW, "HQ set."));
 			}
-			else if (isAMember)
+			else if (teamName != null)
 			{
 				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a member! Ask your leader to set the HQ!"));
 			}

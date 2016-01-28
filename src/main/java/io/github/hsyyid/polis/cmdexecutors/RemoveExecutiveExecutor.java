@@ -5,8 +5,6 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.CommandBlockSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -21,25 +19,16 @@ public class RemoveExecutiveExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player p = (Player) src;
-			String foundTeam = null;
+			String foundTeam = ConfigManager.getTeam(player.getUniqueId());
 
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getLeader(team).equals(p.getUniqueId().toString()))
-				{
-					foundTeam = team;
-					break;
-				}
-			}
-
-			if (foundTeam != null)
+			if (foundTeam != null && ConfigManager.getLeader(foundTeam).equals(p.getUniqueId().toString()))
 			{
 				if (ConfigManager.getExecutives(foundTeam).contains(player.getUniqueId().toString()))
 				{
 					ConfigManager.removeExecutive(foundTeam, player.getUniqueId().toString());
+					ConfigManager.addTeamMember(foundTeam, player.getUniqueId().toString());
 					p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully removed executive status from " + player.getName()));
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You have been demoted by the leader of " + foundTeam));
-					return CommandResult.success();
 				}
 				else
 				{
@@ -48,14 +37,10 @@ public class RemoveExecutiveExecutor implements CommandExecutor
 			}
 			else
 			{
-				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not the leader of  a town!"));
+				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not the leader of a town!"));
 			}
 		}
-		else if (src instanceof ConsoleSource)
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /removeexec!"));
-		}
-		else if (src instanceof CommandBlockSource)
+		else
 		{
 			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /removeexec!"));
 		}

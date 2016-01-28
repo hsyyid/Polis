@@ -17,34 +17,15 @@ public class AddEnemyExecutor implements CommandExecutor
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
 		String townName = ctx.<String> getOne("town name").get();
-		
+
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			
+
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				String playerTeamName = null;
+				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 				boolean playerIsAMember = false;
-
-				for (String team : ConfigManager.getTeams())
-				{
-					if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-					{
-						playerIsAMember = true;
-						break;
-					}
-					else if(ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-					{
-						playerIsAMember = true;
-						break;
-					}
-					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-				}
 
 				if (playerTeamName != null)
 				{

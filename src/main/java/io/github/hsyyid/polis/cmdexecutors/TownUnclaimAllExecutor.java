@@ -19,34 +19,14 @@ public class TownUnclaimAllExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			String playerTeamName = null;
-			boolean playerIsAMember = false;
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-				{
-					playerIsAMember = true;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-				{
-					playerIsAMember = true;
-					break;
-				}
-			}
-
-			if (playerTeamName != null)
+			if (playerTeamName != null && !ConfigManager.getMembers(playerTeamName).contains(player.getUniqueId().toString()))
 			{
 				ConfigManager.removeClaims(playerTeamName);
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully removed all claims!"));
 			}
-			else if (playerIsAMember)
+			else if (playerTeamName != null)
 			{
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to remove all claims!"));
 			}

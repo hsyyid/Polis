@@ -5,14 +5,10 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.CommandBlockSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-
-import java.util.ArrayList;
 
 public class RemoveAllyExecutor implements CommandExecutor
 {
@@ -26,23 +22,8 @@ public class RemoveAllyExecutor implements CommandExecutor
 
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				String playerTeamName = null;
+				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 				boolean playerIsAMember = false;
-
-				for (String team : ConfigManager.getTeams())
-				{
-					ArrayList<String> uuids = ConfigManager.getMembers(team);
-					if (uuids.contains(player.getUniqueId().toString()))
-					{
-						playerIsAMember = true;
-						break;
-					}
-					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-				}
 
 				if (playerTeamName != null)
 				{
@@ -80,11 +61,7 @@ public class RemoveAllyExecutor implements CommandExecutor
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
-		else if (src instanceof ConsoleSource)
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /removeally!"));
-		}
-		else if (src instanceof CommandBlockSource)
+		else
 		{
 			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /removeally!"));
 		}

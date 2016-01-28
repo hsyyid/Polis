@@ -12,8 +12,6 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.ArrayList;
-
 public class RemoveEnemyExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
@@ -26,23 +24,8 @@ public class RemoveEnemyExecutor implements CommandExecutor
 
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				String playerTeamName = null;
+				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 				boolean playerIsAMember = false;
-
-				for (String team : ConfigManager.getTeams())
-				{
-					ArrayList<String> uuids = ConfigManager.getMembers(team);
-					if (uuids.contains(player.getUniqueId().toString()))
-					{
-						playerIsAMember = true;
-						break;
-					}
-					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-				}
 
 				if (playerTeamName != null)
 				{

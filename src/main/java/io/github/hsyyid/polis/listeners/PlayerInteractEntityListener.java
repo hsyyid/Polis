@@ -9,8 +9,6 @@ import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.ArrayList;
-
 public class PlayerInteractEntityListener
 {
 	@Listener
@@ -35,27 +33,7 @@ public class PlayerInteractEntityListener
 				return;
 			}
 
-			String playerTeamName = null;
-
-			for (String team : ConfigManager.getTeams())
-			{
-				ArrayList<String> uuids = ConfigManager.getMembers(team);
-				if (uuids.contains(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-			}
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
 			if (playerTeamName != null)
 			{
@@ -92,47 +70,8 @@ public class PlayerInteractEntityListener
 				}
 			}
 
-			String playerTeamName = null;
-
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getExecutives(team).contains(target.getUniqueId().toString()))
-				{
-					playerTeamName = team;
-					break;
-				}
-			}
-
-			String targetPlayerTeamName = null;
-
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getMembers(team).contains(target.getUniqueId().toString()))
-				{
-					targetPlayerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getLeader(team).equals(target.getUniqueId().toString()))
-				{
-					targetPlayerTeamName = team;
-					break;
-				}
-				else if (ConfigManager.getExecutives(team).contains(target.getUniqueId().toString()))
-				{
-					targetPlayerTeamName = team;
-					break;
-				}
-			}
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
+			String targetPlayerTeamName = ConfigManager.getTeam(target.getUniqueId());
 
 			if (targetPlayerTeamName != null && playerTeamName != null && targetPlayerTeamName.equals(playerTeamName))
 			{

@@ -24,27 +24,8 @@ public class AddAllyExecutor implements CommandExecutor
 
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				String playerTeamName = null;
+				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 				boolean playerIsAMember = false;
-
-				for (String team : ConfigManager.getTeams())
-				{
-					if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-					{
-						playerIsAMember = true;
-						break;
-					}
-					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-					else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-					{
-						playerIsAMember = true;
-						break;
-					}
-				}
 
 				if (playerTeamName != null)
 				{

@@ -586,6 +586,16 @@ public class ConfigManager
 		Configs.setValue(teamConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
 	}
 
+	public static BigDecimal getClaimCost()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(mainConfig).getNode("polis", "claims", "cost");
+
+		if (valueNode.getValue() != null)
+			return new BigDecimal(valueNode.getDouble());
+		else
+			return new BigDecimal(0);
+	}
+
 	public static boolean displayPrefix()
 	{
 		ConfigurationNode valueNode = Configs.getConfig(mainConfig).getNode("polis", "prefix", "display");

@@ -31,23 +31,7 @@ public class InviteExecutor implements CommandExecutor
 			Player player = (Player) src;
 
 			boolean isMember = false;
-			String teamName = null;
-			
-			for (String team : ConfigManager.getTeams())
-			{
-				if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-				{
-					teamName = team;
-				}
-				else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-				{
-					isMember = true;
-				}
-				else if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-				{
-					isMember = true;
-				}
-			}
+			String teamName = ConfigManager.getTeam(player.getUniqueId());
 
 			if (isMember)
 			{

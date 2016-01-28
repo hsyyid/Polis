@@ -23,6 +23,7 @@ public class JoinTownExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
+			
 			if (ConfigManager.getTeams().contains(townName))
 			{
 				for (String team : ConfigManager.getTeams())
@@ -47,6 +48,7 @@ public class JoinTownExecutor implements CommandExecutor
 				try
 				{
 					Invite inv = null;
+					
 					for (Invite invite : Polis.invites)
 					{
 						if (invite.getPlayerUUID().equals(player.getUniqueId().toString()))
@@ -54,6 +56,7 @@ public class JoinTownExecutor implements CommandExecutor
 							inv = invite;
 						}
 					}
+					
 					if (inv != null)
 					{
 						ConfigManager.addTeamMember(townName, player.getUniqueId().toString());
