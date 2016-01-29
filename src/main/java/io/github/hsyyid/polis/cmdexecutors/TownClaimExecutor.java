@@ -42,13 +42,13 @@ public class TownClaimExecutor implements CommandExecutor
 						if (ConfigManager.getBalance(playerTeamName).compareTo(ConfigManager.getClaimCost()) >= 0)
 						{
 							TransactionResult transactionResult = null;
-							Account account = Polis.economyService.getAccount("Polis " + playerTeamName).orElse(null);
+							Account account = Polis.economyService.getAccount(playerTeamName).orElse(null);
 
 							if (account != null)
 								transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
 							else
 							{
-								account = Polis.economyService.createVirtualAccount("Polis " + playerTeamName).get();
+								account = Polis.economyService.createVirtualAccount(playerTeamName).get();
 								account.deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getBalance(playerTeamName), Cause.of(player));
 								transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
 							}
