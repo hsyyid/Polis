@@ -16,11 +16,12 @@ public class ChatListener
 		if (ConfigManager.displayPrefix())
 		{
 			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
-			boolean playerIsMember = false;
-			boolean playerIsExecutive = false;
 
 			if (playerTeamName != null)
 			{
+				boolean playerIsMember = ConfigManager.getMembers(playerTeamName).contains(player.getUniqueId().toString());
+				boolean playerIsExecutive = ConfigManager.getExecutives(playerTeamName).contains(player.getUniqueId().toString());
+				
 				if (playerIsMember)
 				{
 					event.setMessage(Text.builder()
