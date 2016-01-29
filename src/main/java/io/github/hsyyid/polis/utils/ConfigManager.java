@@ -246,28 +246,30 @@ public class ConfigManager
 
 		return executivesList;
 	}
-	
+
 	public static ArrayList<String> getExecutiveNames(String teamName)
 	{
 		ArrayList<String> names = Lists.newArrayList();
-		
-		for(String executive : getExecutives(teamName))
+
+		for (String executive : getExecutives(teamName))
 		{
-			names.add(UUIDFetcher.getName(UUID.fromString(executive)).orElse(executive));
+			if (!executive.equals(""))
+				names.add(UUIDFetcher.getName(UUID.fromString(executive)).orElse(executive));
 		}
-		
+
 		return names;
 	}
-	
+
 	public static ArrayList<String> getMemberNames(String teamName)
 	{
 		ArrayList<String> names = Lists.newArrayList();
-		
-		for(String member : getMembers(teamName))
+
+		for (String member : getMembers(teamName))
 		{
-			names.add(UUIDFetcher.getName(UUID.fromString(member)).orElse(member));
+			if (!member.equals(""))
+				names.add(UUIDFetcher.getName(UUID.fromString(member)).orElse(member));
 		}
-		
+
 		return names;
 	}
 
@@ -418,7 +420,7 @@ public class ConfigManager
 			return new BigDecimal(valueNode.getDouble());
 		else
 			setTax(teamName, new BigDecimal(100));
-		
+
 		return new BigDecimal(100);
 	}
 

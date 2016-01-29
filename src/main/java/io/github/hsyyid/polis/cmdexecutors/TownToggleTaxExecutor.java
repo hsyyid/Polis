@@ -1,14 +1,19 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
 import io.github.hsyyid.polis.utils.ConfigManager;
+import io.github.hsyyid.polis.utils.Utils;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+
+import java.util.Set;
 
 public class TownToggleTaxExecutor implements CommandExecutor
 {
@@ -21,10 +26,26 @@ public class TownToggleTaxExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 			String teamName = ConfigManager.getTeam(player.getUniqueId());
-			
-			if(teamName != null && ConfigManager.getLeader(teamName).equals(player.getUniqueId().toString()))
+
+			if (teamName != null && ConfigManager.getLeader(teamName).equals(player.getUniqueId().toString()))
 			{
 				ConfigManager.setTaxesEnabled(teamName, enableTax);
+				
+				if (!enableTax)
+				{
+					Set<Task> tasks = Sponge.getScheduler().getTasksByName("Polis - Tax Collection for " + teamName);
+
+					for (Task task : tasks)
+					{
+						task.cancel();
+					}
+				}
+				else
+				{
+					Utils.startTeamTaxService(teamName);
+				}
+				
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GREEN, "Success! ", TextColors.YELLOW, "Set taxes " + enableTax + "."));
 			}
 			else
 			{

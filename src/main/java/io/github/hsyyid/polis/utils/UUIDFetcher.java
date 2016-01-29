@@ -17,7 +17,8 @@ public class UUIDFetcher
 		
 		try
 		{
-			URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
+			String link = ("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString()).replaceAll("-", "");
+			URL url = new URL(link);
 			URLConnection connection = url.openConnection();
 			Scanner jsonScanner = new Scanner(connection.getInputStream(), "UTF-8");
 			String json = jsonScanner.next();
