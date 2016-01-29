@@ -50,19 +50,20 @@ public class PlayerInteractEntityListener
 	@Listener
 	public void onPlayerLeftClick(InteractEntityEvent.Primary event, @First Player player)
 	{
+		String isClaimed = ConfigManager.isClaimed(event.getTargetEntity().getLocation());
+
+		if (!isClaimed.equals("false"))
+		{
+			if (isClaimed.equals("SafeZone") && !player.hasPermission("polis.claim.admin.modify"))
+			{
+				event.setCancelled(true);
+				return;
+			}
+		}
+		
 		if (event.getTargetEntity() instanceof Player)
 		{
 			Player target = (Player) event.getTargetEntity();
-			String isClaimed = ConfigManager.isClaimed(event.getTargetEntity().getLocation());
-
-			if (!isClaimed.equals("false"))
-			{
-				if (isClaimed.equals("SafeZone") && !player.hasPermission("polis.claim.admin.modify"))
-				{
-					event.setCancelled(true);
-					return;
-				}
-			}
 
 			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 			String targetPlayerTeamName = ConfigManager.getTeam(target.getUniqueId());
