@@ -604,15 +604,11 @@ public class ConfigManager
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
 
-		if (valueNode.getString() != null || valueNode.getString().length() > 0)
+		if (valueNode.getValue() != null)
 		{
 			String teams = valueNode.getString();
 
-			if (teams.contains(executiveUUID + ","))
-			{
-				;
-			}
-			else
+			if (!teams.contains(executiveUUID + ","))
 			{
 				String formattedItem = (executiveUUID + ",");
 				Configs.setValue(teamConfig, valueNode.getPath(), teams + formattedItem);
