@@ -46,6 +46,7 @@ import io.github.hsyyid.polis.listeners.PlayerInteractListener;
 import io.github.hsyyid.polis.listeners.PlayerMoveListener;
 import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
 import io.github.hsyyid.polis.utils.Invite;
+import io.github.hsyyid.polis.utils.Utils;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
@@ -143,6 +144,8 @@ public class Polis
 		Config.getConfig().setup();
 		// Create teams.conf
 		TeamsConfig.getConfig().setup();
+		// Start Tax Service
+		Utils.startTaxService();
 
 		subcommands = new HashMap<List<String>, CommandSpec>();
 

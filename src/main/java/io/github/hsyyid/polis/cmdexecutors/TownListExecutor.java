@@ -56,7 +56,7 @@ public class TownListExecutor implements CommandExecutor
 		}
 		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis list!"));
+			src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis list!"));
 		}
 
 		return CommandResult.success();

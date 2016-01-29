@@ -1,7 +1,6 @@
 package io.github.hsyyid.polis.listeners;
 
 import io.github.hsyyid.polis.utils.ConfigManager;
-import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
@@ -24,11 +23,6 @@ public class PlayerInteractEntityListener
 			}
 
 			if (isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getName()))
-			{
-				return;
-			}
-
-			if (event.getTargetEntity() instanceof TileEntity && isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(((TileEntity) (event.getTargetEntity())).getBlock().getType().getId()))
 			{
 				return;
 			}
@@ -75,8 +69,8 @@ public class PlayerInteractEntityListener
 
 			if (targetPlayerTeamName != null && playerTeamName != null && targetPlayerTeamName.equals(playerTeamName))
 			{
-				player.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You cannot hurt people in your team."));
-				target.sendMessage(Text.of(TextColors.DARK_RED, player.getName(), TextColors.RED, "Tried to hurt you."));
+				player.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You cannot hurt people in your Polis."));
+				target.sendMessage(Text.of(TextColors.DARK_RED, player.getName(), TextColors.RED, " tried to hurt you."));
 				event.setCancelled(true);
 			}
 		}

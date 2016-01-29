@@ -61,7 +61,7 @@ public class TownClaimExecutor implements CommandExecutor
 							}
 							else if (transactionResult.getResult() == ResultType.ACCOUNT_NO_FUNDS)
 							{
-								player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Not enough funds!"));
+								player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Not enough funds! Deposit funds or setup taxes!"));
 							}
 							else
 							{

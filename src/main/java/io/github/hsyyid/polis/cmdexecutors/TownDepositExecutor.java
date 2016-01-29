@@ -59,6 +59,10 @@ public class TownDepositExecutor implements CommandExecutor
 				}
 			}
 		}
+		else
+		{
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis deposit!"));
+		}
 
 		return CommandResult.success();
 	}

@@ -149,121 +149,102 @@ public class ConfigManager
 	public static boolean inConfig(String teamName)
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".hq.X").split("\\."));
-		try
-		{
-			Object inConfig = valueNode.getValue();
-			if (inConfig != null)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		catch (NullPointerException e)
-		{
+
+		if (valueNode.getValue() != null)
+			return true;
+		else
 			return false;
-		}
 	}
 
 	public static ArrayList<String> getMembers(String teamName)
 	{
-		try
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
+
+		if (valueNode.getValue() == null)
+			return Lists.newArrayList();
+
+		String list = valueNode.getString();
+		ArrayList<String> membersList = Lists.newArrayList();
+		boolean finished = false;
+
+		if (finished != true)
 		{
-			ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".members").split("\\."));
-			String list = valueNode.getString();
-
-			ArrayList<String> membersList = new ArrayList<String>();
-			boolean finished = false;
-
-			// Add all homes to homeList
-			if (finished != true)
+			int endIndex = list.indexOf(",");
+			if (endIndex != -1)
 			{
-				int endIndex = list.indexOf(",");
-				if (endIndex != -1)
-				{
-					String substring = list.substring(0, endIndex);
-					membersList.add(substring);
+				String substring = list.substring(0, endIndex);
+				membersList.add(substring);
 
-					// If they Have More than 1
-					while (finished != true)
+				// If they Have More than 1
+				while (finished != true)
+				{
+					int startIndex = endIndex;
+					endIndex = list.indexOf(",", startIndex + 1);
+					if (endIndex != -1)
 					{
-						int startIndex = endIndex;
-						endIndex = list.indexOf(",", startIndex + 1);
-						if (endIndex != -1)
-						{
-							String substrings = list.substring(startIndex + 1, endIndex);
-							membersList.add(substrings);
-						}
-						else
-						{
-							finished = true;
-						}
+						String substrings = list.substring(startIndex + 1, endIndex);
+						membersList.add(substrings);
+					}
+					else
+					{
+						finished = true;
 					}
 				}
-				else
-				{
-					membersList.add(list);
-					finished = true;
-				}
 			}
+			else
+			{
+				membersList.add(list);
+				finished = true;
+			}
+		}
 
-			return membersList;
-		}
-		catch (Exception e)
-		{
-			return new ArrayList<String>();
-		}
+		return membersList;
 	}
 
 	public static ArrayList<String> getExecutives(String teamName)
 	{
-		try
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
+
+		if (valueNode.getValue() == null)
+			return Lists.newArrayList();
+
+		String list = valueNode.getString();
+		ArrayList<String> executivesList = Lists.newArrayList();
+		boolean finished = false;
+
+		if (finished != true)
 		{
-			ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".executives").split("\\."));
-			String list = valueNode.getString();
+			int endIndex = list.indexOf(",");
 
-			ArrayList<String> executivesList = new ArrayList<String>();
-			boolean finished = false;
-
-			if (finished != true)
+			if (endIndex != -1)
 			{
-				int endIndex = list.indexOf(",");
-				if (endIndex != -1)
-				{
-					String substring = list.substring(0, endIndex);
-					executivesList.add(substring);
+				String substring = list.substring(0, endIndex);
+				executivesList.add(substring);
 
-					// If they Have More than 1
-					while (finished != true)
+				// If they Have More than 1
+				while (finished != true)
+				{
+					int startIndex = endIndex;
+					endIndex = list.indexOf(",", startIndex + 1);
+					if (endIndex != -1)
 					{
-						int startIndex = endIndex;
-						endIndex = list.indexOf(",", startIndex + 1);
-						if (endIndex != -1)
-						{
-							String substrings = list.substring(startIndex + 1, endIndex);
-							executivesList.add(substrings);
-						}
-						else
-						{
-							finished = true;
-						}
+						String substrings = list.substring(startIndex + 1, endIndex);
+						executivesList.add(substrings);
+					}
+					else
+					{
+						finished = true;
 					}
 				}
-				else
-				{
-					executivesList.add(list);
-					finished = true;
-				}
 			}
+			else
+			{
+				executivesList.add(list);
+				finished = true;
+			}
+		}
 
-			return executivesList;
-		}
-		catch (Exception e)
-		{
-			return new ArrayList<String>();
-		}
+		return executivesList;
 	}
 
 	public static void setHQ(String teamName, Location<World> hqLocation, String worldName)
@@ -277,9 +258,11 @@ public class ConfigManager
 	public static ArrayList<String> getAllies(String teamName)
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".allies").split("\\."));
-		String list = valueNode.getString();
+		if (valueNode.getValue() == null)
+			return Lists.newArrayList();
 
-		ArrayList<String> alliesList = new ArrayList<String>();
+		String list = valueNode.getString();
+		ArrayList<String> alliesList = Lists.newArrayList();
 		boolean finished = false;
 
 		// Add all homes to homeList
@@ -320,9 +303,11 @@ public class ConfigManager
 	public static ArrayList<String> getEnemies(String teamName)
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".enemies").split("\\."));
-		String list = valueNode.getString();
+		if (valueNode.getValue() == null)
+			return Lists.newArrayList();
 
-		ArrayList<String> enemyList = new ArrayList<String>();
+		String list = valueNode.getString();
+		ArrayList<String> enemyList = Lists.newArrayList();
 		boolean finished = false;
 
 		// Add all homes to homeList
@@ -362,19 +347,60 @@ public class ConfigManager
 
 	public static String getLeader(String teamName)
 	{
-		try
-		{
-			ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".leader").split("\\."));
 
-			if (valueNode.getValue() != null)
-				return valueNode.getString();
-			else
-				return "";
-		}
-		catch (Exception e)
-		{
+		if (valueNode.getValue() != null)
+			return valueNode.getString();
+		else
 			return "";
-		}
+	}
+
+	public static boolean areTaxesEnabled(String teamName)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".taxes.enabled").split("\\."));
+
+		if (valueNode.getValue() != null)
+			return valueNode.getBoolean();
+		else
+			return false;
+	}
+
+	public static void setTaxesEnabled(String teamName, boolean value)
+	{
+		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "enabled" }, value);
+	}
+
+	public static int getTaxInterval(String teamName)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".taxes.interval").split("\\."));
+
+		if (valueNode.getValue() != null)
+			return valueNode.getInt();
+		else
+			setTaxInterval(teamName, 86400);
+		return 86400;
+	}
+
+	public static void setTaxInterval(String teamName, int interval)
+	{
+		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "interval" }, interval);
+	}
+
+	public static BigDecimal getTax(String teamName)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".taxes.amount").split("\\."));
+
+		if (valueNode.getValue() != null)
+			return new BigDecimal(valueNode.getDouble());
+		else
+			setTax(teamName, new BigDecimal(100));
+		
+		return new BigDecimal(100);
+	}
+
+	public static void setTax(String teamName, BigDecimal amount)
+	{
+		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "amount" }, amount.doubleValue());
 	}
 
 	public static void addTeam(String teamName, String leaderUUID)
@@ -383,7 +409,9 @@ public class ConfigManager
 		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "members" }, "");
 		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "enemies" }, "");
 		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "allies" }, "");
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "executives" }, "");
+		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "enabled" }, true);
+		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "interval" }, 86400);
+		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "amount" }, 100.00);
 
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.teams").split("\\."));
 

@@ -29,15 +29,9 @@ public class InviteExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-
-			boolean isMember = false;
 			String teamName = ConfigManager.getTeam(player.getUniqueId());
 
-			if (isMember)
-			{
-				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of a Town! Please ask the leader of your town to invite " + p.getName()));
-			}
-			else if (teamName != null)
+			if (teamName != null && !ConfigManager.getMembers(teamName).contains(player.getUniqueId().toString()))
 			{
 				final Invite invite = new Invite(teamName, p.getUniqueId().toString());
 				Polis.invites.add(invite);
@@ -59,7 +53,10 @@ public class InviteExecutor implements CommandExecutor
 
 				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully Invited " + p.getName()));
 			}
-
+			else if (teamName != null)
+			{
+				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of a Town! Please ask the leader of your town or an executive to invite " + p.getName()));
+			}
 		}
 		else if (src instanceof ConsoleSource)
 		{
