@@ -34,7 +34,7 @@ public class SetTaxIntervalExecutor implements CommandExecutor
 		}
 		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis toggletax!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis settaxinterval!"));
 		}
 
 		return CommandResult.success();

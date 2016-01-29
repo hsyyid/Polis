@@ -246,6 +246,30 @@ public class ConfigManager
 
 		return executivesList;
 	}
+	
+	public static ArrayList<String> getExecutiveNames(String teamName)
+	{
+		ArrayList<String> names = Lists.newArrayList();
+		
+		for(String executive : getExecutives(teamName))
+		{
+			names.add(UUIDFetcher.getName(UUID.fromString(executive)).orElse(executive));
+		}
+		
+		return names;
+	}
+	
+	public static ArrayList<String> getMemberNames(String teamName)
+	{
+		ArrayList<String> names = Lists.newArrayList();
+		
+		for(String member : getMembers(teamName))
+		{
+			names.add(UUIDFetcher.getName(UUID.fromString(member)).orElse(member));
+		}
+		
+		return names;
+	}
 
 	public static void setHQ(String teamName, Location<World> hqLocation, String worldName)
 	{

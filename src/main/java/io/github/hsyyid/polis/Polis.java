@@ -26,11 +26,14 @@ import io.github.hsyyid.polis.cmdexecutors.RemoveExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
+import io.github.hsyyid.polis.cmdexecutors.SetTaxExecutor;
+import io.github.hsyyid.polis.cmdexecutors.SetTaxIntervalExecutor;
 import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownDepositExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
+import io.github.hsyyid.polis.cmdexecutors.TownToggleTaxExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimAllExecutor;
 import io.github.hsyyid.polis.cmdexecutors.TownUnclaimExecutor;
 import io.github.hsyyid.polis.config.Config;
@@ -344,6 +347,27 @@ public class Polis
 			.permission("polis.executive.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
 			.executor(new RemoveExecutiveExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("toggletax", "toggletaxes"), CommandSpec.builder()
+			.description(Text.of("Toggle Taxes Command"))
+			.permission("polis.taxes.toggle")
+			.arguments(GenericArguments.onlyOne(GenericArguments.bool(Text.of("toggle"))))
+			.executor(new TownToggleTaxExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("settax"), CommandSpec.builder()
+			.description(Text.of("Set Taxes of Town Command"))
+			.permission("polis.taxes.set")
+			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("tax"))))
+			.executor(new SetTaxExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("settaxinterval"), CommandSpec.builder()
+			.description(Text.of("Sets Tax Interval of Town Command"))
+			.permission("polis.taxes.interval.set")
+			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("duration"))))
+			.executor(new SetTaxIntervalExecutor())
 			.build());
 
 		CommandSpec polisCommandSpec = CommandSpec.builder()
