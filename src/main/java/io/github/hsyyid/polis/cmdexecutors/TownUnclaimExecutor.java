@@ -12,7 +12,6 @@ import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.service.economy.account.Account;
 import org.spongepowered.api.service.economy.transaction.ResultType;
 import org.spongepowered.api.service.economy.transaction.TransactionResult;
 import org.spongepowered.api.text.Text;
@@ -40,15 +39,13 @@ public class TownUnclaimExecutor implements CommandExecutor
 					if (ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
 					{
 						TransactionResult transactionResult = null;
-						Account account = Polis.economyService.getAccount("Polis " + playerTeamName).orElse(null);
 
-						if (account != null)
-							transactionResult = account.deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
+						if (Polis.economyService.getAccount(playerTeamName).isPresent())
+							transactionResult = Polis.economyService.getAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
 						else
 						{
-							account = Polis.economyService.createVirtualAccount("Polis " + playerTeamName).get();
-							account.deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getBalance(playerTeamName), Cause.of(player));
-							transactionResult = account.deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
+							Polis.economyService.createVirtualAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getBalance(playerTeamName), Cause.of(player));
+							transactionResult = Polis.economyService.getAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
 						}
 
 						if (transactionResult.getResult() == ResultType.SUCCESS)

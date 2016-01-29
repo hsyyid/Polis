@@ -39,10 +39,10 @@ public class TownDepositExecutor implements CommandExecutor
 				else
 					playerAccount = Polis.economyService.createAccount(player.getUniqueId()).get();
 
-				if (Polis.economyService.getAccount("Polis " + townName).isPresent())
-					transactionResult = playerAccount.transfer(Polis.economyService.getAccount("Polis " + townName).get(), Polis.economyService.getDefaultCurrency(), deposit, Cause.of(player));
+				if (Polis.economyService.getAccount(townName).isPresent())
+					transactionResult = playerAccount.transfer(Polis.economyService.getAccount(townName).get(), Polis.economyService.getDefaultCurrency(), deposit, Cause.of(player));
 				else
-					transactionResult = playerAccount.transfer(Polis.economyService.createVirtualAccount("Polis " + townName).get(), Polis.economyService.getDefaultCurrency(), deposit, Cause.of(player));
+					transactionResult = playerAccount.transfer(Polis.economyService.createVirtualAccount(townName).get(), Polis.economyService.getDefaultCurrency(), deposit, Cause.of(player));
 
 				if (transactionResult.getResult() == ResultType.SUCCESS)
 				{

@@ -38,17 +38,19 @@ public class Utils
 							{
 								UniqueAccount uniqueAccount = Polis.economyService.getAccount(uuid).get();
 								TransactionResult transactionResult = uniqueAccount.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
-								ConfigManager.depositToTownBank(ConfigManager.getTax(teamName), teamName);
-
-								if (Polis.economyService.getAccount(teamName).isPresent())
-									Polis.economyService.getAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
-								else
-									Polis.economyService.createVirtualAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
 
 								if (Sponge.getServer().getPlayer(uuid).isPresent())
 								{
 									if (transactionResult.getResult() == ResultType.SUCCESS)
+									{
 										Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Paid Polis tax of " + ConfigManager.getTax(teamName)));
+										ConfigManager.depositToTownBank(ConfigManager.getTax(teamName), teamName);
+
+										if (Polis.economyService.getAccount(teamName).isPresent())
+											Polis.economyService.getAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
+										else
+											Polis.economyService.createVirtualAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
+									}
 									else
 										Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.RED, "Failed to pay Polis tax of " + ConfigManager.getTax(teamName)));
 								}
@@ -81,17 +83,19 @@ public class Utils
 						{
 							UniqueAccount uniqueAccount = Polis.economyService.getAccount(uuid).get();
 							TransactionResult transactionResult = uniqueAccount.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
-							ConfigManager.depositToTownBank(ConfigManager.getTax(teamName), teamName);
 
-							if (Polis.economyService.getAccount(teamName).isPresent())
-								Polis.economyService.getAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
-							else
-								Polis.economyService.createVirtualAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
-							
 							if (Sponge.getServer().getPlayer(uuid).isPresent())
 							{
 								if (transactionResult.getResult() == ResultType.SUCCESS)
+								{
 									Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Paid Polis tax of " + ConfigManager.getTax(teamName)));
+									ConfigManager.depositToTownBank(ConfigManager.getTax(teamName), teamName);
+
+									if (Polis.economyService.getAccount(teamName).isPresent())
+										Polis.economyService.getAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
+									else
+										Polis.economyService.createVirtualAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(Sponge.getPluginManager().getPlugin("Polis").get()));
+								}
 								else
 									Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.RED, "Failed to pay Polis tax of " + ConfigManager.getTax(teamName)));
 							}
