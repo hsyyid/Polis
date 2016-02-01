@@ -57,7 +57,9 @@ public class TownClaimExecutor implements CommandExecutor
 							{
 								ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
 								ConfigManager.withdrawFromTownBank(ConfigManager.getClaimCost(), playerTeamName);
-								player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location!"));
+								player.sendMessage(Text.builder().append(Text.of(TextColors.GREEN, "[Polis]: ", 
+									TextColors.GOLD, "Successfully claimed this location for " + ConfigManager.getClaimCost() + " "))
+									.append(Polis.economyService.getDefaultCurrency().getPluralDisplayName()).build());
 							}
 							else if (transactionResult.getResult() == ResultType.ACCOUNT_NO_FUNDS)
 							{

@@ -59,6 +59,11 @@ public class PlayerInteractEntityListener
 				event.setCancelled(true);
 				return;
 			}
+			else if(!(event.getTargetEntity() instanceof Player) && !ConfigManager.getTeam(player.getUniqueId()).equals(isClaimed))
+			{
+				event.setCancelled(true);
+				return;
+			}
 		}
 		
 		if (event.getTargetEntity() instanceof Player)

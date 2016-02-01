@@ -10,6 +10,7 @@ import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.world.explosion.Explosion;
 
 public class PlayerBreakBlockListener
 {
@@ -34,20 +35,23 @@ public class PlayerBreakBlockListener
 
 				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
-				if (playerTeamName != null)
+				if (!event.getCause().first(Explosion.class).isPresent())
 				{
-					if (!(isClaimed.equals(playerTeamName)))
+					if (playerTeamName != null)
+					{
+						if (!(isClaimed.equals(playerTeamName)))
+						{
+							event.setCancelled(true);
+							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+							return;
+						}
+					}
+					else
 					{
 						event.setCancelled(true);
 						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 						return;
 					}
-				}
-				else
-				{
-					event.setCancelled(true);
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
-					return;
 				}
 			}
 		}

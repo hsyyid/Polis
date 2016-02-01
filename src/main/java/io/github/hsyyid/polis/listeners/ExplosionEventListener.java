@@ -9,9 +9,14 @@ public class ExplosionEventListener
 	@Listener
 	public void onExplosion(ExplosionEvent.Pre event)
 	{
-		if (ConfigManager.isClaimed(event.getExplosion().getWorld().getLocation(event.getExplosion().getOrigin())).equals("SafeZone"))
+		float radius = event.getExplosion().getRadius();
+
+		for(int i = 0; i < radius; i++)
 		{
-			event.setCancelled(true);
+			if (ConfigManager.isClaimed(event.getExplosion().getWorld().getLocation(event.getExplosion().getOrigin())).equals("SafeZone"))
+			{
+				event.setCancelled(true);
+			}
 		}
 	}
 }
