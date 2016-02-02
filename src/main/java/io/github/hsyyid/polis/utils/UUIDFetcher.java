@@ -1,7 +1,11 @@
 package io.github.hsyyid.polis.utils;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.profile.GameProfile;
+import org.spongepowered.api.profile.GameProfileManager;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -13,26 +17,18 @@ public class UUIDFetcher
 {
 	public static Optional<String> getName(UUID uuid)
 	{
-		String name = null;
-		
+		ListenableFuture<GameProfile> gameProfile = Sponge.getServer().getGameProfileManager().get(uuid);
+
 		try
 		{
-			String link = ("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString()).replaceAll("-", "");
-			URL url = new URL(link);
-			URLConnection connection = url.openConnection();
-			Scanner jsonScanner = new Scanner(connection.getInputStream(), "UTF-8");
-			String json = jsonScanner.next();
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(json);
-			name = (String) ((JSONObject) obj).get("name");
-			jsonScanner.close();
-			return Optional.of(name);
+			if (gameProfile.get() != null)
+				return Optional.of(gameProfile.get().getName());
+			else
+				return Optional.empty();
 		}
 		catch (Exception ex)
 		{
-			;
+			return Optional.empty();
 		}
-
-		return Optional.empty();
 	}
 }
