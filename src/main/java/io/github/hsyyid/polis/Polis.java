@@ -46,7 +46,7 @@ import io.github.hsyyid.polis.listeners.PlayerDamageEventListener;
 import io.github.hsyyid.polis.listeners.PlayerDropItemListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
-import io.github.hsyyid.polis.listeners.PlayerMoveListener;
+import io.github.hsyyid.polis.listeners.EntityMoveListener;
 import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
 import io.github.hsyyid.polis.utils.Invite;
 import io.github.hsyyid.polis.utils.Utils;
@@ -74,7 +74,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-@Plugin(id = "Polis", name = "Polis", version = "1.9")
+@Plugin(id = "Polis", name = "Polis", version = "2.0")
 public class Polis
 {
 	protected Polis()
@@ -382,7 +382,7 @@ public class Polis
 		game.getEventManager().registerListeners(this, new PlayerInteractListener());
 		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
 		game.getEventManager().registerListeners(this, new PlayerPlaceBlockListener());
-		game.getEventManager().registerListeners(this, new PlayerMoveListener());
+		game.getEventManager().registerListeners(this, new EntityMoveListener());
 		game.getEventManager().registerListeners(this, new PlayerInteractEntityListener());
 		game.getEventManager().registerListeners(this, new ChatListener());
 		game.getEventManager().registerListeners(this, new EntitySpawnListener());

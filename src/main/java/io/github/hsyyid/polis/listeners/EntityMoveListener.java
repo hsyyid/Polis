@@ -4,6 +4,7 @@ import com.flowpowered.math.vector.Vector3i;
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 
+import org.spongepowered.api.entity.living.monster.Monster;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.DisplaceEntityEvent;
@@ -14,7 +15,7 @@ import org.spongepowered.api.world.World;
 
 import java.util.Optional;
 
-public class PlayerMoveListener
+public class EntityMoveListener
 {
 	@Listener
 	public void onPlayerMove(DisplaceEntityEvent event)
@@ -66,6 +67,16 @@ public class PlayerMoveListener
 				{
 					player.sendMessage(Text.of(TextColors.GOLD, "Now entering the land of: ", TextColors.GRAY, ConfigManager.isClaimed(newLocation)));
 				}
+			}
+		}
+
+		if(event.getTargetEntity() instanceof Monster)
+		{
+			Location<World> newLocation = event.getToTransform().getLocation();
+
+			if (ConfigManager.isClaimed(newLocation).equals("SafeZone"))
+			{
+				event.setCancelled(true);
 			}
 		}
 	}
