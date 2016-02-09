@@ -39,6 +39,7 @@ import io.github.hsyyid.polis.cmdexecutors.TownUnclaimExecutor;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
+import io.github.hsyyid.polis.listeners.EntityMoveListener;
 import io.github.hsyyid.polis.listeners.EntitySpawnListener;
 import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
@@ -46,10 +47,10 @@ import io.github.hsyyid.polis.listeners.PlayerDamageEventListener;
 import io.github.hsyyid.polis.listeners.PlayerDropItemListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
-import io.github.hsyyid.polis.listeners.EntityMoveListener;
 import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
 import io.github.hsyyid.polis.utils.Invite;
 import io.github.hsyyid.polis.utils.Utils;
+import me.flibio.updatifier.Updatifier;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
@@ -74,7 +75,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-@Plugin(id = "Polis", name = "Polis", version = "2.0")
+@Updatifier(repoName = "Polis", repoOwner = "hsyyid", version = "v" + PluginInfo.VERSION)
+@Plugin(id = PluginInfo.ID, name = PluginInfo.NAME, version = PluginInfo.VERSION)
 public class Polis
 {
 	protected Polis()

@@ -20,14 +20,13 @@ public class DisbandTownExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
-			boolean playerIsAMember = false;
 			
-			if (playerTeamName != null)
+			if (playerTeamName != null && ConfigManager.getLeader(playerTeamName).equals(player.getUniqueId().toString()))
 			{
 				ConfigManager.removeTeam(playerTeamName);
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully deleted town."));
 			}
-			else if (playerIsAMember)
+			else if (playerTeamName != null)
 			{
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to delete your town!"));
 			}
