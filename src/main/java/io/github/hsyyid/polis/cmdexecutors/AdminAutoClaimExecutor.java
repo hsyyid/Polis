@@ -16,7 +16,7 @@ public class AdminAutoClaimExecutor implements CommandExecutor
 	{
 		String zone = ctx.<String> getOne("zone").get();
 
-		if (!zone.equals("SafeZone") || !zone.equals("WarZone"))
+		if (!(zone.equals("SafeZone") || zone.equals("WarZone")))
 		{
 			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Zone name is not applicable."));
 			return CommandResult.success();
