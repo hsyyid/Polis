@@ -20,12 +20,12 @@ public class PlayerInteractListener
 
 			if (!isClaimed.equals("false"))
 			{
-				if (isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
+				if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && player.hasPermission("polis.claim.admin.modify"))
 				{
 					return;
 				}
 
-				if (isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getId()))
+				if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getId()))
 				{
 					return;
 				}

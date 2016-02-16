@@ -5,8 +5,6 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.CommandBlockSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -25,9 +23,8 @@ public class AddAllyExecutor implements CommandExecutor
 			if (ConfigManager.getTeams().contains(townName))
 			{
 				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
-				boolean playerIsAMember = false;
 
-				if (playerTeamName != null)
+				if (playerTeamName != null && ConfigManager.getLeader(playerTeamName).equals(player.getUniqueId().toString()))
 				{
 					try
 					{
@@ -39,8 +36,9 @@ public class AddAllyExecutor implements CommandExecutor
 					}
 					catch (NullPointerException e)
 					{
-
+						;
 					}
+
 					try
 					{
 						if (ConfigManager.getEnemies(playerTeamName) != null && ConfigManager.getEnemies(playerTeamName).contains(townName))
@@ -60,7 +58,7 @@ public class AddAllyExecutor implements CommandExecutor
 					ConfigManager.addAlly(playerTeamName, townName, true);
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully set town ", TextColors.GREEN, townName, TextColors.GOLD, " as an ally!"));
 				}
-				else if (playerIsAMember)
+				else if (playerTeamName != null)
 				{
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to set allies!"));
 				}
@@ -74,13 +72,9 @@ public class AddAllyExecutor implements CommandExecutor
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
-		else if (src instanceof ConsoleSource)
+		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addally!"));
-		}
-		else if (src instanceof CommandBlockSource)
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addally!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis addally!"));
 		}
 
 		return CommandResult.success();

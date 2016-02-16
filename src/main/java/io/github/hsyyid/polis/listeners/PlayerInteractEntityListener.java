@@ -17,12 +17,12 @@ public class PlayerInteractEntityListener
 
 		if (!isClaimed.equals("false"))
 		{
-			if (isClaimed.equals("SafeZone") && player.hasPermission("polis.claim.admin.modify"))
+			if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && player.hasPermission("polis.claim.admin.modify"))
 			{
 				return;
 			}
 
-			if (isClaimed.equals("SafeZone") && ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getName()))
+			if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getName()))
 			{
 				return;
 			}
@@ -59,13 +59,13 @@ public class PlayerInteractEntityListener
 				event.setCancelled(true);
 				return;
 			}
-			else if(!(event.getTargetEntity() instanceof Player) && !ConfigManager.getTeam(player.getUniqueId()).equals(isClaimed))
+			else if (!(event.getTargetEntity() instanceof Player) && !ConfigManager.getTeam(player.getUniqueId()).equals(isClaimed))
 			{
 				event.setCancelled(true);
 				return;
 			}
 		}
-		
+
 		if (event.getTargetEntity() instanceof Player)
 		{
 			Player target = (Player) event.getTargetEntity();

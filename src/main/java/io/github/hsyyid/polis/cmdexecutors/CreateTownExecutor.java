@@ -5,8 +5,6 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.CommandBlockSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -22,9 +20,9 @@ public class CreateTownExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 
-			if (townName.equalsIgnoreCase("SafeZone"))
+			if (townName.equalsIgnoreCase("SafeZone") || townName.equalsIgnoreCase("WarZone"))
 			{
-				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You may not use the name SafeZone."));
+				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You may not use this name."));
 				return CommandResult.success();
 			}
 
@@ -55,13 +53,9 @@ public class CreateTownExecutor implements CommandExecutor
 			}
 
 		}
-		else if (src instanceof ConsoleSource)
+		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addtown!"));
-		}
-		else if (src instanceof CommandBlockSource)
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addtown!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis create!"));
 		}
 
 		return CommandResult.success();

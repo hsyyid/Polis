@@ -45,15 +45,15 @@ public class EntityMoveListener
 			}
 			
 
-			if (Polis.adminAutoClaim.contains(player.getUniqueId()) && ConfigManager.isClaimed(previousLocation).equals("false"))
+			if (Polis.adminAutoClaim.containsKey(player.getUniqueId()) && ConfigManager.isClaimed(previousLocation).equals("false"))
 			{
 				Optional<Vector3i> optionalChunk = Polis.game.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
 
 				if (optionalChunk.isPresent())
 				{
 					Vector3i chunk = optionalChunk.get();
-					ConfigManager.claim("SafeZone", player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for SafeZone!"));
+					ConfigManager.claim(Polis.adminAutoClaim.get(player.getUniqueId()), player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for " + Polis.adminAutoClaim.get(player.getUniqueId())));
 				}
 			}
 

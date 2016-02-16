@@ -89,7 +89,7 @@ public class Polis
 	public static Game game;
 	public static ArrayList<Invite> invites = new ArrayList<>();
 	public static Set<UUID> autoClaim = Sets.newHashSet();
-	public static Set<UUID> adminAutoClaim = Sets.newHashSet();
+	public static HashMap<UUID, String> adminAutoClaim = new HashMap<>();
 	public static Set<UUID> adminBypassMode = Sets.newHashSet();
 	public static HashMap<List<String>, CommandSpec> subcommands;
 	public static EconomyService economyService;
