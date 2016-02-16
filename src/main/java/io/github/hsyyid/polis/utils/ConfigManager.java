@@ -8,6 +8,7 @@ import io.github.hsyyid.polis.config.Configs;
 import io.github.hsyyid.polis.config.Configurable;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -664,6 +665,26 @@ public class ConfigManager
 	public static void setDisplayPrefix(boolean value)
 	{
 		Configs.setValue(mainConfig, new Object[] { "polis", "prefix", "display" }, value);
+	}
+
+	public static int getClaims(String teamName)
+	{
+		return Configs.getConfig(teamConfig).getNode("claims", teamName).getChildrenMap().keySet().size();
+	}
+
+	public static int getClaimCap()
+	{
+		CommentedConfigurationNode node = Configs.getConfig(mainConfig).getNode("polis", "claims", "cap");
+
+		if (node.getValue() != null)
+		{
+			return node.getInt();
+		}
+		else
+		{
+			Configs.setValue(mainConfig, node.getPath(), 50);
+			return 50;
+		}
 	}
 
 	public static void removeClaims(String teamName)

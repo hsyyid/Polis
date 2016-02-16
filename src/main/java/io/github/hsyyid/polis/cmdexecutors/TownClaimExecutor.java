@@ -7,8 +7,6 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.CommandBlockSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
@@ -39,40 +37,46 @@ public class TownClaimExecutor implements CommandExecutor
 
 					if (!ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
 					{
-						if (ConfigManager.getBalance(playerTeamName).compareTo(ConfigManager.getClaimCost()) >= 0)
+						if (ConfigManager.getClaims(playerTeamName) < ConfigManager.getClaimCap())
 						{
-							TransactionResult transactionResult = null;
-							Account account = Polis.economyService.getAccount(playerTeamName).orElse(null);
+							if (ConfigManager.getBalance(playerTeamName).compareTo(ConfigManager.getClaimCost()) >= 0)
+							{
+								TransactionResult transactionResult = null;
+								Account account = Polis.economyService.getAccount(playerTeamName).orElse(null);
 
-							if (account != null)
-								transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
+								if (account != null)
+									transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
+								else
+								{
+									account = Polis.economyService.createVirtualAccount(playerTeamName).get();
+									account.deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getBalance(playerTeamName), Cause.of(player));
+									transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
+								}
+
+								if (transactionResult.getResult() == ResultType.SUCCESS)
+								{
+									ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+									ConfigManager.withdrawFromTownBank(ConfigManager.getClaimCost(), playerTeamName);
+									player.sendMessage(Text.builder().append(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for " + ConfigManager.getClaimCost() + " "))
+										.append(Polis.economyService.getDefaultCurrency().getPluralDisplayName()).build());
+								}
+								else if (transactionResult.getResult() == ResultType.ACCOUNT_NO_FUNDS)
+								{
+									player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Not enough funds! Deposit funds or setup taxes!"));
+								}
+								else
+								{
+									player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "An error occured while trying to withdraw from your Polis' bank."));
+								}
+							}
 							else
 							{
-								account = Polis.economyService.createVirtualAccount(playerTeamName).get();
-								account.deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getBalance(playerTeamName), Cause.of(player));
-								transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
-							}
-
-							if (transactionResult.getResult() == ResultType.SUCCESS)
-							{
-								ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
-								ConfigManager.withdrawFromTownBank(ConfigManager.getClaimCost(), playerTeamName);
-								player.sendMessage(Text.builder().append(Text.of(TextColors.GREEN, "[Polis]: ", 
-									TextColors.GOLD, "Successfully claimed this location for " + ConfigManager.getClaimCost() + " "))
-									.append(Polis.economyService.getDefaultCurrency().getPluralDisplayName()).build());
-							}
-							else if (transactionResult.getResult() == ResultType.ACCOUNT_NO_FUNDS)
-							{
-								player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Not enough funds! Deposit funds or setup taxes!"));
-							}
-							else
-							{
-								player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "An error occured while trying to withdraw from your Polis' bank."));
+								player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Your Polis does not have enough funds to claim this land! Deposit funds soon!"));
 							}
 						}
 						else
 						{
-							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Your Polis does not have enough funds to claim this land! Deposit funds soon!"));
+							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You already have the maximum number of claims!"));
 						}
 					}
 					else
@@ -90,11 +94,7 @@ public class TownClaimExecutor implements CommandExecutor
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not part of a town!"));
 			}
 		}
-		else if (src instanceof ConsoleSource)
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis claim!"));
-		}
-		else if (src instanceof CommandBlockSource)
+		else
 		{
 			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis claim!"));
 		}
