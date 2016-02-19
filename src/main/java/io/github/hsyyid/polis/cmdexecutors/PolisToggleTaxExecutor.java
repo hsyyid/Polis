@@ -15,7 +15,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Set;
 
-public class TownToggleTaxExecutor implements CommandExecutor
+public class PolisToggleTaxExecutor implements CommandExecutor
 {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException

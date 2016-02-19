@@ -12,36 +12,33 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class DisbandTownExecutor implements CommandExecutor
+public class PolisDeleteExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
+		String townName = ctx.<String> getOne("town name").get();
+
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 			
-			if (playerTeamName != null && ConfigManager.getLeader(playerTeamName).equals(player.getUniqueId().toString()))
+			if (ConfigManager.getTeams().contains(townName))
 			{
-				ConfigManager.removeTeam(playerTeamName);
-				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully deleted town."));
-			}
-			else if (playerTeamName != null)
-			{
-				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to delete your town!"));
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully deleted town " + townName));
+				ConfigManager.removeTeam(townName);
 			}
 			else
 			{
-				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not part of a town!"));
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addally!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /deleteteam!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addally!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /deleteteam!"));
 		}
 
 		return CommandResult.success();

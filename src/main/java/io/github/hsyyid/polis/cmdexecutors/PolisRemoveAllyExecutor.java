@@ -10,7 +10,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class AddAllyExecutor implements CommandExecutor
+public class PolisRemoveAllyExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
@@ -23,30 +23,22 @@ public class AddAllyExecutor implements CommandExecutor
 			if (ConfigManager.getTeams().contains(townName))
 			{
 				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
+				boolean playerIsAMember = false;
 
-				if (playerTeamName != null && ConfigManager.getLeader(playerTeamName).equals(player.getUniqueId().toString()))
+				if (playerTeamName != null)
 				{
 					try
 					{
 						if (ConfigManager.getAllies(playerTeamName) != null && ConfigManager.getAllies(playerTeamName).contains(townName))
 						{
-							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are already allies!"));
+							ConfigManager.removeAlly(playerTeamName, townName);
+							ConfigManager.removeAlly(townName, playerTeamName);
+							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully removed town ", TextColors.GREEN, townName, TextColors.GOLD, " as an ally!"));
 							return CommandResult.success();
 						}
-					}
-					catch (NullPointerException e)
-					{
-						;
-					}
-
-					try
-					{
-						if (ConfigManager.getEnemies(playerTeamName) != null && ConfigManager.getEnemies(playerTeamName).contains(townName))
+						else
 						{
-							ConfigManager.removeEnemy(playerTeamName, townName);
-							ConfigManager.removeEnemy(townName, playerTeamName);
-							ConfigManager.addAlly(playerTeamName, townName, true);
-							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully set town ", TextColors.GREEN, townName, TextColors.GOLD, " as an ally!"));
+							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not allies!"));
 							return CommandResult.success();
 						}
 					}
@@ -54,13 +46,10 @@ public class AddAllyExecutor implements CommandExecutor
 					{
 						;
 					}
-
-					ConfigManager.addAlly(playerTeamName, townName, true);
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully set town ", TextColors.GREEN, townName, TextColors.GOLD, " as an ally!"));
 				}
-				else if (playerTeamName != null)
+				else if (playerIsAMember)
 				{
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to set allies!"));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to remove allies!"));
 				}
 				else
 				{
@@ -74,7 +63,7 @@ public class AddAllyExecutor implements CommandExecutor
 		}
 		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis addally!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /removeally!"));
 		}
 
 		return CommandResult.success();

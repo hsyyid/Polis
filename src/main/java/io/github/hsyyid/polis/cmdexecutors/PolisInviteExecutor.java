@@ -19,7 +19,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.concurrent.TimeUnit;
 
-public class InviteExecutor implements CommandExecutor
+public class PolisInviteExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{

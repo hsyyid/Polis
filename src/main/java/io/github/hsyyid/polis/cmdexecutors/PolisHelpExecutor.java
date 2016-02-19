@@ -17,7 +17,7 @@ import org.spongepowered.api.text.format.TextColors;
 import java.util.HashMap;
 import java.util.List;
 
-public class HelpExecutor implements CommandExecutor
+public class PolisHelpExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{	

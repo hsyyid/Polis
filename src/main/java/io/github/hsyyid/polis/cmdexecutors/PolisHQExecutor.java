@@ -15,7 +15,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-public class HQExecutor implements CommandExecutor
+public class PolisHQExecutor implements CommandExecutor
 {
 
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException

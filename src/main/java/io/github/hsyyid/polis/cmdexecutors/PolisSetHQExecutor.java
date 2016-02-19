@@ -12,33 +12,36 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class DeleteTownExecutor implements CommandExecutor
+public class PolisSetHQExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
-		String townName = ctx.<String> getOne("town name").get();
-
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			
-			if (ConfigManager.getTeams().contains(townName))
+			String teamName = ConfigManager.getTeam(player.getUniqueId());
+
+			if (teamName != null && !ConfigManager.getMembers(teamName).contains(player.getUniqueId().toString()))
 			{
-				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully deleted town " + townName));
-				ConfigManager.removeTeam(townName);
+				ConfigManager.setHQ(teamName, player.getLocation(), player.getWorld().getName());
+				src.sendMessage(Text.of(TextColors.GREEN, "Success: ", TextColors.YELLOW, "HQ set."));
+			}
+			else if (teamName != null)
+			{
+				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a member! Ask your leader to set the HQ!"));
 			}
 			else
 			{
-				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Town does not exist!"));
+				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not in a town!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /deleteteam!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /sethq!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /deleteteam!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /sethq!"));
 		}
 
 		return CommandResult.success();

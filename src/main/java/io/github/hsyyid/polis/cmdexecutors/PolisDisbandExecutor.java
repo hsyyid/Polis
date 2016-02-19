@@ -12,36 +12,36 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class SetHQExecutor implements CommandExecutor
+public class PolisDisbandExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			String teamName = ConfigManager.getTeam(player.getUniqueId());
-
-			if (teamName != null && !ConfigManager.getMembers(teamName).contains(player.getUniqueId().toString()))
+			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
+			
+			if (playerTeamName != null && ConfigManager.getLeader(playerTeamName).equals(player.getUniqueId().toString()))
 			{
-				ConfigManager.setHQ(teamName, player.getLocation(), player.getWorld().getName());
-				src.sendMessage(Text.of(TextColors.GREEN, "Success: ", TextColors.YELLOW, "HQ set."));
+				ConfigManager.removeTeam(playerTeamName);
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully deleted town."));
 			}
-			else if (teamName != null)
+			else if (playerTeamName != null)
 			{
-				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a member! Ask your leader to set the HQ!"));
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Ask your leader to delete your town!"));
 			}
 			else
 			{
-				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not in a town!"));
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not part of a town!"));
 			}
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /sethq!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addally!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /sethq!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addally!"));
 		}
 
 		return CommandResult.success();

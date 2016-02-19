@@ -19,7 +19,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Optional;
 
-public class TownUnclaimExecutor implements CommandExecutor
+public class PolisUnclaimExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{

@@ -9,6 +9,8 @@ import io.github.hsyyid.polis.config.Configurable;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import org.spongepowered.api.text.format.TextColor;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -743,6 +745,32 @@ public class ConfigManager
 		return claimed;
 	}
 
+	public static String isClaimed(Vector3i chunk, UUID worldUUID)
+	{
+		String claimed = "false";
+
+		for (String teamName : getTeams())
+		{
+			try
+			{
+				ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
+				boolean value = valueNode.getBoolean();
+
+				if (value)
+				{
+					claimed = teamName;
+					break;
+				}
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+
+		return claimed;
+	}
+
 	public static boolean canUseInSafeZone(String id)
 	{
 		try
@@ -753,6 +781,26 @@ public class ConfigManager
 		{
 			addUsableSafeZoneBlock("");
 			return false;
+		}
+	}
+
+	public static TextColor getColorTo(String observerPolis, String polis)
+	{
+		if (observerPolis.equals(polis))
+		{
+			return TextColors.GOLD;
+		}
+		else if (ConfigManager.getAllies(observerPolis).contains(polis))
+		{
+			return TextColors.GREEN;
+		}
+		else if (ConfigManager.getEnemies(observerPolis).contains(polis))
+		{
+			return TextColors.RED;
+		}
+		else
+		{
+			return TextColors.YELLOW;
 		}
 	}
 

@@ -19,7 +19,7 @@ import org.spongepowered.api.text.format.TextStyles;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TownListExecutor implements CommandExecutor
+public class PolisListExecutor implements CommandExecutor
 {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException

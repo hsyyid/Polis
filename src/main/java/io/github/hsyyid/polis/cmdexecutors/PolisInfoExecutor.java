@@ -14,7 +14,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.UUID;
 
-public class TownInfoExecutor implements CommandExecutor
+public class PolisInfoExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{

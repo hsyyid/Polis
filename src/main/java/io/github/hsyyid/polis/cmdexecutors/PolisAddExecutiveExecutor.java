@@ -12,28 +12,29 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class SetLeaderExecutor implements CommandExecutor
+public class PolisAddExecutiveExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
 		Player p = ctx.<Player> getOne("player").get();
-		String townName = ctx.<String> getOne("town name").get();
 
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
 			
-			if (ConfigManager.getTeams().contains(townName))
+			if (ConfigManager.getTeam(player.getUniqueId()) != null)
 			{
+				String townName = ConfigManager.getTeam(player.getUniqueId());
+				
 				if (ConfigManager.getLeader(townName).equals(player.getUniqueId().toString()))
 				{
 					try
 					{
 						if (ConfigManager.getMembers(townName).contains(p.getUniqueId().toString()))
 						{
-							ConfigManager.setTeamLeader(townName, p.getUniqueId().toString());
-							ConfigManager.addTeamMember(townName, player.getUniqueId().toString());
-							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Set " + townName + " leader to " + p.getName()));
+							ConfigManager.addTeamExecutive(townName, p.getUniqueId().toString());
+							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Added " + p.getName() + " as an executive of town " + townName));
+							p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You have been promoted by the leader of " + townName));
 						}
 						else
 						{
@@ -42,7 +43,7 @@ public class SetLeaderExecutor implements CommandExecutor
 					}
 					catch (NullPointerException e)
 					{
-						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to set town leader!"));
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Failed to add town executive!"));
 					}
 				}
 				else
@@ -57,11 +58,11 @@ public class SetLeaderExecutor implements CommandExecutor
 		}
 		else if (src instanceof ConsoleSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /setleader!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addexecutive!"));
 		}
 		else if (src instanceof CommandBlockSource)
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /setleader!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /addexecutive!"));
 		}
 
 		return CommandResult.success();

@@ -17,7 +17,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.math.BigDecimal;
 
-public class TownDepositExecutor implements CommandExecutor
+public class PolisDepositExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{

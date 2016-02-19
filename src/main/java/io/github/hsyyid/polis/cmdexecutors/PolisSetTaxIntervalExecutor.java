@@ -13,15 +13,14 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
-public class SetTaxExecutor implements CommandExecutor
+public class PolisSetTaxIntervalExecutor implements CommandExecutor
 {
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
-		double tax = ctx.<Double> getOne("tax").get();
+		String duration = ctx.<String> getOne("duration").get();
 
 		if (src instanceof Player)
 		{
@@ -30,7 +29,8 @@ public class SetTaxExecutor implements CommandExecutor
 
 			if (teamName != null && ConfigManager.getLeader(teamName).equals(player.getUniqueId().toString()))
 			{
-				ConfigManager.setTax(teamName, new BigDecimal(tax));
+				int seconds = getDurationFromString(duration);
+				ConfigManager.setTaxInterval(teamName, seconds);
 				Set<Task> tasks = Sponge.getScheduler().getTasksByName("Polis - Tax Collection for " + teamName);
 
 				for (Task task : tasks)
@@ -39,7 +39,7 @@ public class SetTaxExecutor implements CommandExecutor
 				}
 
 				Utils.startTeamTaxService(teamName);
-				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GREEN, "Success! ", TextColors.YELLOW, "Set tax to " + tax + "."));
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GREEN, "Success! ", TextColors.YELLOW, "Set tax interval."));
 			}
 			else
 			{
@@ -48,9 +48,26 @@ public class SetTaxExecutor implements CommandExecutor
 		}
 		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis settax!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis settaxinterval!"));
 		}
 
 		return CommandResult.success();
+	}
+
+	public int getDurationFromString(String duration)
+	{
+		if (duration.contains(":"))
+		{
+			String[] tokens = duration.split(":");
+			int hours = Integer.parseInt(tokens[0]);
+			int minutes = Integer.parseInt(tokens[1]);
+			int seconds = Integer.parseInt(tokens[2]);
+			int durationInSec = 3600 * hours + 60 * minutes + seconds;
+			return durationInSec;
+		}
+		else
+		{
+			return Integer.parseInt(duration);
+		}
 	}
 }

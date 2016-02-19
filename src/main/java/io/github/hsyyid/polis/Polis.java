@@ -2,40 +2,41 @@ package io.github.hsyyid.polis;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
-import io.github.hsyyid.polis.cmdexecutors.AddAllyExecutor;
-import io.github.hsyyid.polis.cmdexecutors.AddEnemyExecutor;
-import io.github.hsyyid.polis.cmdexecutors.AddExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisAddAllyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisAddEnemyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisAddExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminAutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminUnClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AutoClaimExecutor;
-import io.github.hsyyid.polis.cmdexecutors.CreateTownExecutor;
-import io.github.hsyyid.polis.cmdexecutors.DeleteTownExecutor;
-import io.github.hsyyid.polis.cmdexecutors.DisbandTownExecutor;
-import io.github.hsyyid.polis.cmdexecutors.HQExecutor;
-import io.github.hsyyid.polis.cmdexecutors.HelpExecutor;
-import io.github.hsyyid.polis.cmdexecutors.InviteExecutor;
-import io.github.hsyyid.polis.cmdexecutors.JoinTownExecutor;
-import io.github.hsyyid.polis.cmdexecutors.KickMemberExecutor;
-import io.github.hsyyid.polis.cmdexecutors.LeaveTownExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisCreateExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisDeleteExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisDisbandExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisHQExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisHelpExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisInviteExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisJoinExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisKickMemberExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisLeaveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisExecutor;
-import io.github.hsyyid.polis.cmdexecutors.RemoveAllyExecutor;
-import io.github.hsyyid.polis.cmdexecutors.RemoveEnemyExecutor;
-import io.github.hsyyid.polis.cmdexecutors.RemoveExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisMapExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisRemoveAllyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisRemoveEnemyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisRemoveExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
-import io.github.hsyyid.polis.cmdexecutors.SetHQExecutor;
-import io.github.hsyyid.polis.cmdexecutors.SetLeaderExecutor;
-import io.github.hsyyid.polis.cmdexecutors.SetTaxExecutor;
-import io.github.hsyyid.polis.cmdexecutors.SetTaxIntervalExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisSetHQExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisSetLeaderExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisSetTaxExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisSetTaxIntervalExecutor;
 import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
-import io.github.hsyyid.polis.cmdexecutors.TownClaimExecutor;
-import io.github.hsyyid.polis.cmdexecutors.TownDepositExecutor;
-import io.github.hsyyid.polis.cmdexecutors.TownInfoExecutor;
-import io.github.hsyyid.polis.cmdexecutors.TownListExecutor;
-import io.github.hsyyid.polis.cmdexecutors.TownToggleTaxExecutor;
-import io.github.hsyyid.polis.cmdexecutors.TownUnclaimAllExecutor;
-import io.github.hsyyid.polis.cmdexecutors.TownUnclaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisClaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisDepositExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisInfoExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisListExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisToggleTaxExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimAllExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimExecutor;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
@@ -158,7 +159,7 @@ public class Polis
 			.description(Text.of("Help Command"))
 			.permission("polis.help")
 			.arguments(GenericArguments.optional(GenericArguments.integer(Text.of("page no"))))
-			.executor(new HelpExecutor())
+			.executor(new PolisHelpExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("toggleadminbypass"), CommandSpec.builder()
@@ -171,13 +172,13 @@ public class Polis
 			.description(Text.of("Join Town Command"))
 			.permission("polis.join")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new JoinTownExecutor())
+			.executor(new PolisJoinExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("sethq"), CommandSpec.builder()
 			.description(Text.of("Set Town HQ Command"))
 			.permission("polis.hq.set")
-			.executor(new SetHQExecutor())
+			.executor(new PolisSetHQExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("adminclaim"), CommandSpec.builder()
@@ -204,14 +205,14 @@ public class Polis
 		subcommands.put(Arrays.asList("hq"), CommandSpec.builder()
 			.description(Text.of("Teleport to Town HQ Command"))
 			.permission("polis.hq.use")
-			.executor(new HQExecutor())
+			.executor(new PolisHQExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("invite"), CommandSpec.builder()
 			.description(Text.of("Towny Invite Command"))
 			.permission("polis.invite")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
-			.executor(new InviteExecutor())
+			.executor(new PolisInviteExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("addusable"), CommandSpec.builder()
@@ -232,54 +233,60 @@ public class Polis
 			.description(Text.of("Add Enemy Command"))
 			.permission("polis.enemy.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new AddEnemyExecutor())
+			.executor(new PolisAddEnemyExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("removeenemy"), CommandSpec.builder()
 			.description(Text.of("Remove Enemy Command"))
 			.permission("polis.enemy.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new RemoveEnemyExecutor())
+			.executor(new PolisRemoveEnemyExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("map"), CommandSpec.builder()
+			.description(Text.of("Polis Map Command"))
+			.permission("polis.map.use")
+			.executor(new PolisMapExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("kick"), CommandSpec.builder()
 			.description(Text.of("Kick Member Command"))
 			.permission("polis.kick.use")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
-			.executor(new KickMemberExecutor())
+			.executor(new PolisKickMemberExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("addally"), CommandSpec.builder()
 			.description(Text.of("Add Ally Command"))
 			.permission("polis.ally.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new AddAllyExecutor())
+			.executor(new PolisAddAllyExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("removeally"), CommandSpec.builder()
 			.description(Text.of("Remove Ally Command"))
 			.permission("polis.ally.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new RemoveAllyExecutor())
+			.executor(new PolisRemoveAllyExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("leave"), CommandSpec.builder()
 			.description(Text.of("Leave Town Command"))
 			.permission("polis.leave")
-			.executor(new LeaveTownExecutor())
+			.executor(new PolisLeaveExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("claim"), CommandSpec.builder()
 			.description(Text.of("Claim Command"))
 			.permission("polis.claim.use")
-			.executor(new TownClaimExecutor())
+			.executor(new PolisClaimExecutor())
 			.build());
 		
 		subcommands.put(Arrays.asList("deposit"), CommandSpec.builder()
 			.description(Text.of("Polis Deposit Command"))
 			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("amount"))))
 			.permission("polis.deposit.use")
-			.executor(new TownDepositExecutor())
+			.executor(new PolisDepositExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("autoclaim"), CommandSpec.builder()
@@ -291,88 +298,88 @@ public class Polis
 		subcommands.put(Arrays.asList("unclaim"), CommandSpec.builder()
 			.description(Text.of("Un-Claim Command"))
 			.permission("polis.unclaim.use")
-			.executor(new TownUnclaimExecutor())
+			.executor(new PolisUnclaimExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("unclaimall"), CommandSpec.builder()
 			.description(Text.of("Un-Claim All Command"))
 			.permission("polis.unclaim.all")
-			.executor(new TownUnclaimAllExecutor())
+			.executor(new PolisUnclaimAllExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("delete"), CommandSpec.builder()
 			.description(Text.of("Delete Town Command"))
 			.permission("polis.delete")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new DeleteTownExecutor())
+			.executor(new PolisDeleteExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("disband"), CommandSpec.builder()
 			.description(Text.of("Disband Town Command"))
 			.permission("polis.disband")
-			.executor(new DisbandTownExecutor())
+			.executor(new PolisDisbandExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("info"), CommandSpec.builder()
 			.description(Text.of("Town Info Command"))
 			.permission("polis.info")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new TownInfoExecutor())
+			.executor(new PolisInfoExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("list"), CommandSpec.builder()
 			.description(Text.of("Town List Command"))
 			.permission("polis.list")
-			.executor(new TownListExecutor())
+			.executor(new PolisListExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("create"), CommandSpec.builder()
 			.description(Text.of("Create Town Command"))
 			.permission("polis.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
-			.executor(new CreateTownExecutor())
+			.executor(new PolisCreateExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("setleader"), CommandSpec.builder()
 			.description(Text.of("Set Leader of Town Command"))
 			.permission("polis.leader.set")
 			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))), GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))))
-			.executor(new SetLeaderExecutor())
+			.executor(new PolisSetLeaderExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("addexecutive"), CommandSpec.builder()
 			.description(Text.of("Adds Executive of Town Command"))
 			.permission("polis.executive.add")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
-			.executor(new AddExecutiveExecutor())
+			.executor(new PolisAddExecutiveExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("removeexecutive"), CommandSpec.builder()
 			.description(Text.of("Remove Executive of Town Command"))
 			.permission("polis.executive.remove")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
-			.executor(new RemoveExecutiveExecutor())
+			.executor(new PolisRemoveExecutiveExecutor())
 			.build());
 		
 		subcommands.put(Arrays.asList("toggletax", "toggletaxes"), CommandSpec.builder()
 			.description(Text.of("Toggle Taxes Command"))
 			.permission("polis.taxes.toggle")
 			.arguments(GenericArguments.onlyOne(GenericArguments.bool(Text.of("toggle"))))
-			.executor(new TownToggleTaxExecutor())
+			.executor(new PolisToggleTaxExecutor())
 			.build());
 		
 		subcommands.put(Arrays.asList("settax"), CommandSpec.builder()
 			.description(Text.of("Set Taxes of Town Command"))
 			.permission("polis.taxes.set")
 			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("tax"))))
-			.executor(new SetTaxExecutor())
+			.executor(new PolisSetTaxExecutor())
 			.build());
 		
 		subcommands.put(Arrays.asList("settaxinterval"), CommandSpec.builder()
 			.description(Text.of("Sets Tax Interval of Town Command"))
 			.permission("polis.taxes.interval.set")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("duration"))))
-			.executor(new SetTaxIntervalExecutor())
+			.executor(new PolisSetTaxIntervalExecutor())
 			.build());
 
 		CommandSpec polisCommandSpec = CommandSpec.builder()
