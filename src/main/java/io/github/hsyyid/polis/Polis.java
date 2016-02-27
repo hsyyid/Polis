@@ -174,7 +174,7 @@ public class Polis
 
 		subcommands.put(Arrays.asList("chat"), CommandSpec.builder()
 			.description(Text.of("Chat Command"))
-			.permission("polis.chat")
+			.permission("polis.chat.use")
 			.executor(new PolisChatExecutor())
 			.build());
 
