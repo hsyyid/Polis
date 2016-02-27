@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.spongepowered:spongeapi:3.0.0"
+    compile "org.spongepowered:spongeapi:3.1.0-SNAPSHOT"
 	compile "com.github.Flibio:Updatifier:v1.0.0"
 }
 
