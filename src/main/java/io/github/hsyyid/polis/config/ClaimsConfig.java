@@ -1,6 +1,7 @@
 package io.github.hsyyid.polis.config;
 
 import io.github.hsyyid.polis.Polis;
+import io.github.hsyyid.polis.utils.ConfigManager;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -11,23 +12,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Handles the teams.conf file
+ * Handles the claims.conf file
  */
-public class TeamsConfig implements Configurable
+public class ClaimsConfig implements Configurable
 {
-	private static TeamsConfig config = new TeamsConfig();
+	private static ClaimsConfig config = new ClaimsConfig();
 
-	private TeamsConfig()
+	private ClaimsConfig()
 	{
 		;
 	}
 
-	public static TeamsConfig getConfig()
+	public static ClaimsConfig getConfig()
 	{
 		return config;
 	}
 
-	private Path configFile = Paths.get(Polis.getPolis().getConfigDir().resolve("data") + "/teams.conf");
+	private Path configFile = Paths.get(Polis.getPolis().getConfigDir().resolve("data") + "/claims.conf");
 	private ConfigurationLoader<CommentedConfigurationNode> configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	private CommentedConfigurationNode configNode;
 
@@ -83,7 +84,8 @@ public class TeamsConfig implements Configurable
 	@Override
 	public void populate()
 	{
-		get().getNode("teams").setComment("This stores all the data on the towns.");
+		get().getNode("claims").setComment("This stores all the claims of the towns.");
+		ConfigManager.transferClaimsConfig();
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package io.github.hsyyid.polis.utils;
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Lists;
 import io.github.hsyyid.polis.Polis;
+import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.Configs;
 import io.github.hsyyid.polis.config.Configurable;
@@ -23,6 +24,7 @@ public class ConfigManager
 {
 	private static Configurable mainConfig = Config.getConfig();
 	private static Configurable teamConfig = TeamsConfig.getConfig();
+	private static Configurable claimsConfig = ClaimsConfig.getConfig();
 
 	public static ArrayList<String> getTeams()
 	{
@@ -636,7 +638,7 @@ public class ConfigManager
 
 	public static void claim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
-		Configs.setValue(teamConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
+		Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
 	}
 
 	public static BigDecimal getClaimCost()
@@ -671,7 +673,7 @@ public class ConfigManager
 
 	public static int getClaims(String teamName)
 	{
-		return Configs.getConfig(teamConfig).getNode("claims", teamName).getChildrenMap().keySet().size();
+		return Configs.getConfig(claimsConfig).getNode("claims", teamName).getChildrenMap().keySet().size();
 	}
 
 	public static int getClaimCap()
@@ -691,19 +693,19 @@ public class ConfigManager
 
 	public static void removeClaims(String teamName)
 	{
-		Configs.removeChild(teamConfig, new Object[] { "claims" }, teamName);
+		Configs.removeChild(claimsConfig, new Object[] { "claims" }, teamName);
 	}
 
 	public static void unclaim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
-		Configs.setValue(teamConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, false);
+		Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, false);
 	}
 
 	public static boolean isClaimed(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
 		try
 		{
-			ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
+			ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
 			return valueNode.getBoolean();
 		}
 		catch (Exception e)
@@ -726,7 +728,7 @@ public class ConfigManager
 			{
 				try
 				{
-					ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
+					ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
 					boolean value = valueNode.getBoolean();
 
 					if (value)
@@ -753,7 +755,7 @@ public class ConfigManager
 		{
 			try
 			{
-				ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
+				ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
 				boolean value = valueNode.getBoolean();
 
 				if (value)
@@ -877,5 +879,17 @@ public class ConfigManager
 		}
 
 		return teamsList;
+	}
+
+	public static void transferClaimsConfig()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode("claims");
+
+		if (valueNode.getValue() != null)
+		{
+			Configs.setValue(claimsConfig, valueNode.getPath(), valueNode.getValue());
+			Configs.removeChildren(teamConfig, valueNode.getPath());
+			Configs.setValue(teamConfig, valueNode.getPath(), null);
+		}
 	}
 }

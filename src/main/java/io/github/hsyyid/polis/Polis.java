@@ -1,42 +1,44 @@
 package io.github.hsyyid.polis;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
-import io.github.hsyyid.polis.cmdexecutors.PolisAddAllyExecutor;
-import io.github.hsyyid.polis.cmdexecutors.PolisAddEnemyExecutor;
-import io.github.hsyyid.polis.cmdexecutors.PolisAddExecutiveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AddUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminAutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminUnClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AutoClaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisAddAllyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisAddEnemyExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisAddExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisChatExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisCreateExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisDeleteExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisDepositExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisDisbandExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisHelpExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisInviteExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisJoinExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisKickMemberExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisLeaveExecutor;
-import io.github.hsyyid.polis.cmdexecutors.PolisExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisListExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisMapExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveExecutiveExecutor;
-import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisSetHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisSetLeaderExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisSetTaxExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisSetTaxIntervalExecutor;
-import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
-import io.github.hsyyid.polis.cmdexecutors.PolisClaimExecutor;
-import io.github.hsyyid.polis.cmdexecutors.PolisDepositExecutor;
-import io.github.hsyyid.polis.cmdexecutors.PolisInfoExecutor;
-import io.github.hsyyid.polis.cmdexecutors.PolisListExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisToggleTaxExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimAllExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
+import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
@@ -88,8 +90,9 @@ public class Polis
 	private static Polis polis;
 
 	public static Game game;
-	public static ArrayList<Invite> invites = new ArrayList<>();
+	public static ArrayList<Invite> invites = Lists.newArrayList();
 	public static Set<UUID> autoClaim = Sets.newHashSet();
+	public static Set<UUID> polisChat = Sets.newHashSet();
 	public static HashMap<UUID, String> adminAutoClaim = new HashMap<>();
 	public static Set<UUID> adminBypassMode = Sets.newHashSet();
 	public static HashMap<List<String>, CommandSpec> subcommands;
@@ -158,8 +161,13 @@ public class Polis
 		subcommands.put(Arrays.asList("help"), CommandSpec.builder()
 			.description(Text.of("Help Command"))
 			.permission("polis.help")
-			.arguments(GenericArguments.optional(GenericArguments.integer(Text.of("page no"))))
 			.executor(new PolisHelpExecutor())
+			.build());
+
+		subcommands.put(Arrays.asList("chat"), CommandSpec.builder()
+			.description(Text.of("Chat Command"))
+			.permission("polis.chat")
+			.executor(new PolisChatExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("toggleadminbypass"), CommandSpec.builder()
@@ -242,7 +250,7 @@ public class Polis
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))
 			.executor(new PolisRemoveEnemyExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("map"), CommandSpec.builder()
 			.description(Text.of("Polis Map Command"))
 			.permission("polis.map.use")
@@ -281,7 +289,7 @@ public class Polis
 			.permission("polis.claim.use")
 			.executor(new PolisClaimExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("deposit"), CommandSpec.builder()
 			.description(Text.of("Polis Deposit Command"))
 			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("amount"))))
@@ -360,21 +368,21 @@ public class Polis
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
 			.executor(new PolisRemoveExecutiveExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("toggletax", "toggletaxes"), CommandSpec.builder()
 			.description(Text.of("Toggle Taxes Command"))
 			.permission("polis.taxes.toggle")
 			.arguments(GenericArguments.onlyOne(GenericArguments.bool(Text.of("toggle"))))
 			.executor(new PolisToggleTaxExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("settax"), CommandSpec.builder()
 			.description(Text.of("Set Taxes of Town Command"))
 			.permission("polis.taxes.set")
 			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("tax"))))
 			.executor(new PolisSetTaxExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("settaxinterval"), CommandSpec.builder()
 			.description(Text.of("Sets Tax Interval of Town Command"))
 			.permission("polis.taxes.interval.set")
@@ -409,13 +417,13 @@ public class Polis
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis loaded!");
 	}
-	
+
 	@Listener
 	public void onGamePostInit(GamePostInitializationEvent event)
 	{
 		Optional<EconomyService> econService = Sponge.getServiceManager().provide(EconomyService.class);
-		
-		if(econService.isPresent())
+
+		if (econService.isPresent())
 		{
 			economyService = econService.get();
 		}
