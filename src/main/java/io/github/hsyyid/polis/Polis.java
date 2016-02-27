@@ -39,7 +39,9 @@ import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimAllExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
+import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
+import io.github.hsyyid.polis.config.MessageConfig;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
 import io.github.hsyyid.polis.listeners.EntityMoveListener;
@@ -151,8 +153,14 @@ public class Polis
 
 		// Create config.conf
 		Config.getConfig().setup();
+		// Create messages.conf
+		MessageConfig.getConfig().setup();
 		// Create teams.conf
 		TeamsConfig.getConfig().setup();
+		// Create claims.conf
+		ClaimsConfig.getConfig().setup();
+		// Create claims.conf
+		ClaimsConfig.getConfig().setup();
 		// Start Tax Service
 		Utils.startTaxService();
 

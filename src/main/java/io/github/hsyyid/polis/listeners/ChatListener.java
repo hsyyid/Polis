@@ -30,21 +30,21 @@ public class ChatListener
 				if (playerIsMember)
 				{
 					event.setMessage(Text.builder()
-						.append(Text.of(TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
+						.append(ConfigManager.getMemberPrefix(playerTeamName))
 						.append(event.getMessage().orElse(Text.of()))
 						.build());
 				}
 				else if (playerIsExecutive)
 				{
 					event.setMessage(Text.builder()
-						.append(Text.of(TextColors.GREEN, "+", TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
+						.append(ConfigManager.getExecutivePrefix(playerTeamName))
 						.append(event.getMessage().orElse(Text.of()))
 						.build());
 				}
 				else
 				{
 					event.setMessage(Text.builder()
-						.append(Text.of(TextColors.GREEN, "*", TextColors.GRAY, "[", TextColors.GOLD, playerTeamName, TextColors.GRAY, "] "))
+						.append(ConfigManager.getLeaderPrefix(playerTeamName))
 						.append(event.getMessage().orElse(Text.of()))
 						.build());
 				}

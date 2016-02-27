@@ -50,7 +50,9 @@ public class EntityMoveListener
 								Account account = Polis.economyService.getAccount(playerTeamName).orElse(null);
 
 								if (account != null)
+								{
 									transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
+								}
 								else
 								{
 									account = Polis.economyService.createVirtualAccount(playerTeamName).get();
@@ -103,11 +105,11 @@ public class EntityMoveListener
 			{
 				if (ConfigManager.isClaimed(newLocation).equalsIgnoreCase("false"))
 				{
-					player.sendMessage(Text.of(TextColors.GOLD, "Now entering unclaimed land."));
+					player.sendMessage(ConfigManager.getUnclaimedNotification());
 				}
 				else
 				{
-					player.sendMessage(Text.of(TextColors.GOLD, "Now entering the land of: ", TextColors.GRAY, ConfigManager.isClaimed(newLocation)));
+					player.sendMessage(ConfigManager.getClaimedNotification(ConfigManager.isClaimed(newLocation)));
 				}
 			}
 		}

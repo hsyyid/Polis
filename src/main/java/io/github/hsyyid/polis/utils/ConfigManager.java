@@ -7,11 +7,14 @@ import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.Configs;
 import io.github.hsyyid.polis.config.Configurable;
+import io.github.hsyyid.polis.config.MessageConfig;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -25,6 +28,7 @@ public class ConfigManager
 	private static Configurable mainConfig = Config.getConfig();
 	private static Configurable teamConfig = TeamsConfig.getConfig();
 	private static Configurable claimsConfig = ClaimsConfig.getConfig();
+	private static Configurable messageConfig = MessageConfig.getConfig();
 
 	public static ArrayList<String> getTeams()
 	{
@@ -669,6 +673,31 @@ public class ConfigManager
 	public static void setDisplayPrefix(boolean value)
 	{
 		Configs.setValue(mainConfig, new Object[] { "polis", "prefix", "display" }, value);
+	}
+
+	public static Text getUnclaimedNotification()
+	{
+		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "messages", "claims", "unclaimed", "notification").getString());
+	}
+
+	public static Text getClaimedNotification(String teamName)
+	{
+		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "messages", "claims", "claimed", "notification").getString().replaceAll("@t", teamName));
+	}
+
+	public static Text getLeaderPrefix(String teamName)
+	{
+		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "prefix", "leader").getString().replaceAll("@t", teamName));
+	}
+
+	public static Text getExecutivePrefix(String teamName)
+	{
+		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "prefix", "member").getString().replaceAll("@t", teamName));
+	}
+
+	public static Text getMemberPrefix(String teamName)
+	{
+		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "prefix", "executive").getString().replaceAll("@t", teamName));
 	}
 
 	public static int getClaims(String teamName)
