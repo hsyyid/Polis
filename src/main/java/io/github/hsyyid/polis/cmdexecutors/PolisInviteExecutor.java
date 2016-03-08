@@ -1,5 +1,6 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
+import io.github.hsyyid.polis.PluginInfo;
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import io.github.hsyyid.polis.utils.Invite;
@@ -44,7 +45,7 @@ public class PolisInviteExecutor implements CommandExecutor
 							Polis.invites.remove(invite);
 						}
 					}
-				}).delay(2, TimeUnit.MINUTES).name("Polis - remove invite").submit(Sponge.getPluginManager().getPlugin("Polis").get().getInstance().get());
+				}).delay(2, TimeUnit.MINUTES).name("Polis - remove invite").submit(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get().getInstance().get());
 
 				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully invited " + p.getName()));
 			}

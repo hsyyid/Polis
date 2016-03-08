@@ -1,5 +1,6 @@
 package io.github.hsyyid.polis.utils;
 
+import io.github.hsyyid.polis.PluginInfo;
 import io.github.hsyyid.polis.Polis;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.cause.Cause;
@@ -53,7 +54,7 @@ public class Utils
 							}
 						}
 					}
-				}).name("Polis - Tax Collection for " + team).interval(ConfigManager.getTaxInterval(team), TimeUnit.SECONDS).submit(Sponge.getPluginManager().getPlugin("Polis").get().getInstance().get());
+				}).name("Polis - Tax Collection for " + team).interval(ConfigManager.getTaxInterval(team), TimeUnit.SECONDS).submit(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get().getInstance().get());
 			}
 		}
 	}
@@ -92,7 +93,7 @@ public class Utils
 						}
 					}
 				}
-			}).name("Polis - Tax Collection for " + team).interval(ConfigManager.getTaxInterval(team), TimeUnit.SECONDS).submit(Sponge.getPluginManager().getPlugin("Polis").get().getInstance().get());
+			}).name("Polis - Tax Collection for " + team).interval(ConfigManager.getTaxInterval(team), TimeUnit.SECONDS).submit(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get().getInstance().get());
 		}
 	}
 }

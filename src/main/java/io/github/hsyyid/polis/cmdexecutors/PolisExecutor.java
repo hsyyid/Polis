@@ -1,5 +1,6 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
+import io.github.hsyyid.polis.PluginInfo;
 import io.github.hsyyid.polis.Polis;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -13,7 +14,7 @@ public class PolisExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
-		src.sendMessage(Text.of(TextColors.GREEN, "Polis: ", TextColors.GRAY, "Version: ", TextColors.GOLD, Polis.game.getPluginManager().getPlugin("Polis").get().getVersion()));
+		src.sendMessage(Text.of(TextColors.GREEN, "Polis: ", TextColors.GRAY, "Version: ", TextColors.GOLD, Polis.game.getPluginManager().getPlugin(PluginInfo.ID).get().getVersion()));
 		return CommandResult.success();
 	}
 }
