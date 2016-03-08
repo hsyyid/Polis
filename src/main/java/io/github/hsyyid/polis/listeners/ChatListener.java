@@ -31,21 +31,21 @@ public class ChatListener
 				{
 					event.setMessage(Text.builder()
 						.append(ConfigManager.getMemberPrefix(playerTeamName))
-						.append(event.getMessage().orElse(Text.of()))
+						.append(event.getMessage())
 						.build());
 				}
 				else if (playerIsExecutive)
 				{
 					event.setMessage(Text.builder()
 						.append(ConfigManager.getExecutivePrefix(playerTeamName))
-						.append(event.getMessage().orElse(Text.of()))
+						.append(event.getMessage())
 						.build());
 				}
 				else
 				{
 					event.setMessage(Text.builder()
 						.append(ConfigManager.getLeaderPrefix(playerTeamName))
-						.append(event.getMessage().orElse(Text.of()))
+						.append(event.getMessage())
 						.build());
 				}
 			}
@@ -62,7 +62,7 @@ public class ChatListener
 				event.setChannel(messageChannel);
 				event.setMessage(Text.builder()
 					.append(Text.of(TextColors.AQUA, "[Polis Chat]: "))
-					.append(event.getMessage().orElse(Text.of()))
+					.append(event.getMessage())
 					.build());
 			}
 			else

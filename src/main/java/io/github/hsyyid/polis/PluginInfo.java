@@ -5,8 +5,8 @@ package io.github.hsyyid.polis;
  */
 public abstract class PluginInfo
 {
-	public static final String ID = "Polis";
+	public static final String ID = "io.github.hsyyid.polis";
 	public static final String NAME = "Polis";
-	public static final String VERSION = "2.2";
-	public static final String DEPENDENCIES = "after:Updatifier";
+	public static final String VERSION = "2.3";
+	public static final String DESCRIPTION = "This plugin adds towns, which users can create and use to work together.";
 }

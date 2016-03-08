@@ -9,6 +9,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
 import org.spongepowered.api.service.economy.transaction.ResultType;
 import org.spongepowered.api.service.economy.transaction.TransactionResult;
@@ -31,18 +32,8 @@ public class PolisDepositExecutor implements CommandExecutor
 			if (ConfigManager.getTeam(player.getUniqueId()) != null)
 			{
 				String townName = ConfigManager.getTeam(player.getUniqueId());
-				UniqueAccount playerAccount = null;
-				TransactionResult transactionResult = null;
-
-				if (Polis.economyService.getAccount(player.getUniqueId()).isPresent())
-					playerAccount = Polis.economyService.getAccount(player.getUniqueId()).get();
-				else
-					playerAccount = Polis.economyService.createAccount(player.getUniqueId()).get();
-
-				if (Polis.economyService.getAccount(townName).isPresent())
-					transactionResult = playerAccount.transfer(Polis.economyService.getAccount(townName).get(), Polis.economyService.getDefaultCurrency(), deposit, Cause.of(player));
-				else
-					transactionResult = playerAccount.transfer(Polis.economyService.createVirtualAccount(townName).get(), Polis.economyService.getDefaultCurrency(), deposit, Cause.of(player));
+				UniqueAccount playerAccount = Polis.economyService.getOrCreateAccount(player.getUniqueId()).get();
+				TransactionResult transactionResult = playerAccount.transfer(Polis.economyService.getOrCreateAccount(townName).get(), Polis.economyService.getDefaultCurrency(), deposit, Cause.of(NamedCause.source(player)));
 
 				if (transactionResult.getResult() == ResultType.SUCCESS)
 				{

@@ -7,6 +7,7 @@ import org.spongepowered.api.entity.living.monster.Monster;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.entity.DisplaceEntityEvent;
 import org.spongepowered.api.service.economy.account.Account;
 import org.spongepowered.api.service.economy.transaction.ResultType;
@@ -46,19 +47,8 @@ public class EntityMoveListener
 						{
 							if (ConfigManager.getBalance(playerTeamName).compareTo(ConfigManager.getClaimCost()) >= 0)
 							{
-								TransactionResult transactionResult = null;
-								Account account = Polis.economyService.getAccount(playerTeamName).orElse(null);
-
-								if (account != null)
-								{
-									transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
-								}
-								else
-								{
-									account = Polis.economyService.createVirtualAccount(playerTeamName).get();
-									account.deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getBalance(playerTeamName), Cause.of(player));
-									transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
-								}
+								Account account = Polis.economyService.getOrCreateAccount(playerTeamName).get();
+								TransactionResult transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(NamedCause.source(player)));
 
 								if (transactionResult.getResult() == ResultType.SUCCESS)
 								{

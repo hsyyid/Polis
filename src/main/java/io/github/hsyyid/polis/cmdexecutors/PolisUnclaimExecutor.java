@@ -7,11 +7,10 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.CommandBlockSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.service.economy.transaction.ResultType;
 import org.spongepowered.api.service.economy.transaction.TransactionResult;
 import org.spongepowered.api.text.Text;
@@ -38,15 +37,7 @@ public class PolisUnclaimExecutor implements CommandExecutor
 
 					if (ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
 					{
-						TransactionResult transactionResult = null;
-
-						if (Polis.economyService.getAccount(playerTeamName).isPresent())
-							transactionResult = Polis.economyService.getAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
-						else
-						{
-							Polis.economyService.createVirtualAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getBalance(playerTeamName), Cause.of(player));
-							transactionResult = Polis.economyService.getAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(player));
-						}
+						TransactionResult transactionResult = Polis.economyService.getOrCreateAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(NamedCause.source(player)));
 
 						if (transactionResult.getResult() == ResultType.SUCCESS)
 						{
@@ -78,13 +69,9 @@ public class PolisUnclaimExecutor implements CommandExecutor
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You're not part of a town!"));
 			}
 		}
-		else if (src instanceof ConsoleSource)
+		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /townunclaim!"));
-		}
-		else if (src instanceof CommandBlockSource)
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /townunclaim!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis unclaim!"));
 		}
 
 		return CommandResult.success();
