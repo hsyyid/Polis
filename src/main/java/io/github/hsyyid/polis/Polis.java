@@ -49,7 +49,6 @@ import io.github.hsyyid.polis.listeners.EntitySpawnListener;
 import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
 import io.github.hsyyid.polis.listeners.PlayerDamageEventListener;
-import io.github.hsyyid.polis.listeners.PlayerDropItemListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
 import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
@@ -125,17 +124,30 @@ public class Polis
 		polis = this;
 		game = Sponge.getGame();
 
-		// Config File
 		// Create Config Directory for Polis
 		if (!Files.exists(configDir))
 		{
-			try
+			if (Files.exists(configDir.resolveSibling("polis")))
 			{
-				Files.createDirectories(configDir);
+				try
+				{
+					Files.move(configDir.resolveSibling("polis"), configDir);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
-			catch (IOException e)
+			else
 			{
-				e.printStackTrace();
+				try
+				{
+					Files.createDirectories(configDir);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -417,7 +429,6 @@ public class Polis
 		game.getEventManager().registerListeners(this, new EntitySpawnListener());
 		game.getEventManager().registerListeners(this, new ExplosionEventListener());
 		game.getEventManager().registerListeners(this, new PlayerDamageEventListener());
-		game.getEventManager().registerListeners(this, new PlayerDropItemListener());
 
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis was made by HassanS6000!");

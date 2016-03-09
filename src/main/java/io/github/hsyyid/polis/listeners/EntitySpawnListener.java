@@ -16,6 +16,7 @@ public class EntitySpawnListener
 			if(ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone") && entity instanceof Monster)
 			{
 				event.setCancelled(true);
+				return;
 			}
 		}
 	}

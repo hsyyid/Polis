@@ -43,6 +43,7 @@ public class PolisUnclaimExecutor implements CommandExecutor
 						{
 							ConfigManager.unclaim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
 							ConfigManager.depositToTownBank(ConfigManager.getClaimCost(), playerTeamName);
+							Polis.economyService.getOrCreateAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(NamedCause.source(player)));
 							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully unclaimed this location!"));
 						}
 						else if (transactionResult.getResult() == ResultType.ACCOUNT_NO_FUNDS)
