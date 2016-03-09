@@ -842,9 +842,8 @@ public class ConfigManager
 		if (valueNode.getString() != null)
 		{
 			String items = valueNode.getString();
-			if (items.contains(id + ","))
-				;
-			else
+			
+			if (!items.contains(id + ","))
 			{
 				String formattedItem = (id + ",");
 				Configs.setValue(teamConfig, valueNode.getPath(), items + formattedItem);
