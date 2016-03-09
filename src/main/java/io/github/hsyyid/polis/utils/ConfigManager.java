@@ -692,12 +692,12 @@ public class ConfigManager
 
 	public static Text getExecutivePrefix(String teamName)
 	{
-		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "prefix", "member").getString().replaceAll("@t", teamName));
+		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "prefix", "executive").getString().replaceAll("@t", teamName));
 	}
 
 	public static Text getMemberPrefix(String teamName)
 	{
-		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "prefix", "executive").getString().replaceAll("@t", teamName));
+		return TextSerializers.FORMATTING_CODE.deserialize(Configs.getConfig(messageConfig).getNode("polis", "prefix", "member").getString().replaceAll("@t", teamName));
 	}
 
 	public static int getClaims(String teamName)
