@@ -37,7 +37,7 @@ public class Utils
 							UUID uuid = UUID.fromString(memberUuid);
 
 							UniqueAccount uniqueAccount = Polis.economyService.getOrCreateAccount(uuid).get();
-							TransactionResult transactionResult = uniqueAccount.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin("Polis").get())));
+							TransactionResult transactionResult = uniqueAccount.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get())));
 
 							if (Sponge.getServer().getPlayer(uuid).isPresent())
 							{
@@ -45,7 +45,7 @@ public class Utils
 								{
 									Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Paid Polis tax of " + ConfigManager.getTax(teamName)));
 									ConfigManager.depositToTownBank(ConfigManager.getTax(teamName), teamName);
-									Polis.economyService.getOrCreateAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin("Polis").get())));
+									Polis.economyService.getOrCreateAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get())));
 								}
 								else
 								{
@@ -76,7 +76,7 @@ public class Utils
 					{
 						UUID uuid = UUID.fromString(memberUuid);
 						UniqueAccount uniqueAccount = Polis.economyService.getOrCreateAccount(uuid).get();
-						TransactionResult transactionResult = uniqueAccount.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin("Polis").get())));
+						TransactionResult transactionResult = uniqueAccount.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get())));
 
 						if (Sponge.getServer().getPlayer(uuid).isPresent())
 						{
@@ -84,7 +84,7 @@ public class Utils
 							{
 								Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Paid Polis tax of " + ConfigManager.getTax(teamName)));
 								ConfigManager.depositToTownBank(ConfigManager.getTax(teamName), teamName);
-								Polis.economyService.getOrCreateAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin("Polis").get())));
+								Polis.economyService.getOrCreateAccount(teamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getTax(teamName), Cause.of(NamedCause.owner(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get())));
 							}
 							else
 							{
