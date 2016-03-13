@@ -36,7 +36,7 @@ public class PolisClaimExecutor implements CommandExecutor
 				{
 					Vector3i chunk = optionalChunk.get();
 
-					if (!ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
+					if (ConfigManager.isClaimed(player.getLocation()).equals("false") && !ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
 					{
 						if (ConfigManager.getClaims(playerTeamName) < ConfigManager.getClaimCap())
 						{
