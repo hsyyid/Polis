@@ -806,6 +806,14 @@ public class ConfigManager
 		{
 			return TextColors.RED;
 		}
+		else if (polis.equals("WarZone"))
+		{
+			return TextColors.DARK_RED;
+		}
+		else if (polis.equals("SafeZone"))
+		{
+			return TextColors.YELLOW;
+		}
 		else
 		{
 			return TextColors.DARK_GREEN;
