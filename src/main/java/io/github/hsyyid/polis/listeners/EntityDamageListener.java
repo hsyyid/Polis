@@ -39,6 +39,7 @@ public class EntityDamageListener
 					if (event.getTargetEntity().getType() != EntityTypes.PLAYER && !playerTeamName.equals(isClaimed))
 					{
 						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
+						event.setBaseDamage(0);
 						event.setCancelled(true);
 					}
 					// If they are attacking a player
@@ -52,6 +53,7 @@ public class EntityDamageListener
 						{
 							player.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You cannot hurt people in your Polis."));
 							target.sendMessage(Text.of(TextColors.DARK_RED, player.getName(), TextColors.RED, " tried to hurt you."));
+							event.setBaseDamage(0);
 							event.setCancelled(true);
 						}
 					}
@@ -61,6 +63,7 @@ public class EntityDamageListener
 			else if (isClaimed.equals("SafeZone"))
 			{
 				// Protect all entities.
+				event.setBaseDamage(0);
 				event.setCancelled(true);
 			}
 		}
