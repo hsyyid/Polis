@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version = '2.3d'
+version = '2.4'
 group = "io.github.hsyyid"
 archivesBaseName = "Polis"
 
@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     compile "org.spongepowered:spongeapi:4.1.0-SNAPSHOT"
-	compile "com.github.Flibio:Updatifier:v1.0.0"
+	compile "com.github.Flibio:Updatifier:v1.4.0"
 }
 
 test {

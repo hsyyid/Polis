@@ -55,6 +55,15 @@ public class PolisUnclaimExecutor implements CommandExecutor
 							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "An error occured while trying to withdraw from your Polis' bank."));
 						}
 					}
+					else if (Polis.adminBypassMode.contains(player.getUniqueId()) && !ConfigManager.isClaimed(player.getLocation()).equals("false"))
+					{
+						ConfigManager.unclaim(ConfigManager.isClaimed(player.getLocation()), player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully unclaimed this location!"));
+					}
+					else if (!ConfigManager.isClaimed(player.getLocation()).equals("false"))
+					{
+						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This location is not claimed by your Polis!"));
+					}
 					else
 					{
 						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This location is not claimed!"));

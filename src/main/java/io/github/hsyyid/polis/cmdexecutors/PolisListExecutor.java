@@ -16,8 +16,8 @@ import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class PolisListExecutor implements CommandExecutor
 {
@@ -28,7 +28,7 @@ public class PolisListExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 
-			ArrayList<String> towns = ConfigManager.getTeams();
+			Set<Object> towns = ConfigManager.getTeams();
 
 			if (towns.size() == 0)
 			{
@@ -38,8 +38,10 @@ public class PolisListExecutor implements CommandExecutor
 
 			List<Text> townList = Lists.newArrayList();
 
-			for (String name : towns)
+			for (Object t : towns)
 			{
+				String name = String.valueOf(t);
+
 				Text item = Text.builder(name)
 					.onClick(TextActions.runCommand("/polis info " + name))
 					.onHover(TextActions.showText(Text.of(TextColors.WHITE, "View info of town ", TextColors.GOLD, name)))

@@ -28,7 +28,7 @@ public class PlayerBreakBlockListener
 					return;
 				}
 
-				if (Polis.adminBypassMode.contains(player.getUniqueId()))
+				if (!(isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && Polis.adminBypassMode.contains(player.getUniqueId()))
 				{
 					return;
 				}

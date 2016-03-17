@@ -19,15 +19,17 @@ public class PolisJoinExecutor implements CommandExecutor
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
 		String townName = ctx.<String> getOne("town name").get();
-		
+
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			
+
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				for (String team : ConfigManager.getTeams())
+				for (Object t : ConfigManager.getTeams())
 				{
+					String team = String.valueOf(t);
+
 					if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
 					{
 						src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You are in a town, first leave that team by doing /polis leave!"));
@@ -48,7 +50,7 @@ public class PolisJoinExecutor implements CommandExecutor
 				try
 				{
 					Invite inv = null;
-					
+
 					for (Invite invite : Polis.invites)
 					{
 						if (invite.getPlayerUUID().equals(player.getUniqueId().toString()))
@@ -56,19 +58,19 @@ public class PolisJoinExecutor implements CommandExecutor
 							inv = invite;
 						}
 					}
-					
+
 					if (inv != null)
 					{
 						ConfigManager.addTeamMember(townName, player.getUniqueId().toString());
-						
-						for(Player p : Polis.game.getServer().getOnlinePlayers())
+
+						for (Player p : Polis.game.getServer().getOnlinePlayers())
 						{
-							if((p.getUniqueId().toString()).equals(ConfigManager.getLeader(townName)))
+							if ((p.getUniqueId().toString()).equals(ConfigManager.getLeader(townName)))
 							{
 								p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, player.getName() + " has joined your Town!"));
 							}
 						}
-						
+
 						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Joined town " + townName));
 						Polis.invites.remove(inv);
 					}

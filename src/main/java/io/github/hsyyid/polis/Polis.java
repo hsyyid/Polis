@@ -48,7 +48,7 @@ import io.github.hsyyid.polis.listeners.EntityMoveListener;
 import io.github.hsyyid.polis.listeners.EntitySpawnListener;
 import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
-import io.github.hsyyid.polis.listeners.PlayerDamageEventListener;
+import io.github.hsyyid.polis.listeners.EntityDamageListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
 import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
@@ -213,7 +213,7 @@ public class Polis
 		subcommands.put(Arrays.asList("adminclaim"), CommandSpec.builder()
 			.description(Text.of("Admin Claim Command"))
 			.permission("polis.claim.admin")
-			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))))
+			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), GenericArguments.optional(GenericArguments.onlyOne(GenericArguments.integer(Text.of("radius"))))))
 			.executor(new AdminClaimExecutor())
 			.build());
 
@@ -428,7 +428,7 @@ public class Polis
 		game.getEventManager().registerListeners(this, new ChatListener());
 		game.getEventManager().registerListeners(this, new EntitySpawnListener());
 		game.getEventManager().registerListeners(this, new ExplosionEventListener());
-		game.getEventManager().registerListeners(this, new PlayerDamageEventListener());
+		game.getEventManager().registerListeners(this, new EntityDamageListener());
 
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis was made by HassanS6000!");

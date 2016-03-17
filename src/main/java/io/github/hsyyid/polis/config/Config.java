@@ -84,6 +84,8 @@ public class Config implements Configurable
 	public void populate()
 	{
 		get().getNode("polis").setComment("Contains all Polis related settings.");
+		get().getNode("polis", "name", "maxlength").setValue(30).setComment("This determines the maximum amount of characters a Polis's name can be.");
+		get().getNode("polis", "name", "minlength").setValue(3).setComment("This determines the minimum amount of characters a Polis's name can be.");
 		get().getNode("polis", "prefix", "display").setValue(true).setComment("Allows/denies displaying Polis prefixes.");
 		get().getNode("polis", "claims", "cost").setValue(100.00).setComment("The amount of currency it costs per claim of chunk.");
 		get().getNode("polis", "claims", "cap").setValue(50).setComment("The maximum number of claims a Polis may have.");

@@ -26,6 +26,18 @@ public class PolisCreateExecutor implements CommandExecutor
 				return CommandResult.success();
 			}
 
+			if (townName.length() > ConfigManager.getMaxNameLength())
+			{
+				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Your name is too long, the max amount of characters is ", ConfigManager.getMaxNameLength()));
+				return CommandResult.success();
+			}
+
+			if (townName.length() < ConfigManager.getMinNameLength())
+			{
+				src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Your name is too short, the required amount of characters is ", ConfigManager.getMinNameLength()));
+				return CommandResult.success();
+			}
+
 			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
 			if (playerTeamName == null)

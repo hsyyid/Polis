@@ -19,11 +19,11 @@ public class Utils
 {
 	public static void startTaxService()
 	{
-		for (String team : ConfigManager.getTeams())
+		for (Object t : ConfigManager.getTeams())
 		{
-			final String teamName = team;
+			final String teamName = String.valueOf(t);
 
-			if (ConfigManager.areTaxesEnabled(team))
+			if (ConfigManager.areTaxesEnabled(teamName))
 			{
 				Sponge.getScheduler().createTaskBuilder().execute(() -> {
 					ArrayList<String> townMembers = ConfigManager.getMembers(teamName);
@@ -54,7 +54,7 @@ public class Utils
 							}
 						}
 					}
-				}).name("Polis - Tax Collection for " + team).interval(ConfigManager.getTaxInterval(team), TimeUnit.SECONDS).submit(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get().getInstance().get());
+				}).name("Polis - Tax Collection for " + teamName).interval(ConfigManager.getTaxInterval(teamName), TimeUnit.SECONDS).submit(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get().getInstance().get());
 			}
 		}
 	}

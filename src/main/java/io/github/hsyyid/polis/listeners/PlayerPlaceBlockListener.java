@@ -27,31 +27,12 @@ public class PlayerPlaceBlockListener
 					return;
 				}
 
-				if (Polis.adminBypassMode.contains(player.getUniqueId()))
+				if (!(isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && Polis.adminBypassMode.contains(player.getUniqueId()))
 				{
 					return;
 				}
 
-				String playerTeamName = null;
-
-				for (String team : ConfigManager.getTeams())
-				{
-					if (ConfigManager.getMembers(team).contains(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-					else if (ConfigManager.getExecutives(team).contains(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-					else if (ConfigManager.getLeader(team).equals(player.getUniqueId().toString()))
-					{
-						playerTeamName = team;
-						break;
-					}
-				}
+				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
 
 				if (playerTeamName != null)
 				{

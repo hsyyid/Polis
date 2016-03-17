@@ -21,6 +21,7 @@ import org.spongepowered.api.world.World;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public class ConfigManager
@@ -30,60 +31,23 @@ public class ConfigManager
 	private static Configurable claimsConfig = ClaimsConfig.getConfig();
 	private static Configurable messageConfig = MessageConfig.getConfig();
 
-	public static ArrayList<String> getTeams()
+	public static Set<Object> getTeams()
 	{
-		try
+		// Remove old way of getting teams
+		if (Configs.getConfig(teamConfig).getNode("teams", "teams").getValue() != null)
 		{
-			ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.teams").split("\\."));
-			String list = valueNode.getString();
-
-			ArrayList<String> teamsList = new ArrayList<String>();
-			boolean finished = false;
-
-			if (finished != true)
-			{
-				int endIndex = list.indexOf(",");
-
-				if (endIndex != -1)
-				{
-					String substring = list.substring(0, endIndex);
-					teamsList.add(substring);
-
-					while (finished != true)
-					{
-						int startIndex = endIndex;
-						endIndex = list.indexOf(",", startIndex + 1);
-
-						if (endIndex != -1)
-						{
-							String substrings = list.substring(startIndex + 1, endIndex);
-							teamsList.add(substrings);
-						}
-						else
-						{
-							finished = true;
-						}
-					}
-				}
-				else if (!list.equals(""))
-				{
-					teamsList.add(list);
-					finished = true;
-				}
-			}
-
-			return teamsList;
+			Configs.removeChild(teamConfig, new Object[] { "teams" }, "teams");
 		}
-		catch (Exception e)
-		{
-			return new ArrayList<String>();
-		}
+
+		return Configs.getConfig(teamConfig).getNode("teams").getChildrenMap().keySet();
 	}
 
 	public static String getTeam(UUID playerUUID)
 	{
-		for (String team : ConfigManager.getTeams())
+		for (Object t : ConfigManager.getTeams())
 		{
+			String team = String.valueOf(t);
+
 			if (ConfigManager.getMembers(team).contains(playerUUID.toString()))
 			{
 				return team;
@@ -101,11 +65,41 @@ public class ConfigManager
 		return null;
 	}
 
+	public static int getMaxNameLength()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(mainConfig).getNode((Object[]) ("polis.name.maxlength").split("\\."));
+
+		if (valueNode.getValue() != null)
+		{
+			return valueNode.getInt();
+		}
+		else
+		{
+			Configs.setValue(mainConfig, valueNode.getPath(), 30);
+			return 30;
+		}
+	}
+
+	public static int getMinNameLength()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(mainConfig).getNode((Object[]) ("polis.name.minlength").split("\\."));
+
+		if (valueNode.getValue() != null)
+		{
+			return valueNode.getInt();
+		}
+		else
+		{
+			Configs.setValue(mainConfig, valueNode.getPath(), 3);
+			return 3;
+		}
+	}
+
 	public static BigDecimal getBalance(String teamName)
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".balance").split("\\."));
 
-		if (valueNode != null)
+		if (valueNode.getValue() != null)
 			return new BigDecimal(valueNode.getDouble());
 		else
 			return new BigDecimal(0);
@@ -447,24 +441,6 @@ public class ConfigManager
 		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "enabled" }, true);
 		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "interval" }, 86400);
 		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "amount" }, 100.00);
-
-		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.teams").split("\\."));
-
-		if (valueNode.getString() != null)
-		{
-			String items = valueNode.getString();
-			if (items.contains(teamName + ","))
-				;
-			else
-			{
-				String formattedItem = (teamName + ",");
-				Configs.setValue(teamConfig, valueNode.getPath(), items + formattedItem);
-			}
-		}
-		else
-		{
-			Configs.setValue(teamConfig, valueNode.getPath(), teamName + ",");
-		}
 	}
 
 	public static void addTeamMember(String teamName, String memberUUID)
@@ -633,10 +609,7 @@ public class ConfigManager
 
 	public static void removeTeam(String teamName)
 	{
-		Configs.setValue(teamConfig, ((Object[]) ("teams." + teamName).split("\\.")), "");
-		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.teams").split("\\."));
-		String val = valueNode.getString();
-		Configs.setValue(teamConfig, valueNode.getPath(), val.replace(teamName + ",", ""));
+		Configs.removeChild(teamConfig, new Object[] { "teams" }, teamName);
 		ConfigManager.removeClaims(teamName);
 	}
 
@@ -753,8 +726,10 @@ public class ConfigManager
 		{
 			Vector3i chunk = optionalChunk.get();
 
-			for (String teamName : getTeams())
+			for (Object team : getTeams())
 			{
+				String teamName = String.valueOf(team);
+
 				try
 				{
 					ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
@@ -780,8 +755,10 @@ public class ConfigManager
 	{
 		String claimed = "false";
 
-		for (String teamName : getTeams())
+		for (Object team : getTeams())
 		{
+			String teamName = String.valueOf(team);
+
 			try
 			{
 				ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
@@ -831,7 +808,7 @@ public class ConfigManager
 		}
 		else
 		{
-			return TextColors.YELLOW;
+			return TextColors.DARK_GREEN;
 		}
 	}
 
@@ -842,7 +819,7 @@ public class ConfigManager
 		if (valueNode.getString() != null)
 		{
 			String items = valueNode.getString();
-			
+
 			if (!items.contains(id + ","))
 			{
 				String formattedItem = (id + ",");
