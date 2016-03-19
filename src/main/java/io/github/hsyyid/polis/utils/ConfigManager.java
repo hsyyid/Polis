@@ -918,4 +918,19 @@ public class ConfigManager
 		Configs.setValue(teamConfig, new Object[] { "teams", newPolisName }, polisNode.getValue());
 		Configs.removeChild(teamConfig, new Object[] { "teams" }, oldPolisName);
 	}
+
+	public static BigDecimal getPolisCreateCost()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(mainConfig).getNode("polis", "create", "cost");
+
+		if (valueNode.getValue() != null)
+		{
+			return new BigDecimal(valueNode.getDouble());
+		}
+		else
+		{
+			Configs.setValue(mainConfig, valueNode.getPath(), 50.00);
+			return new BigDecimal(50.00);
+		}
+	}
 }
