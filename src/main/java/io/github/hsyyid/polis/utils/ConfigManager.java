@@ -905,4 +905,17 @@ public class ConfigManager
 			Configs.setValue(teamConfig, valueNode.getPath(), null);
 		}
 	}
+
+	public static void updatePolisName(String oldPolisName, String newPolisName)
+	{
+		// Transfer Claims
+		ConfigurationNode claimNode = Configs.getConfig(claimsConfig).getNode("claims", oldPolisName);
+		Configs.setValue(claimsConfig, new Object[] { "claims", newPolisName }, claimNode.getValue());
+		Configs.removeChild(claimsConfig, new Object[] { "claims" }, oldPolisName);
+
+		// Transfer Polis Info
+		ConfigurationNode polisNode = Configs.getConfig(teamConfig).getNode("teams", newPolisName);
+		Configs.setValue(teamConfig, new Object[] { "teams", newPolisName }, polisNode.getValue());
+		Configs.removeChild(teamConfig, new Object[] { "teams" }, oldPolisName);
+	}
 }

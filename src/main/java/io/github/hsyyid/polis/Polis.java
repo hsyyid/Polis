@@ -30,6 +30,7 @@ import io.github.hsyyid.polis.cmdexecutors.PolisMapExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisRenameExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisSetHQExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisSetLeaderExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisSetTaxExecutor;
@@ -44,11 +45,11 @@ import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.MessageConfig;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
+import io.github.hsyyid.polis.listeners.EntityDamageListener;
 import io.github.hsyyid.polis.listeners.EntityMoveListener;
 import io.github.hsyyid.polis.listeners.EntitySpawnListener;
 import io.github.hsyyid.polis.listeners.ExplosionEventListener;
 import io.github.hsyyid.polis.listeners.PlayerBreakBlockListener;
-import io.github.hsyyid.polis.listeners.EntityDamageListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractEntityListener;
 import io.github.hsyyid.polis.listeners.PlayerInteractListener;
 import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
@@ -208,6 +209,12 @@ public class Polis
 			.description(Text.of("Set Town HQ Command"))
 			.permission("polis.hq.set")
 			.executor(new PolisSetHQExecutor())
+			.build());
+		
+		subcommands.put(Arrays.asList("rename"), CommandSpec.builder()
+			.description(Text.of("Rename Command"))
+			.permission("polis.rename")
+			.executor(new PolisRenameExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("adminclaim"), CommandSpec.builder()
