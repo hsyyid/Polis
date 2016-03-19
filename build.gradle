@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version = '2.4'
+version = '2.4b'
 group = "io.github.hsyyid"
 archivesBaseName = "Polis"
 
