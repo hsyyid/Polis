@@ -210,9 +210,10 @@ public class Polis
 			.permission("polis.hq.set")
 			.executor(new PolisSetHQExecutor())
 			.build());
-		
+
 		subcommands.put(Arrays.asList("rename"), CommandSpec.builder()
 			.description(Text.of("Rename Command"))
+			.arguments(GenericArguments.string(Text.of("name")))
 			.permission("polis.rename")
 			.executor(new PolisRenameExecutor())
 			.build());
