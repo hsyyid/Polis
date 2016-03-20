@@ -914,7 +914,7 @@ public class ConfigManager
 		Configs.removeChild(claimsConfig, new Object[] { "claims" }, oldPolisName);
 
 		// Transfer Polis Info
-		ConfigurationNode polisNode = Configs.getConfig(teamConfig).getNode("teams", newPolisName);
+		ConfigurationNode polisNode = Configs.getConfig(teamConfig).getNode("teams", oldPolisName);
 		Configs.setValue(teamConfig, new Object[] { "teams", newPolisName }, polisNode.getValue());
 		Configs.removeChild(teamConfig, new Object[] { "teams" }, oldPolisName);
 	}
