@@ -18,22 +18,9 @@ public class AdminUnClaimExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
-		String zone = ctx.<String> getOne("zone").get();
-
-		if (!(zone.equals("SafeZone") || zone.equals("WarZone")))
-		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Zone name is not applicable."));
-			return CommandResult.success();
-		}
-
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-
-			if (!ConfigManager.getTeams().contains(zone))
-			{
-				ConfigManager.addTeam(zone, "");
-			}
 
 			Optional<Vector3i> optionalChunk = Polis.game.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
 
@@ -41,9 +28,9 @@ public class AdminUnClaimExecutor implements CommandExecutor
 			{
 				Vector3i chunk = optionalChunk.get();
 
-				if (ConfigManager.isClaimed(player.getLocation()).equals(zone))
+				if (!ConfigManager.isClaimed(player.getLocation()).equals("false"))
 				{
-					ConfigManager.unclaim(zone, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+					ConfigManager.unclaim(ConfigManager.isClaimed(player.getLocation()), player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully un-claimed this location!"));
 				}
 				else
@@ -54,7 +41,7 @@ public class AdminUnClaimExecutor implements CommandExecutor
 		}
 		else
 		{
-			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /adminunclaim!"));
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /polis adminunclaim!"));
 		}
 
 		return CommandResult.success();

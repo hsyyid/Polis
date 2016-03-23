@@ -235,7 +235,6 @@ public class Polis
 		subcommands.put(Arrays.asList("adminunclaim"), CommandSpec.builder()
 			.description(Text.of("Admin Un-Claim Command"))
 			.permission("polis.unclaim.admin")
-			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))))
 			.executor(new AdminUnClaimExecutor())
 			.build());
 
