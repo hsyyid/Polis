@@ -2,6 +2,7 @@ package io.github.hsyyid.polis.utils;
 
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
@@ -41,7 +42,12 @@ public class ConfigManager
 			Configs.removeChild(teamConfig, new Object[] { "teams" }, "teams");
 		}
 
-		return Configs.getConfig(teamConfig).getNode("teams").getChildrenMap().keySet();
+		if (Configs.getConfig(teamConfig).getNode("teams").getValue() != null)
+		{
+			return Configs.getConfig(teamConfig).getNode("teams").getChildrenMap().keySet();
+		}
+
+		return Sets.newHashSet();
 	}
 
 	public static String getTeam(UUID playerUUID)
@@ -799,15 +805,7 @@ public class ConfigManager
 
 	public static boolean canUseInSafeZone(String id)
 	{
-		try
-		{
-			return getAllowedBlocksInSafeZone().contains(id);
-		}
-		catch (Exception e)
-		{
-			addUsableSafeZoneBlock("");
-			return false;
-		}
+		return ConfigManager.getAllowedBlocksInSafeZone().contains(id);
 	}
 
 	public static TextColor getColorTo(String observerPolis, String polis)
