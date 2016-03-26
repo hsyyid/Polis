@@ -11,6 +11,7 @@ import io.github.hsyyid.polis.config.MessageConfig;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
@@ -20,6 +21,7 @@ import org.spongepowered.api.world.World;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -607,8 +609,24 @@ public class ConfigManager
 		ConfigManager.removeMember(teamName, executiveUUID);
 	}
 
-	public static void removeTeam(String teamName)
+	public static void removeTeam(String teamName, boolean notifyMembers)
 	{
+		if (notifyMembers)
+		{
+			List<String> members = ConfigManager.getMembers(teamName);
+			members.addAll(ConfigManager.getExecutives(teamName));
+
+			for (String memberUuid : members)
+			{
+				UUID uuid = UUID.fromString(memberUuid);
+
+				if (Sponge.getServer().getPlayer(uuid).isPresent())
+				{
+					Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Your Polis has been deleted!"));
+				}
+			}
+		}
+
 		Configs.removeChild(teamConfig, new Object[] { "teams" }, teamName);
 		ConfigManager.removeClaims(teamName);
 	}

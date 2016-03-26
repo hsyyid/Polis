@@ -20,10 +20,10 @@ public class PolisDisbandExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 			String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
-			
+
 			if (playerTeamName != null && ConfigManager.getLeader(playerTeamName).equals(player.getUniqueId().toString()))
 			{
-				ConfigManager.removeTeam(playerTeamName);
+				ConfigManager.removeTeam(playerTeamName, true);
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully deleted town."));
 			}
 			else if (playerTeamName != null)

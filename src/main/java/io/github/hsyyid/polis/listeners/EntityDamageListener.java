@@ -62,9 +62,18 @@ public class EntityDamageListener
 			// Otherwise if it's just in a SafeZone
 			else if (isClaimed.equals("SafeZone"))
 			{
-				// Protect all entities.
-				event.setBaseDamage(0);
-				event.setCancelled(true);
+				// And this area is a SafeZone, but this entity is interactable
+				if (ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getId()))
+				{
+					// Disable entity protection
+					return;
+				}
+				else
+				{
+					// Otherwise, protect all entities.
+					event.setBaseDamage(0);
+					event.setCancelled(true);
+				}
 			}
 		}
 	}

@@ -25,7 +25,7 @@ public class PolisDeleteExecutor implements CommandExecutor
 			if (ConfigManager.getTeams().contains(townName))
 			{
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully deleted town " + townName));
-				ConfigManager.removeTeam(townName);
+				ConfigManager.removeTeam(townName, true);
 			}
 			else
 			{

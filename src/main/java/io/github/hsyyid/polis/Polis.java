@@ -38,6 +38,7 @@ import io.github.hsyyid.polis.cmdexecutors.PolisSetTaxIntervalExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisToggleTaxExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimAllExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisWithdrawExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
 import io.github.hsyyid.polis.config.ClaimsConfig;
@@ -323,6 +324,13 @@ public class Polis
 			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("amount"))))
 			.permission("polis.deposit.use")
 			.executor(new PolisDepositExecutor())
+			.build());
+
+		subcommands.put(Arrays.asList("withdraw"), CommandSpec.builder()
+			.description(Text.of("Polis Withdraw Command"))
+			.arguments(GenericArguments.onlyOne(GenericArguments.doubleNum(Text.of("amount"))))
+			.permission("polis.withdraw.use")
+			.executor(new PolisWithdrawExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("autoclaim"), CommandSpec.builder()
