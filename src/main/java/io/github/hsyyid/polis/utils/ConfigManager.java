@@ -841,7 +841,7 @@ public class ConfigManager
 
 	public static void addUsableSafeZoneBlock(String id)
 	{
-		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.SafeZone.usable.blocks").split("\\."));
 
 		if (valueNode.getString() != null)
 		{
@@ -861,14 +861,14 @@ public class ConfigManager
 
 	public static void removeUsableSafeZoneBlock(String id)
 	{
-		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.SafeZone.usable.blocks").split("\\."));
 		String val = valueNode.getString();
 		Configs.setValue(teamConfig, valueNode.getPath(), val.replace(id + ",", ""));
 	}
 
 	public static ArrayList<String> getAllowedBlocksInSafeZone()
 	{
-		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.safezone.usable.blocks").split("\\."));
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.SafeZone.usable.blocks").split("\\."));
 
 		if (valueNode.getValue() == null)
 			return Lists.newArrayList();

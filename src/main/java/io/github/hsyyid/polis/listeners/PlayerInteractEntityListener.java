@@ -10,6 +10,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 public class PlayerInteractEntityListener
 {
+
 	@Listener
 	public void onPlayerRightClick(InteractEntityEvent.Secondary event, @First Player player)
 	{
@@ -54,7 +55,7 @@ public class PlayerInteractEntityListener
 
 		if (!isClaimed.equals("false"))
 		{
-			if (isClaimed.equals("SafeZone") && !player.hasPermission("polis.claim.admin.modify"))
+			if (isClaimed.equals("SafeZone") && (!player.hasPermission("polis.claim.admin.modify") && !ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getId())))
 			{
 				event.setCancelled(true);
 				return;
