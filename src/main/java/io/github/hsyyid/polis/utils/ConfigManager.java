@@ -624,11 +624,14 @@ public class ConfigManager
 
 			for (String memberUuid : members)
 			{
-				UUID uuid = UUID.fromString(memberUuid);
-
-				if (Sponge.getServer().getPlayer(uuid).isPresent())
+				if (!memberUuid.isEmpty())
 				{
-					Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Your Polis has been deleted!"));
+					UUID uuid = UUID.fromString(memberUuid);
+
+					if (Sponge.getServer().getPlayer(uuid).isPresent())
+					{
+						Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Your Polis has been deleted!"));
+					}
 				}
 			}
 		}
