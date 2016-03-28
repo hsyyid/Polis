@@ -23,7 +23,7 @@ public class PlayerInteractEntityListener
 				return;
 			}
 
-			if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getName()))
+			if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getId()))
 			{
 				return;
 			}
@@ -60,7 +60,7 @@ public class PlayerInteractEntityListener
 				event.setCancelled(true);
 				return;
 			}
-			else if (!(event.getTargetEntity() instanceof Player) && !ConfigManager.getTeam(player.getUniqueId()).equals(isClaimed))
+			else if (!(event.getTargetEntity() instanceof Player) && ConfigManager.getTeam(player.getUniqueId()) != null && !ConfigManager.getTeam(player.getUniqueId()).equals(isClaimed))
 			{
 				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 				event.setCancelled(true);

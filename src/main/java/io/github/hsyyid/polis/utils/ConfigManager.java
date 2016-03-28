@@ -56,6 +56,11 @@ public class ConfigManager
 		{
 			String team = String.valueOf(t);
 
+			if (team.equals("WarZone") || team.equals("SafeZone"))
+			{
+				continue;
+			}
+
 			if (ConfigManager.getMembers(team).contains(playerUUID.toString()))
 			{
 				return team;
