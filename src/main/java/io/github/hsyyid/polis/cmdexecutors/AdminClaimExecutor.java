@@ -88,7 +88,7 @@ public class AdminClaimExecutor implements CommandExecutor
 			Set<Vector3i> chunksToClaim = Sets.newHashSet();
 			Vector3i centerChunk = optionalChunk.get();
 			Vector3i topLeftPs = centerChunk.add(-radius, 0, -radius);
-			
+
 			for (int dz = 0; dz < radius * 2; dz++)
 			{
 				for (int dx = 0; dx < radius * 2; dx++)
@@ -97,14 +97,14 @@ public class AdminClaimExecutor implements CommandExecutor
 					chunksToClaim.add(chunkAtLocation);
 				}
 			}
-			
+
 			boolean successful = true;
 
 			for (Vector3i chunk : chunksToClaim)
 			{
 				if (Sponge.getServer().getChunkLayout().isValidChunk(chunk))
 				{
-					if (ConfigManager.isClaimed(location).equals("false"))
+					if (ConfigManager.isClaimed(new Location<World>(location.getExtent(), Sponge.getServer().getChunkLayout().toWorld(chunk).get())).equals("false"))
 					{
 						ConfigManager.claim(zone, location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
 					}
