@@ -88,7 +88,7 @@ public class ConfigManager
 		}
 		else
 		{
-			Configs.setValue(mainConfig, valueNode.getPath(), 30);
+			Configs.setValueAndSave(mainConfig, valueNode.getPath(), 30);
 			return 30;
 		}
 	}
@@ -103,7 +103,7 @@ public class ConfigManager
 		}
 		else
 		{
-			Configs.setValue(mainConfig, valueNode.getPath(), 3);
+			Configs.setValueAndSave(mainConfig, valueNode.getPath(), 3);
 			return 3;
 		}
 	}
@@ -123,9 +123,9 @@ public class ConfigManager
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".balance").split("\\."));
 
 		if (valueNode.getValue() != null)
-			Configs.setValue(teamConfig, valueNode.getPath(), valueNode.getDouble() + amount.doubleValue());
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), valueNode.getDouble() + amount.doubleValue());
 		else
-			Configs.setValue(teamConfig, valueNode.getPath(), amount.doubleValue());
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), amount.doubleValue());
 	}
 
 	public static void withdrawFromTownBank(BigDecimal amount, String teamName)
@@ -133,9 +133,9 @@ public class ConfigManager
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + teamName + ".balance").split("\\."));
 
 		if (valueNode.getValue() != null)
-			Configs.setValue(teamConfig, valueNode.getPath(), valueNode.getDouble() - amount.doubleValue());
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), valueNode.getDouble() - amount.doubleValue());
 		else
-			Configs.setValue(teamConfig, valueNode.getPath(), -amount.doubleValue());
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), -amount.doubleValue());
 	}
 
 	public static String getHQWorldName(String teamName)
@@ -291,10 +291,10 @@ public class ConfigManager
 
 	public static void setHQ(String teamName, Location<World> hqLocation, String worldName)
 	{
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "hq", "world" }, worldName);
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "hq", "X" }, hqLocation.getX());
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "hq", "Y" }, hqLocation.getY());
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "hq", "Z" }, hqLocation.getZ());
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "hq", "world" }, worldName);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "hq", "X" }, hqLocation.getX());
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "hq", "Y" }, hqLocation.getY());
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "hq", "Z" }, hqLocation.getZ());
 	}
 
 	public static ArrayList<String> getAllies(String teamName)
@@ -409,7 +409,7 @@ public class ConfigManager
 
 	public static void setTaxesEnabled(String teamName, boolean value)
 	{
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "enabled" }, value);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "taxes", "enabled" }, value);
 	}
 
 	public static int getTaxInterval(String teamName)
@@ -425,7 +425,7 @@ public class ConfigManager
 
 	public static void setTaxInterval(String teamName, int interval)
 	{
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "interval" }, interval);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "taxes", "interval" }, interval);
 	}
 
 	public static BigDecimal getTax(String teamName)
@@ -442,18 +442,18 @@ public class ConfigManager
 
 	public static void setTax(String teamName, BigDecimal amount)
 	{
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "amount" }, amount.doubleValue());
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "taxes", "amount" }, amount.doubleValue());
 	}
 
 	public static void addTeam(String teamName, String leaderUUID)
 	{
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "leader" }, leaderUUID);
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "members" }, "");
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "enemies" }, "");
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "allies" }, "");
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "enabled" }, true);
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "interval" }, 86400);
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "taxes", "amount" }, 100.00);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "leader" }, leaderUUID);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "members" }, "");
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "enemies" }, "");
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "allies" }, "");
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "taxes", "enabled" }, true);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "taxes", "interval" }, 86400);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "taxes", "amount" }, 100.00);
 	}
 
 	public static void addTeamMember(String teamName, String memberUUID)
@@ -471,12 +471,12 @@ public class ConfigManager
 			else
 			{
 				String formattedItem = (memberUUID + ",");
-				Configs.setValue(teamConfig, valueNode.getPath(), teams + formattedItem);
+				Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams + formattedItem);
 			}
 		}
 		else
 		{
-			Configs.setValue(teamConfig, valueNode.getPath(), memberUUID + ",");
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), memberUUID + ",");
 		}
 	}
 
@@ -497,13 +497,13 @@ public class ConfigManager
 				else
 				{
 					String formattedItem = (enemyTeamName + ",");
-					Configs.setValue(teamConfig, valueNode.getPath(), teams + formattedItem);
+					Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams + formattedItem);
 				}
 			}
 		}
 		catch (NullPointerException e)
 		{
-			Configs.setValue(teamConfig, valueNode.getPath(), enemyTeamName + ",");
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), enemyTeamName + ",");
 		}
 
 		if (addEnemy)
@@ -529,13 +529,13 @@ public class ConfigManager
 				else
 				{
 					String formattedItem = (allyTeamName + ",");
-					Configs.setValue(teamConfig, valueNode.getPath(), teams + formattedItem);
+					Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams + formattedItem);
 				}
 			}
 		}
 		catch (NullPointerException e)
 		{
-			Configs.setValue(teamConfig, valueNode.getPath(), allyTeamName + ",");
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), allyTeamName + ",");
 		}
 
 		if (addAlly)
@@ -552,7 +552,7 @@ public class ConfigManager
 		{
 			String teams = valueNode.getString();
 			teams = teams.replace(memberUUID + ",", "");
-			Configs.setValue(teamConfig, valueNode.getPath(), teams);
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams);
 		}
 	}
 
@@ -564,7 +564,7 @@ public class ConfigManager
 		{
 			String executives = valueNode.getString();
 			executives = executives.replace(executiveUUID + ",", "");
-			Configs.setValue(teamConfig, valueNode.getPath(), executives);
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), executives);
 		}
 	}
 
@@ -576,7 +576,7 @@ public class ConfigManager
 		{
 			String teams = valueNode.getString();
 			teams = teams.replace(enemyName + ",", "");
-			Configs.setValue(teamConfig, valueNode.getPath(), teams);
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams);
 		}
 	}
 
@@ -588,13 +588,13 @@ public class ConfigManager
 		{
 			String teams = valueNode.getString();
 			teams = teams.replace(allyName + ",", "");
-			Configs.setValue(teamConfig, valueNode.getPath(), teams);
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams);
 		}
 	}
 
 	public static void setTeamLeader(String teamName, String leaderUUID)
 	{
-		Configs.setValue(teamConfig, new Object[] { "teams", teamName, "leader" }, leaderUUID);
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", teamName, "leader" }, leaderUUID);
 		ConfigManager.removeMember(teamName, leaderUUID);
 	}
 
@@ -609,12 +609,12 @@ public class ConfigManager
 			if (!teams.contains(executiveUUID + ","))
 			{
 				String formattedItem = (executiveUUID + ",");
-				Configs.setValue(teamConfig, valueNode.getPath(), teams + formattedItem);
+				Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams + formattedItem);
 			}
 		}
 		else
 		{
-			Configs.setValue(teamConfig, valueNode.getPath(), executiveUUID + ",");
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), executiveUUID + ",");
 		}
 
 		ConfigManager.removeMember(teamName, executiveUUID);
@@ -645,9 +645,12 @@ public class ConfigManager
 		ConfigManager.removeClaims(teamName);
 	}
 
-	public static void claim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
+	public static void claim(String teamName, UUID worldUUID, int chunkX, int chunkZ, boolean save)
 	{
-		Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
+		if (save)
+			Configs.setValueAndSave(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
+		else
+			Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
 	}
 
 	public static BigDecimal getClaimCost()
@@ -677,7 +680,7 @@ public class ConfigManager
 
 	public static void setDisplayPrefix(boolean value)
 	{
-		Configs.setValue(mainConfig, new Object[] { "polis", "prefix", "display" }, value);
+		Configs.setValueAndSave(mainConfig, new Object[] { "polis", "prefix", "display" }, value);
 	}
 
 	public static Text getUnclaimedNotification()
@@ -720,7 +723,7 @@ public class ConfigManager
 		}
 		else
 		{
-			Configs.setValue(mainConfig, node.getPath(), 50);
+			Configs.setValueAndSave(mainConfig, node.getPath(), 50);
 			return 50;
 		}
 	}
@@ -732,7 +735,7 @@ public class ConfigManager
 
 	public static void unclaim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
-		Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, false);
+		Configs.setValueAndSave(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, false);
 	}
 
 	public static boolean isClaimed(String teamName, UUID worldUUID, int chunkX, int chunkZ)
@@ -855,12 +858,12 @@ public class ConfigManager
 			if (!items.contains(id + ","))
 			{
 				String formattedItem = (id + ",");
-				Configs.setValue(teamConfig, valueNode.getPath(), items + formattedItem);
+				Configs.setValueAndSave(teamConfig, valueNode.getPath(), items + formattedItem);
 			}
 		}
 		else
 		{
-			Configs.setValue(teamConfig, valueNode.getPath(), id + ",");
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), id + ",");
 		}
 	}
 
@@ -868,7 +871,7 @@ public class ConfigManager
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams.SafeZone.usable.blocks").split("\\."));
 		String val = valueNode.getString();
-		Configs.setValue(teamConfig, valueNode.getPath(), val.replace(id + ",", ""));
+		Configs.setValueAndSave(teamConfig, valueNode.getPath(), val.replace(id + ",", ""));
 	}
 
 	public static ArrayList<String> getAllowedBlocksInSafeZone()
@@ -924,9 +927,9 @@ public class ConfigManager
 
 		if (valueNode.getValue() != null)
 		{
-			Configs.setValue(claimsConfig, valueNode.getPath(), valueNode.getValue());
+			Configs.setValueAndSave(claimsConfig, valueNode.getPath(), valueNode.getValue());
 			Configs.removeChildren(teamConfig, valueNode.getPath());
-			Configs.setValue(teamConfig, valueNode.getPath(), null);
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), null);
 		}
 	}
 
@@ -934,12 +937,12 @@ public class ConfigManager
 	{
 		// Transfer Claims
 		ConfigurationNode claimNode = Configs.getConfig(claimsConfig).getNode("claims", oldPolisName);
-		Configs.setValue(claimsConfig, new Object[] { "claims", newPolisName }, claimNode.getValue());
+		Configs.setValueAndSave(claimsConfig, new Object[] { "claims", newPolisName }, claimNode.getValue());
 		Configs.removeChild(claimsConfig, new Object[] { "claims" }, oldPolisName);
 
 		// Transfer Polis Info
 		ConfigurationNode polisNode = Configs.getConfig(teamConfig).getNode("teams", oldPolisName);
-		Configs.setValue(teamConfig, new Object[] { "teams", newPolisName }, polisNode.getValue());
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", newPolisName }, polisNode.getValue());
 		Configs.removeChild(teamConfig, new Object[] { "teams" }, oldPolisName);
 	}
 
@@ -953,7 +956,7 @@ public class ConfigManager
 		}
 		else
 		{
-			Configs.setValue(mainConfig, valueNode.getPath(), 50.00);
+			Configs.setValueAndSave(mainConfig, valueNode.getPath(), 50.00);
 			return new BigDecimal(50.00);
 		}
 	}
