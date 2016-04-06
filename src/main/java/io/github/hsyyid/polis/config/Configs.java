@@ -22,10 +22,15 @@ public final class Configs
 		config.save();
 	}
 
-	public static void setValue(Configurable config, Object[] nodePath, Object value)
+	public static void setValueAndSave(Configurable config, Object[] nodePath, Object value)
 	{
 		config.get().getNode(nodePath).setValue(value);
 		config.save();
+	}
+	
+	public static void setValue(Configurable config, Object[] nodePath, Object value)
+	{
+		config.get().getNode(nodePath).setValue(value);
 	}
 
 	public static void removeChild(Configurable config, Object[] nodePath, Object child)

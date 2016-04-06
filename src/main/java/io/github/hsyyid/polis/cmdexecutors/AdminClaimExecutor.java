@@ -1,9 +1,9 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
-import com.flowpowered.math.vector.Vector3i;
-import com.google.common.collect.Sets;
-import io.github.hsyyid.polis.Polis;
-import io.github.hsyyid.polis.utils.ConfigManager;
+import java.awt.Color;
+import java.util.Optional;
+import java.util.Set;
+
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -16,9 +16,12 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import com.flowpowered.math.vector.Vector3i;
+import com.google.common.collect.Sets;
+
+import io.github.hsyyid.polis.Polis;
+import io.github.hsyyid.polis.config.ClaimsConfig;
+import io.github.hsyyid.polis.utils.ConfigManager;
 
 public class AdminClaimExecutor implements CommandExecutor
 {
@@ -49,8 +52,7 @@ public class AdminClaimExecutor implements CommandExecutor
 			}
 			else
 			{
-				Text message = this.claimChunksAroundLocation(player.getUniqueId(), zone, player.getLocation(), radius.get()) ? Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed chunks in radius!") : Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Claimed chunks, however some chunks in radius contain other claims. Toggle admin-bypass and re-execute this command to force-claim these locations.");
-				player.sendMessage(message);
+				claimChunksAroundLocation(player, zone, player.getLocation(), radius.get());
 			}
 		}
 		else
@@ -71,7 +73,7 @@ public class AdminClaimExecutor implements CommandExecutor
 
 			if (ConfigManager.isClaimed(location).equals("false"))
 			{
-				ConfigManager.claim(zone, location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+				ConfigManager.claim(zone, location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ(), true);
 				return true;
 			}
 		}
@@ -79,8 +81,9 @@ public class AdminClaimExecutor implements CommandExecutor
 		return false;
 	}
 
-	private boolean claimChunksAroundLocation(UUID uuid, String zone, Location<World> location, int radius)
+	private void claimChunksAroundLocation(Player player, String zone, Location<World> location, int radius)
 	{
+
 		Optional<Vector3i> optionalChunk = Sponge.getServer().getChunkLayout().toChunk(location.getBlockPosition());
 
 		if (optionalChunk.isPresent())
@@ -97,32 +100,37 @@ public class AdminClaimExecutor implements CommandExecutor
 					chunksToClaim.add(chunkAtLocation);
 				}
 			}
-
-			boolean successful = true;
-
+			int claimed = 0;
 			for (Vector3i chunk : chunksToClaim)
 			{
 				if (Sponge.getServer().getChunkLayout().isValidChunk(chunk))
 				{
-					if (ConfigManager.isClaimed(new Location<World>(location.getExtent(), Sponge.getServer().getChunkLayout().toWorld(chunk).get())).equals("false"))
+					Location<World> thisLocation = new Location<World>(location.getExtent(), Sponge.getServer().getChunkLayout().toWorld(chunk).get());
+					
+					if (ConfigManager.isClaimed(thisLocation).equals("false"))
 					{
-						ConfigManager.claim(zone, location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+						ConfigManager.claim(zone, location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ(), false);
+						claimed++;
 					}
-					else if (Polis.adminBypassMode.contains(uuid))
+					else if (Polis.adminBypassMode.contains(player.getUniqueId()))
 					{
-						ConfigManager.unclaim(ConfigManager.isClaimed(location), location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
-						ConfigManager.claim(zone, location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ());
+						ConfigManager.unclaim(ConfigManager.isClaimed(thisLocation), location.getExtent().getUniqueId(), chunk.getX(), chunk.getY());
+						ConfigManager.claim(zone, location.getExtent().getUniqueId(), chunk.getX(), chunk.getZ(), false);
+						claimed++;
 					}
-					else
-					{
-						successful = false;
-					}
+					else if (ConfigManager.isClaimed(thisLocation).equals(zone))
+						claimed++;
 				}
 			}
+			player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, claimed + " have been marked for saving..."));
+			ClaimsConfig.getConfig().save();
+			player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", claimed, " total claims were successfully written to disc."));
+			if (chunksToClaim.size() > claimed)
+				player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, 
+					"Claimed chunks, however ", chunksToClaim.size() - claimed, " chunks in radius contain other claims. Toggle admin-bypass and re-execute this command to force-claim these locations."));
 
-			return successful;
 		}
-
-		return false;
+		else //Fairly sure this would be impossible but hey, why take the risk? Shouldn't fire since the only time the chunk would not exist is if the server runs this, but it already checks that in the caller
+			player.sendMessage(Text.of(Color.RED + "You are not in a chunk, somehow"));
 	}
 }
