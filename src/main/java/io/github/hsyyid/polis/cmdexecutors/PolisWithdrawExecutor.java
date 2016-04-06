@@ -40,13 +40,9 @@ public class PolisWithdrawExecutor implements CommandExecutor
 					ConfigManager.withdrawFromTownBank(withdrawAmt, townName);
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully withdrew " + withdrawAmt + " from " + townName + "'s account."));
 				}
-				else if (transactionResult.getResult() == ResultType.ACCOUNT_NO_SPACE)
-				{
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Could not deposit " + withdrawAmt + " into " + townName + "'s account, as it has no room."));
-				}
 				else
 				{
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Could not deposit " + withdrawAmt + " into " + townName + "'s account."));
+					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "Could not withdraw " + withdrawAmt + " from " + townName + "'s account."));
 				}
 			}
 			else if (ConfigManager.getTeam(player.getUniqueId()) != null)
