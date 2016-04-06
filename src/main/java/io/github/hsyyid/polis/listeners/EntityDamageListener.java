@@ -37,7 +37,6 @@ public class EntityDamageListener
 					// If they are not attacking a player, but it is an entity claimed by another Polis
 					if (event.getTargetEntity().getType() != EntityTypes.PLAYER && !playerTeamName.equals(isClaimed))
 					{
-						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 						event.setBaseDamage(0);
 						event.setCancelled(true);
 					}

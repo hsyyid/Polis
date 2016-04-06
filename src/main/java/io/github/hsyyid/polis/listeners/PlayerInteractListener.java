@@ -6,8 +6,6 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
 import org.spongepowered.api.event.filter.cause.First;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 
 public class PlayerInteractListener
 {
@@ -41,14 +39,12 @@ public class PlayerInteractListener
 				{
 					if (!(isClaimed.equals(playerTeamName)))
 					{
-						player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 						event.setCancelled(true);
 						return;
 					}
 				}
 				else
 				{
-					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "This land is claimed."));
 					event.setCancelled(true);
 					return;
 				}
