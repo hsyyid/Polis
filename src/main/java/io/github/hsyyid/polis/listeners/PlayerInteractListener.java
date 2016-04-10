@@ -6,53 +6,62 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
 import org.spongepowered.api.event.filter.cause.First;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
+
+import java.util.Optional;
 
 public class PlayerInteractListener
 {
 	@Listener
 	public void onPlayerInteractBlock(InteractBlockEvent event, @First Player player)
 	{
-		try
+		Optional<Location<World>> location = event.getTargetBlock().getLocation();
+
+		if (location.isPresent())
 		{
-			String isClaimed = ConfigManager.isClaimed(event.getTargetBlock().getLocation().get());
-
-			if (!isClaimed.equals("false"))
+			try
 			{
-				if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && player.hasPermission("polis.claim.admin.modify"))
-				{
-					return;
-				}
+				String isClaimed = ConfigManager.isClaimed(location.get());
 
-				if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getId()))
+				if (!isClaimed.equals("false"))
 				{
-					return;
-				}
+					if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && player.hasPermission("polis.claim.admin.modify"))
+					{
+						return;
+					}
 
-				if (Polis.adminBypassMode.contains(player.getUniqueId()))
-				{
-					return;
-				}
+					if ((isClaimed.equals("SafeZone") || isClaimed.equals("WarZone")) && ConfigManager.canUseInSafeZone(event.getTargetBlock().getState().getType().getId()))
+					{
+						return;
+					}
 
-				String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
+					if (Polis.adminBypassMode.contains(player.getUniqueId()))
+					{
+						return;
+					}
 
-				if (playerTeamName != null)
-				{
-					if (!(isClaimed.equals(playerTeamName)))
+					String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
+
+					if (playerTeamName != null)
+					{
+						if (!isClaimed.equals(playerTeamName))
+						{
+							event.setCancelled(true);
+							return;
+						}
+					}
+					else
 					{
 						event.setCancelled(true);
 						return;
 					}
 				}
-				else
-				{
-					event.setCancelled(true);
-					return;
-				}
 			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }
