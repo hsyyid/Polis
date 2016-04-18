@@ -430,7 +430,7 @@ public class Polis
 			.executor(new PolisSetTaxIntervalExecutor())
 			.build());
 
-		subcommands.put(Arrays.asList("zonemobs"), CommandSpec.builder()
+		subcommands.put(Arrays.asList("zonemobs", "listzonemob", "listzonemobs"), CommandSpec.builder()
 			.description(Text.of("Zone Mob List Command"))
 			.permission("polis.zonemobs.list")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))))
