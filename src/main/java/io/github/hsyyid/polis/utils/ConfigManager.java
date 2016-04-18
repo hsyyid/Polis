@@ -977,7 +977,7 @@ public class ConfigManager
 
 	public static void addMob(String zone, EntityType type)
 	{
-		Configs.setValue(teamConfig, new Object[] { "teams", zone, "mobs", type.getId() }, "disable");
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", zone, "mobs", type.getId() }, "disable");
 	}
 
 	public static void removeMob(String zone, EntityType type)
