@@ -11,12 +11,29 @@ public class EntitySpawnListener
 	@Listener
 	public void onEntitySpawn(SpawnEntityEvent event)
 	{
-		for(Entity entity : event.getEntities())
+		for (Entity entity : event.getEntities())
 		{
-			if(ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone") && entity instanceof Monster)
+			if (ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone") && entity instanceof Monster)
 			{
 				event.setCancelled(true);
 				return;
+			}
+
+			if (ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone"))
+			{
+				if (ConfigManager.getMobs("safezone").contains(entity.getType()))
+				{
+					event.setCancelled(true);
+					return;
+				}
+			}
+			else if (ConfigManager.isClaimed(entity.getLocation()).equals("WarZone"))
+			{
+				if (ConfigManager.getMobs("warzone").contains(entity.getType()))
+				{
+					event.setCancelled(true);
+					return;
+				}
 			}
 		}
 	}

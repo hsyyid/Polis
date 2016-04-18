@@ -13,6 +13,7 @@ import io.github.hsyyid.polis.config.TeamsConfig;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
@@ -959,5 +960,28 @@ public class ConfigManager
 			Configs.setValueAndSave(mainConfig, valueNode.getPath(), 50.00);
 			return new BigDecimal(50.00);
 		}
+	}
+
+	public static List<EntityType> getMobs(String zone)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + zone + ".mobs").split("\\."));
+		List<EntityType> mobs = Lists.newArrayList();
+
+		for (Object entityType : valueNode.getChildrenMap().keySet())
+		{
+			mobs.add(Sponge.getRegistry().getType(EntityType.class, String.valueOf(entityType)).get());
+		}
+
+		return mobs;
+	}
+
+	public static void addMob(String zone, EntityType type)
+	{
+		Configs.setValue(teamConfig, new Object[] { "teams", zone, "mobs", type.getId() }, "disable");
+	}
+
+	public static void removeMob(String zone, EntityType type)
+	{
+		Configs.removeChild(teamConfig, new Object[] { "teams", zone, "mobs" }, type.getId());
 	}
 }

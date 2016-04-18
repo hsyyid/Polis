@@ -41,6 +41,9 @@ import io.github.hsyyid.polis.cmdexecutors.PolisUnclaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisWithdrawExecutor;
 import io.github.hsyyid.polis.cmdexecutors.RemoveUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.ToggleAdminBypassExecutor;
+import io.github.hsyyid.polis.cmdexecutors.ZoneMobAddExecutor;
+import io.github.hsyyid.polis.cmdexecutors.ZoneMobDeleteExecutor;
+import io.github.hsyyid.polis.cmdexecutors.ZoneMobListExecutor;
 import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.MessageConfig;
@@ -63,6 +66,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
@@ -424,6 +428,27 @@ public class Polis
 			.permission("polis.taxes.interval.set")
 			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("duration"))))
 			.executor(new PolisSetTaxIntervalExecutor())
+			.build());
+
+		subcommands.put(Arrays.asList("zonemobs"), CommandSpec.builder()
+			.description(Text.of("Zone Mob List Command"))
+			.permission("polis.zonemobs.list")
+			.arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))))
+			.executor(new ZoneMobListExecutor())
+			.build());
+
+		subcommands.put(Arrays.asList("addzonemob"), CommandSpec.builder()
+			.description(Text.of("Zone Mob List Command"))
+			.permission("polis.zonemobs.add")
+			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))))
+			.executor(new ZoneMobAddExecutor())
+			.build());
+
+		subcommands.put(Arrays.asList("delzonemob", "remzonemob", "deletezonemob", "removezonemob"), CommandSpec.builder()
+			.description(Text.of("Zone Mob List Command"))
+			.permission("polis.zonemobs.delete")
+			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))))
+			.executor(new ZoneMobDeleteExecutor())
 			.build());
 
 		CommandSpec polisCommandSpec = CommandSpec.builder()
