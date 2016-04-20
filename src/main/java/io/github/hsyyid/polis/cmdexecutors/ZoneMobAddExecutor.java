@@ -16,6 +16,7 @@ public class ZoneMobAddExecutor implements CommandExecutor
 	{
 		String zone = ctx.<String> getOne("zone").get();
 		EntityType type = ctx.<EntityType> getOne("mob").get();
+		String option = ctx.<String> getOne("option").get();
 
 		if (!(zone.equalsIgnoreCase("SafeZone") || zone.equalsIgnoreCase("WarZone")))
 		{
@@ -23,13 +24,13 @@ public class ZoneMobAddExecutor implements CommandExecutor
 			return CommandResult.empty();
 		}
 
-		if (ConfigManager.getMobs(zone).contains(type))
+		if (ConfigManager.getMobs(zone).containsKey(type))
 		{
 			src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.RED, "Mob is already blocked in zone!"));
 			return CommandResult.empty();
 		}
 
-		ConfigManager.addMob(zone.toLowerCase(), type);
+		ConfigManager.addMob(zone.toLowerCase(), type, option);
 		src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Blocked mob in zone!"));
 		return CommandResult.success();
 	}

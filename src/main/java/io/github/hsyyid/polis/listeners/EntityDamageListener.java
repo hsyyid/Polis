@@ -23,11 +23,21 @@ public class EntityDamageListener
 			{
 				Player player = event.getCause().first(Player.class).get();
 
-				// And this area is a SafeZone, but this player has toggled admin-bypass or the entity is usable.
-				if (isClaimed.equals("SafeZone") && (Polis.adminBypassMode.contains(player.getUniqueId()) || ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getId())))
+				// And this area is a SafeZone
+				if (isClaimed.equals("SafeZone"))
 				{
-					// Disable entity protection
-					return;
+					// but this player has toggled admin-bypass or the entity is usable.
+					if (Polis.adminBypassMode.contains(player.getUniqueId()) || ConfigManager.canUseInSafeZone(event.getTargetEntity().getType().getId()))
+					{
+						// Disable entity protection
+						return;
+					}
+					// if it's a player
+					else if (event.getTargetEntity().getType() == EntityTypes.PLAYER)
+					{
+						event.setBaseDamage(0);
+						event.setCancelled(true);
+					}
 				}
 				else
 				{

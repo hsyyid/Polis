@@ -1,6 +1,7 @@
 package io.github.hsyyid.polis;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import io.github.hsyyid.polis.cmdexecutors.AddUsableExecutor;
@@ -82,6 +83,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -437,17 +439,27 @@ public class Polis
 			.executor(new ZoneMobListExecutor())
 			.build());
 
+		Map<String, String> zoneProtectionChoices = Maps.newHashMap();
+		zoneProtectionChoices.put("all", "all");
+        zoneProtectionChoices.put("non-player", "nonplayer");
+        zoneProtectionChoices.put("player", "player");
+        
 		subcommands.put(Arrays.asList("addzonemob"), CommandSpec.builder()
 			.description(Text.of("Zone Mob List Command"))
 			.permission("polis.zonemobs.add")
-			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))))
+			.arguments(GenericArguments.seq(
+				GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), 
+				GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))),
+				GenericArguments.onlyOne(GenericArguments.choices(Text.of("option"), zoneProtectionChoices)))
 			.executor(new ZoneMobAddExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("delzonemob", "remzonemob", "deletezonemob", "removezonemob"), CommandSpec.builder()
 			.description(Text.of("Zone Mob List Command"))
 			.permission("polis.zonemobs.delete")
-			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))))
+			.arguments(GenericArguments.seq(
+				GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), 
+				GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))))
 			.executor(new ZoneMobDeleteExecutor())
 			.build());
 

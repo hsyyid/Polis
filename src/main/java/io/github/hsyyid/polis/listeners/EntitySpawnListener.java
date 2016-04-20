@@ -2,9 +2,13 @@ package io.github.hsyyid.polis.listeners;
 
 import io.github.hsyyid.polis.utils.ConfigManager;
 import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.entity.living.monster.Monster;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
+
+import java.util.Map;
 
 public class EntitySpawnListener
 {
@@ -21,18 +25,52 @@ public class EntitySpawnListener
 
 			if (ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone"))
 			{
-				if (ConfigManager.getMobs("safezone").contains(entity.getType()))
+				Map<EntityType, String> protectedMobs = ConfigManager.getMobs("safezone");
+
+				if (protectedMobs.containsKey(entity.getType()))
 				{
-					event.setCancelled(true);
-					return;
+					String option = protectedMobs.get(entity.getType());
+
+					if (option.equals("all"))
+					{
+						event.setCancelled(true);
+						return;
+					}
+					else if (option.equals("player") && event.getCause().first(Player.class).isPresent())
+					{
+						event.setCancelled(true);
+						return;
+					}
+					else if (option.equals("non-player") && !event.getCause().first(Player.class).isPresent())
+					{
+						event.setCancelled(true);
+						return;
+					}
 				}
 			}
 			else if (ConfigManager.isClaimed(entity.getLocation()).equals("WarZone"))
 			{
-				if (ConfigManager.getMobs("warzone").contains(entity.getType()))
+				Map<EntityType, String> protectedMobs = ConfigManager.getMobs("warzone");
+
+				if (protectedMobs.containsKey(entity.getType()))
 				{
-					event.setCancelled(true);
-					return;
+					String option = protectedMobs.get(entity.getType());
+
+					if (option.equals("all"))
+					{
+						event.setCancelled(true);
+						return;
+					}
+					else if (option.equals("player") && event.getCause().first(Player.class).isPresent())
+					{
+						event.setCancelled(true);
+						return;
+					}
+					else if (option.equals("non-player") && !event.getCause().first(Player.class).isPresent())
+					{
+						event.setCancelled(true);
+						return;
+					}
 				}
 			}
 		}

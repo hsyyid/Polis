@@ -2,6 +2,7 @@ package io.github.hsyyid.polis.utils;
 
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.config.ClaimsConfig;
@@ -24,6 +25,7 @@ import org.spongepowered.api.world.World;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -962,22 +964,25 @@ public class ConfigManager
 		}
 	}
 
-	public static List<EntityType> getMobs(String zone)
+	public static Map<EntityType, String> getMobs(String zone)
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + zone + ".mobs").split("\\."));
-		List<EntityType> mobs = Lists.newArrayList();
+		Map<EntityType, String> mobs = Maps.newHashMap();
 
 		for (Object entityType : valueNode.getChildrenMap().keySet())
 		{
-			mobs.add(Sponge.getRegistry().getType(EntityType.class, String.valueOf(entityType)).get());
+			EntityType type = Sponge.getRegistry().getType(EntityType.class, String.valueOf(entityType)).get();
+			ConfigurationNode childNode = valueNode.getNode(type.getId());
+			mobs.put(type, childNode.getString());
 		}
 
 		return mobs;
 	}
 
-	public static void addMob(String zone, EntityType type)
+	public static void addMob(String zone, EntityType type, String option)
 	{
-		Configs.setValueAndSave(teamConfig, new Object[] { "teams", zone, "mobs", type.getId() }, "disable");
+		Configs.removeChild(teamConfig, new Object[] { "teams", zone, "mobs" }, type.getId());
+		Configs.setValueAndSave(teamConfig, new Object[] { "teams", zone, "mobs", type.getId() }, option);
 	}
 
 	public static void removeMob(String zone, EntityType type)

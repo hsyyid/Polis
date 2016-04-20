@@ -12,10 +12,12 @@ import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
 import java.util.List;
+import java.util.Map;
 
 public class ZoneMobListExecutor implements CommandExecutor
 {
@@ -29,7 +31,7 @@ public class ZoneMobListExecutor implements CommandExecutor
 			return CommandResult.empty();
 		}
 
-		List<EntityType> mobs = ConfigManager.getMobs(zone.toLowerCase());
+		Map<EntityType, String> mobs = ConfigManager.getMobs(zone.toLowerCase());
 
 		if (mobs.isEmpty())
 		{
@@ -39,10 +41,11 @@ public class ZoneMobListExecutor implements CommandExecutor
 
 		List<Text> mobList = Lists.newArrayList();
 
-		for (EntityType e : mobs)
+		for (Map.Entry<EntityType, String> e : mobs.entrySet())
 		{
-			Text item = Text.builder(e.getTranslation().get())
+			Text item = Text.builder(e.getKey().getTranslation().get())
 				.color(TextColors.DARK_AQUA)
+				.onHover(TextActions.showText(Text.of(TextColors.GREEN, e.getValue())))
 				.style(TextStyles.UNDERLINE)
 				.build();
 

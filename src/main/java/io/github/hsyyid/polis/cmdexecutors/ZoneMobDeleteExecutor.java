@@ -23,7 +23,7 @@ public class ZoneMobDeleteExecutor implements CommandExecutor
 			return CommandResult.empty();
 		}
 
-		if (!ConfigManager.getMobs(zone.toLowerCase()).contains(type))
+		if (!ConfigManager.getMobs(zone.toLowerCase()).containsKey(type))
 		{
 			src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.RED, "Mob is not blocked in zone!"));
 			return CommandResult.empty();
