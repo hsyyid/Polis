@@ -1,7 +1,6 @@
 package io.github.hsyyid.polis.listeners;
 
 import io.github.hsyyid.polis.utils.ConfigManager;
-import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.entity.living.monster.Monster;
 import org.spongepowered.api.entity.living.player.Player;
@@ -15,12 +14,10 @@ public class EntitySpawnListener
 	@Listener
 	public void onEntitySpawn(SpawnEntityEvent event)
 	{
-		for (Entity entity : event.getEntities())
-		{
+		event.filterEntities(entity -> {
 			if (ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone") && entity instanceof Monster)
 			{
-				event.setCancelled(true);
-				return;
+				return false;
 			}
 
 			if (ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone"))
@@ -33,18 +30,15 @@ public class EntitySpawnListener
 
 					if (option.equals("all"))
 					{
-						event.setCancelled(true);
-						return;
+						return false;
 					}
 					else if (option.equals("player") && event.getCause().first(Player.class).isPresent())
 					{
-						event.setCancelled(true);
-						return;
+						return false;
 					}
 					else if (option.equals("non-player") && !event.getCause().first(Player.class).isPresent())
 					{
-						event.setCancelled(true);
-						return;
+						return false;
 					}
 				}
 			}
@@ -58,21 +52,20 @@ public class EntitySpawnListener
 
 					if (option.equals("all"))
 					{
-						event.setCancelled(true);
-						return;
+						return false;
 					}
 					else if (option.equals("player") && event.getCause().first(Player.class).isPresent())
 					{
-						event.setCancelled(true);
-						return;
+						return false;
 					}
 					else if (option.equals("non-player") && !event.getCause().first(Player.class).isPresent())
 					{
-						event.setCancelled(true);
-						return;
+						return false;
 					}
 				}
 			}
-		}
+
+			return true;
+		});
 	}
 }
