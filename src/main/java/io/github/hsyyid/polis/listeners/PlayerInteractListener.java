@@ -77,8 +77,15 @@ public class PlayerInteractListener
 						}
 						else
 						{
-							event.setCancelled(true);
-							return;
+							if (event instanceof InteractBlockEvent.Secondary && ConfigManager.isAllowedBlock(isClaimed, event.getTargetBlock().getState().getType()))
+							{
+								return;
+							}
+							else
+							{
+								event.setCancelled(true);
+								return;
+							}
 						}
 					}
 				}
