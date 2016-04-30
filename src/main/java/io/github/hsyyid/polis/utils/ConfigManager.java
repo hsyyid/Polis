@@ -14,6 +14,7 @@ import io.github.hsyyid.polis.config.TeamsConfig;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColor;
@@ -868,6 +869,50 @@ public class ConfigManager
 		{
 			Configs.setValueAndSave(teamConfig, valueNode.getPath(), id + ",");
 		}
+	}
+	
+	public static boolean allowBlock(String team, BlockType type)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + team + ".usable.blocks").split("\\."));
+
+		if (valueNode.getString() != null)
+		{
+			String items = valueNode.getString();
+
+			if (!items.contains(type.getId() + ","))
+			{
+				String formattedItem = (type.getId() + ",");
+				Configs.setValueAndSave(teamConfig, valueNode.getPath(), items + formattedItem);
+				return true;
+			}
+			else
+			{
+				Configs.setValueAndSave(teamConfig, valueNode.getPath(), items.replace((type.getId() + ","), ""));
+				return false;
+			}
+		}
+		else
+		{
+			Configs.setValueAndSave(teamConfig, valueNode.getPath(), type.getId() + ",");
+			return true;
+		}
+	}
+	
+	public static boolean isAllowedBlock(String team, BlockType type)
+	{
+		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + team + ".usable.blocks").split("\\."));
+
+		if (valueNode.getString() != null)
+		{
+			String items = valueNode.getString();
+
+			if (items.contains(type.getId() + ","))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	public static void removeUsableSafeZoneBlock(String id)

@@ -12,6 +12,7 @@ import io.github.hsyyid.polis.cmdexecutors.AutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisAddAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisAddEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisAddExecutiveExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisAllowBlockExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisChatExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisCreateExecutor;
@@ -105,6 +106,7 @@ public class Polis
 	public static Set<UUID> polisChat = Sets.newHashSet();
 	public static HashMap<UUID, String> adminAutoClaim = new HashMap<>();
 	public static Set<UUID> adminBypassMode = Sets.newHashSet();
+	public static Map<UUID, String> allowBlocks = Maps.newHashMap();
 	public static HashMap<List<String>, CommandSpec> subcommands;
 	public static EconomyService economyService;
 
@@ -432,6 +434,12 @@ public class Polis
 			.executor(new PolisSetTaxIntervalExecutor())
 			.build());
 
+		subcommands.put(Arrays.asList("allowblock"), CommandSpec.builder()
+			.description(Text.of("Polis Allow Block Command"))
+			.permission("polis.allowblock.use")
+			.executor(new PolisAllowBlockExecutor())
+			.build());
+
 		subcommands.put(Arrays.asList("zonemobs", "listzonemob", "listzonemobs"), CommandSpec.builder()
 			.description(Text.of("Zone Mob List Command"))
 			.permission("polis.zonemobs.list")
@@ -441,25 +449,20 @@ public class Polis
 
 		Map<String, String> zoneProtectionChoices = Maps.newHashMap();
 		zoneProtectionChoices.put("all", "all");
-        zoneProtectionChoices.put("non-player", "nonplayer");
-        zoneProtectionChoices.put("player", "player");
-        
+		zoneProtectionChoices.put("non-player", "nonplayer");
+		zoneProtectionChoices.put("player", "player");
+
 		subcommands.put(Arrays.asList("addzonemob"), CommandSpec.builder()
 			.description(Text.of("Zone Mob List Command"))
 			.permission("polis.zonemobs.add")
-			.arguments(GenericArguments.seq(
-				GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), 
-				GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))),
-				GenericArguments.onlyOne(GenericArguments.choices(Text.of("option"), zoneProtectionChoices)))
+			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))), GenericArguments.onlyOne(GenericArguments.choices(Text.of("option"), zoneProtectionChoices)))
 			.executor(new ZoneMobAddExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("delzonemob", "remzonemob", "deletezonemob", "removezonemob"), CommandSpec.builder()
 			.description(Text.of("Zone Mob List Command"))
 			.permission("polis.zonemobs.delete")
-			.arguments(GenericArguments.seq(
-				GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), 
-				GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))))
+			.arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("zone"))), GenericArguments.onlyOne(GenericArguments.catalogedElement(Text.of("mob"), EntityType.class))))
 			.executor(new ZoneMobDeleteExecutor())
 			.build());
 
