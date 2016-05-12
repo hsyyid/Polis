@@ -90,6 +90,7 @@ public class Config implements Configurable
 		get().getNode("polis", "create", "cost").setValue(50.00).setComment("The amount of currency it costs to create a Polis.");
 		get().getNode("polis", "claims", "cost").setValue(100.00).setComment("The amount of currency it costs per claim of chunk.");
 		get().getNode("polis", "claims", "cap").setValue(50).setComment("The maximum number of claims a Polis may have.");
+		get().getNode("polis", "claims", "items", "drop").setValue(false).setComment("Toggles the ability for players to drop items in claimed areas.");
 	}
 
 	@Override

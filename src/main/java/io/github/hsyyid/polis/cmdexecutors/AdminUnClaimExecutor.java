@@ -1,8 +1,8 @@
 package io.github.hsyyid.polis.cmdexecutors;
 
 import com.flowpowered.math.vector.Vector3i;
-import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -22,7 +22,7 @@ public class AdminUnClaimExecutor implements CommandExecutor
 		{
 			Player player = (Player) src;
 
-			Optional<Vector3i> optionalChunk = Polis.game.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
+			Optional<Vector3i> optionalChunk = Sponge.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
 
 			if (optionalChunk.isPresent())
 			{

@@ -51,6 +51,7 @@ import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.MessageConfig;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
+import io.github.hsyyid.polis.listeners.DropItemListener;
 import io.github.hsyyid.polis.listeners.EntityDamageListener;
 import io.github.hsyyid.polis.listeners.EntityMoveListener;
 import io.github.hsyyid.polis.listeners.EntitySpawnListener;
@@ -63,7 +64,6 @@ import io.github.hsyyid.polis.utils.Invite;
 import io.github.hsyyid.polis.utils.Utils;
 import me.flibio.updatifier.Updatifier;
 import org.slf4j.Logger;
-import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -100,7 +100,6 @@ public class Polis
 
 	private static Polis polis;
 
-	public static Game game;
 	public static ArrayList<Invite> invites = Lists.newArrayList();
 	public static Set<UUID> autoClaim = Sets.newHashSet();
 	public static Set<UUID> polisChat = Sets.newHashSet();
@@ -132,7 +131,6 @@ public class Polis
 	{
 		getLogger().info("Polis loading...");
 		polis = this;
-		game = Sponge.getGame();
 
 		// Create Config Directory for Polis
 		if (!Files.exists(configDir))
@@ -473,17 +471,18 @@ public class Polis
 			.children(subcommands)
 			.build();
 
-		game.getCommandManager().register(this, polisCommandSpec, "polis", "p");
+		Sponge.getCommandManager().register(this, polisCommandSpec, "polis", "p");
 
-		game.getEventManager().registerListeners(this, new PlayerInteractListener());
-		game.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
-		game.getEventManager().registerListeners(this, new PlayerPlaceBlockListener());
-		game.getEventManager().registerListeners(this, new EntityMoveListener());
-		game.getEventManager().registerListeners(this, new PlayerInteractEntityListener());
-		game.getEventManager().registerListeners(this, new ChatListener());
-		game.getEventManager().registerListeners(this, new EntitySpawnListener());
-		game.getEventManager().registerListeners(this, new ExplosionEventListener());
-		game.getEventManager().registerListeners(this, new EntityDamageListener());
+		Sponge.getEventManager().registerListeners(this, new PlayerInteractListener());
+		Sponge.getEventManager().registerListeners(this, new PlayerBreakBlockListener());
+		Sponge.getEventManager().registerListeners(this, new PlayerPlaceBlockListener());
+		Sponge.getEventManager().registerListeners(this, new EntityMoveListener());
+		Sponge.getEventManager().registerListeners(this, new PlayerInteractEntityListener());
+		Sponge.getEventManager().registerListeners(this, new ChatListener());
+		Sponge.getEventManager().registerListeners(this, new EntitySpawnListener());
+		Sponge.getEventManager().registerListeners(this, new ExplosionEventListener());
+		Sponge.getEventManager().registerListeners(this, new EntityDamageListener());
+		Sponge.getEventManager().registerListeners(this, new DropItemListener());
 
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis was made by HassanS6000!");

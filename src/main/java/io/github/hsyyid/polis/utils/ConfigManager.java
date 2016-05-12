@@ -4,7 +4,6 @@ import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.Configs;
@@ -52,6 +51,21 @@ public class ConfigManager
 		}
 
 		return Sets.newHashSet();
+	}
+
+	public static boolean canPlayersDropItems()
+	{
+		CommentedConfigurationNode node = Configs.getConfig(mainConfig).getNode("polis", "claims", "items", "drop");
+
+		if (node.getValue() != null)
+		{
+			return node.getBoolean();
+		}
+		else
+		{
+			Configs.setValue(mainConfig, node.getPath(), false);
+			return false;
+		}
 	}
 
 	public static String getTeam(UUID playerUUID)
@@ -759,7 +773,7 @@ public class ConfigManager
 	{
 		String claimed = "false";
 		UUID worldUUID = location.getExtent().getUniqueId();
-		Optional<Vector3i> optionalChunk = Polis.game.getServer().getChunkLayout().toChunk(location.getBlockPosition());
+		Optional<Vector3i> optionalChunk = Sponge.getServer().getChunkLayout().toChunk(location.getBlockPosition());
 
 		if (optionalChunk.isPresent())
 		{
@@ -870,7 +884,7 @@ public class ConfigManager
 			Configs.setValueAndSave(teamConfig, valueNode.getPath(), id + ",");
 		}
 	}
-	
+
 	public static boolean allowBlock(String team, BlockType type)
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + team + ".usable.blocks").split("\\."));
@@ -897,7 +911,7 @@ public class ConfigManager
 			return true;
 		}
 	}
-	
+
 	public static boolean isAllowedBlock(String team, BlockType type)
 	{
 		ConfigurationNode valueNode = Configs.getConfig(teamConfig).getNode((Object[]) ("teams." + team + ".usable.blocks").split("\\."));
@@ -911,7 +925,7 @@ public class ConfigManager
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

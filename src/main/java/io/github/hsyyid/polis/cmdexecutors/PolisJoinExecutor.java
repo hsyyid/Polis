@@ -3,6 +3,7 @@ package io.github.hsyyid.polis.cmdexecutors;
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import io.github.hsyyid.polis.utils.Invite;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -63,7 +64,7 @@ public class PolisJoinExecutor implements CommandExecutor
 					{
 						ConfigManager.addTeamMember(townName, player.getUniqueId().toString());
 
-						for (Player p : Polis.game.getServer().getOnlinePlayers())
+						for (Player p : Sponge.getServer().getOnlinePlayers())
 						{
 							if ((p.getUniqueId().toString()).equals(ConfigManager.getLeader(townName)))
 							{
