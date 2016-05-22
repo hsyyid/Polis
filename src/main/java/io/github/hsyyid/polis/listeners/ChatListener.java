@@ -4,7 +4,7 @@ import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.filter.cause.First;
+import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ChatListener
 {
 	@Listener
-	public void onMessage(MessageChannelEvent.Chat event, @First Player player)
+	public void onMessage(MessageChannelEvent.Chat event, @Root Player player)
 	{
 		if (ConfigManager.displayPrefix())
 		{

@@ -7,12 +7,12 @@ import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
-import org.spongepowered.api.event.filter.cause.First;
+import org.spongepowered.api.event.filter.cause.Root;
 
 public class PlayerPlaceBlockListener
 {
 	@Listener
-	public void onPlayerPlaceBlock(ChangeBlockEvent.Place event, @First Player player)
+	public void onPlayerPlaceBlock(ChangeBlockEvent.Place event, @Root Player player)
 	{
 		for (Transaction<BlockSnapshot> transaction : event.getTransactions())
 		{

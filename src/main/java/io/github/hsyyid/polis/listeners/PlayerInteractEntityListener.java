@@ -5,11 +5,12 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.filter.cause.First;
+import org.spongepowered.api.event.filter.cause.Root;
 
 public class PlayerInteractEntityListener
 {
 	@Listener
-	public void onPlayerRightClick(InteractEntityEvent.Secondary event, @First Player player)
+	public void onPlayerRightClick(InteractEntityEvent.Secondary event, @Root Player player)
 	{
 		String isClaimed = ConfigManager.isClaimed(event.getTargetEntity().getLocation());
 
