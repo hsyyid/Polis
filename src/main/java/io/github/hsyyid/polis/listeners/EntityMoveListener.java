@@ -9,7 +9,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
-import org.spongepowered.api.event.entity.DisplaceEntityEvent;
+import org.spongepowered.api.event.entity.MoveEntityEvent;
 import org.spongepowered.api.service.economy.account.Account;
 import org.spongepowered.api.service.economy.transaction.ResultType;
 import org.spongepowered.api.service.economy.transaction.TransactionResult;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class EntityMoveListener
 {
 	@Listener
-	public void onPlayerMove(DisplaceEntityEvent event)
+	public void onPlayerMove(MoveEntityEvent event)
 	{
 		if (event.getTargetEntity() instanceof Player)
 		{
