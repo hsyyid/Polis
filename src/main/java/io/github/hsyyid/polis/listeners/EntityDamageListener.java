@@ -19,9 +19,9 @@ public class EntityDamageListener
 		if (!isClaimed.equals("false"))
 		{
 			// If a player attacked this entity
-			if (event.getCause().first(Player.class).isPresent())
+			if (event.getCause().root() instanceof Player)
 			{
-				Player player = event.getCause().first(Player.class).get();
+				Player player = (Player) event.getCause().root();
 
 				// And this area is a SafeZone
 				if (isClaimed.equals("SafeZone"))
@@ -56,8 +56,8 @@ public class EntityDamageListener
 						Player target = (Player) event.getTargetEntity();
 						String targetPlayerTeamName = ConfigManager.getTeam(target.getUniqueId());
 
-						// If their team names are the same
-						if (targetPlayerTeamName != null && playerTeamName != null && targetPlayerTeamName.equals(playerTeamName))
+						// If they are both in the same team... (and different people)
+						if (targetPlayerTeamName != null && playerTeamName != null && !target.getUniqueId().equals(player.getUniqueId()) && targetPlayerTeamName.equals(playerTeamName))
 						{
 							player.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "You cannot hurt people in your Polis."));
 							target.sendMessage(Text.of(TextColors.DARK_RED, player.getName(), TextColors.RED, " tried to hurt you."));

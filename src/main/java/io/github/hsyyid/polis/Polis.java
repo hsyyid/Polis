@@ -29,6 +29,7 @@ import io.github.hsyyid.polis.cmdexecutors.PolisKickMemberExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisLeaveExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisListExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisMapExecutor;
+import io.github.hsyyid.polis.cmdexecutors.PolisPlayerInfoExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveAllyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveEnemyExecutor;
 import io.github.hsyyid.polis.cmdexecutors.PolisRemoveExecutiveExecutor;
@@ -256,6 +257,13 @@ public class Polis
 			.permission("polis.invite")
 			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
 			.executor(new PolisInviteExecutor())
+			.build());
+
+		subcommands.put(Arrays.asList("player"), CommandSpec.builder()
+			.description(Text.of("Player Info Command"))
+			.permission("polis.player")
+			.arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))))
+			.executor(new PolisPlayerInfoExecutor())
 			.build());
 
 		subcommands.put(Arrays.asList("addusable"), CommandSpec.builder()

@@ -53,7 +53,7 @@ public class EntityMoveListener
 
 								if (transactionResult.getResult() == ResultType.SUCCESS)
 								{
-									//TODO Perhaps move this into an asynchronous task so if they're running around super fast it's not going to cause issues. Alternately only save the claims after they turn it off
+									// TODO: Perhaps move this into an asynchronous task so if they're running around super fast it's not going to cause issues. Alternately only save the claims after they turn it off
 									ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ(), true);
 									ConfigManager.withdrawFromTownBank(ConfigManager.getClaimCost(), playerTeamName);
 									player.sendMessage(Text.builder().append(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for " + ConfigManager.getClaimCost() + " "))
@@ -87,16 +87,16 @@ public class EntityMoveListener
 
 				if (optionalChunk.isPresent())
 				{
-					//Same TODO as above
+					// Same TODO as above
 					Vector3i chunk = optionalChunk.get();
 					ConfigManager.claim(Polis.adminAutoClaim.get(player.getUniqueId()), player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ(), true);
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for " + Polis.adminAutoClaim.get(player.getUniqueId())));
 				}
 			}
 
-			if (!ConfigManager.isClaimed(previousLocation).equalsIgnoreCase(ConfigManager.isClaimed(newLocation)))
+			if (!ConfigManager.isClaimed(previousLocation).equals(ConfigManager.isClaimed(newLocation)))
 			{
-				if (ConfigManager.isClaimed(newLocation).equalsIgnoreCase("false"))
+				if (ConfigManager.isClaimed(newLocation).equals("false"))
 				{
 					player.sendMessage(ConfigManager.getUnclaimedNotification());
 				}
@@ -113,6 +113,7 @@ public class EntityMoveListener
 
 			if (ConfigManager.isClaimed(newLocation).equals("SafeZone"))
 			{
+				// Don't allow mobs in SafeZone!
 				event.setCancelled(true);
 			}
 		}
