@@ -26,8 +26,10 @@ repositories {
 }
 
 dependencies {
-    compile files("libs/spongeapi-bleeding-1.10-SNAPSHOT.jar")
-	compile "com.github.Flibio:Updatifier:v1.4.0"
+    compile "org.spongepowered:spongeapi:bleeding-1.10-SNAPSHOT"
+	compile("com.github.Flibio:Updatifier:v1.4.0") {
+		exclude module: 'spongeapi'
+	}
 }
 
 test {
