@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version = '2.6.6'
+version = '2.6.8'
 group = "io.github.hsyyid"
 archivesBaseName = "Polis"
 
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.spongepowered:spongeapi:bleeding-1.10-SNAPSHOT"
+    compile "org.spongepowered:spongeapi:5.0.0-SNAPSHOT"
 	compile("com.github.Flibio:Updatifier:v1.4.0") {
 		exclude module: 'spongeapi'
 	}
