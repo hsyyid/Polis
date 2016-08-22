@@ -20,8 +20,6 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import java.util.Optional;
-
 public class EntityMoveListener {
 	@Listener(order = Order.POST)
 	public void onPlayerMove(final DisplaceEntityEvent event, @Getter("getTargetEntity") final Player player) {
