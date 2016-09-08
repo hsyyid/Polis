@@ -17,7 +17,7 @@ public class PolisLeaveExecutor implements CommandExecutor
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
-			String playerTownName = ConfigManager.getTeam(player.getUniqueId());
+			String playerTownName = ConfigManager.getTeam(player.getUniqueId().toString());
 
 			if (playerTownName != null)
 			{
