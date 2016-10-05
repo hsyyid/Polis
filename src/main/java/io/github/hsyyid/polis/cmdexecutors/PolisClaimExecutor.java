@@ -50,6 +50,10 @@ public class PolisClaimExecutor implements CommandExecutor
 								if (transactionResult.getResult() == ResultType.SUCCESS)
 								{
 									ConfigManager.claim(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ(), true);
+									
+									if (ConfigManager.getHQY(playerTeamName) == 0 && ConfigManager.getHQX(playerTeamName) == 0 && ConfigManager.getHQZ(playerTeamName) == 0)
+										ConfigManager.setHQ(playerTeamName, player.getLocation(), player.getWorld().getName());
+									
 									ConfigManager.withdrawFromTownBank(ConfigManager.getClaimCost(), playerTeamName);
 									player.sendMessage(Text.builder().append(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Successfully claimed this location for " + ConfigManager.getClaimCost() + " "))
 										.append(Polis.economyService.getDefaultCurrency().getPluralDisplayName()).build());
