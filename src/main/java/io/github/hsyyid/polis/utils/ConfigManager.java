@@ -1,9 +1,29 @@
 package io.github.hsyyid.polis.utils;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockType;
+import org.spongepowered.api.entity.EntityType;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColor;
+import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.serializer.TextSerializers;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
+
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.Configs;
@@ -12,23 +32,6 @@ import io.github.hsyyid.polis.config.MessageConfig;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockType;
-import org.spongepowered.api.entity.EntityType;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.text.serializer.TextSerializers;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 public class ConfigManager
 {
@@ -540,11 +543,7 @@ public class ConfigManager
 			{
 				String teams = valueNode.getString();
 
-				if (teams.contains(allyTeamName + ","))
-				{
-					;
-				}
-				else
+				if (!teams.contains(allyTeamName + ","))
 				{
 					String formattedItem = (allyTeamName + ",");
 					Configs.setValueAndSave(teamConfig, valueNode.getPath(), teams + formattedItem);
@@ -557,9 +556,7 @@ public class ConfigManager
 		}
 
 		if (addAlly)
-		{
 			ConfigManager.addAlly(allyTeamName, teamName, false);
-		}
 	}
 
 	public static void removeMember(String teamName, String memberUUID)
@@ -652,9 +649,7 @@ public class ConfigManager
 					UUID uuid = UUID.fromString(memberUuid);
 
 					if (Sponge.getServer().getPlayer(uuid).isPresent())
-					{
 						Sponge.getServer().getPlayer(uuid).get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, "Your Polis has been deleted!"));
-					}
 				}
 			}
 		}
@@ -669,6 +664,30 @@ public class ConfigManager
 			Configs.setValueAndSave(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
 		else
 			Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
+	}
+	
+	public static CanClaimResult canClaim(Player player)
+	{
+		String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
+		if (playerTeamName == null)
+			return CanClaimResult.NO_TOWN;
+		if (ConfigManager.getMembers(playerTeamName).contains(player.getUniqueId()))
+			return CanClaimResult.NO_PERMISSION;
+		Optional<Vector3i> optionalChunk = Sponge.getServer().getChunkLayout().toChunk(player.getLocation().getBlockPosition());
+		if (optionalChunk.isPresent())
+		{
+			String claimTown = ConfigManager.isClaimed(player.getLocation());
+			if (!claimTown.equals("false"))
+				return claimTown.equals(playerTeamName) ? CanClaimResult.ALREADY_CLAIMED : CanClaimResult.OTHER_CLAIMED;
+			if (ConfigManager.getClaims(playerTeamName) >= ConfigManager.getClaimCapMax())
+				return CanClaimResult.MAX_CLAIMS;
+			if (ConfigManager.getClaims(playerTeamName) >= ConfigManager.getClaimCapForSize(playerTeamName))
+				return CanClaimResult.TOWN_SIZE;
+			if (ConfigManager.getBalance(playerTeamName).compareTo(ConfigManager.getClaimCost()) < 0)
+				return CanClaimResult.INSUFFICIENT_FUNDS;
+			return CanClaimResult.YES;
+		}
+		return CanClaimResult.ERROR; //Shouldn't be possible unless the player has no location, right?
 	}
 
 	public static BigDecimal getClaimCost()
@@ -731,7 +750,7 @@ public class ConfigManager
 		return Configs.getConfig(claimsConfig).getNode("claims", teamName).getChildrenMap().keySet().size();
 	}
 
-	public static int getClaimCap()
+	public static int getClaimCapMax()
 	{
 		CommentedConfigurationNode node = Configs.getConfig(mainConfig).getNode("polis", "claims", "cap");
 
@@ -746,6 +765,11 @@ public class ConfigManager
 		}
 	}
 
+	public static int getClaimCapForSize(String teamName)
+	{
+		return 16; //DEBUG ONLY
+	}
+	
 	public static void removeClaims(String teamName)
 	{
 		Configs.removeChild(claimsConfig, new Object[] { "claims" }, teamName);

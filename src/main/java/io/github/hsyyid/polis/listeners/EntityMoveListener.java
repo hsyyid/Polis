@@ -46,7 +46,7 @@ public class EntityMoveListener {
 				if (playerTeamName != null && (ConfigManager.getExecutives(playerTeamName).contains(player.getUniqueId().toString()) || ConfigManager.getLeader(playerTeamName).equals(player.getUniqueId().toString()))) {
 					Vector3i chunk = newLocation.getChunkPosition();
 
-					if (ConfigManager.getClaims(playerTeamName) < ConfigManager.getClaimCap()) {
+					if (ConfigManager.getClaims(playerTeamName) < ConfigManager.getClaimCapMax()) {
 						if (ConfigManager.getBalance(playerTeamName).compareTo(ConfigManager.getClaimCost()) >= 0) {
 							Account account = Polis.economyService.getOrCreateAccount(playerTeamName).get();
 							TransactionResult transactionResult = account.withdraw(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(NamedCause.source(player)));
