@@ -767,7 +767,11 @@ public class ConfigManager
 
 	public static int getClaimCapForSize(String teamName)
 	{
-		return 16; //DEBUG ONLY
+		if (teamName.equals("SafeZone") || teamName.equals("WarZone"))
+			return Integer.MAX_VALUE;
+		
+		int townSize = ConfigManager.getMembers(teamName).size() + ConfigManager.getExecutives(teamName).size() + 1;
+		return townSize * 5; //TODO link to some config ladder or a single config value for the multiplier, idk
 	}
 	
 	public static void removeClaims(String teamName)
