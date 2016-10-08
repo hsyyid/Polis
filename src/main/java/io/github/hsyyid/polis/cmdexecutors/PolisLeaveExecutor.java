@@ -25,7 +25,7 @@ public class PolisLeaveExecutor implements CommandExecutor
 				{
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "You are the leader of town " + playerTownName + " to leave, you must appoint a new leader by doing /setleader"));
 				}
-				else if (ConfigManager.getExecutives(playerTownName).contains(player.getUniqueId()))
+				else if (ConfigManager.getExecutives(playerTownName).contains(player.getUniqueId().toString()))
 				{
 					player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Left town."));
 					ConfigManager.removeExecutive(playerTownName, player.getUniqueId().toString());

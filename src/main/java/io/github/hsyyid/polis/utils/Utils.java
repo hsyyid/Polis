@@ -96,4 +96,9 @@ public class Utils
 			}).name("Polis - Tax Collection for " + team).interval(ConfigManager.getTaxInterval(team), TimeUnit.SECONDS).submit(Sponge.getPluginManager().getPlugin(PluginInfo.ID).get().getInstance().get());
 		}
 	}
+	
+	public static Text polisPrefix()
+	{
+		return Text.of(TextColors.GREEN, "[Polis] ");
+	}
 }
