@@ -665,7 +665,7 @@ public class ConfigManager
 		else
 			Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
 	}
-	
+
 	public static CanClaimResult canClaim(Player player)
 	{
 		String playerTeamName = ConfigManager.getTeam(player.getUniqueId());
@@ -687,7 +687,7 @@ public class ConfigManager
 				return CanClaimResult.INSUFFICIENT_FUNDS;
 			return CanClaimResult.YES;
 		}
-		return CanClaimResult.ERROR; //Shouldn't be possible unless the player has no location, right?
+		return CanClaimResult.ERROR; // Shouldn't be possible unless the player has no location, right?
 	}
 
 	public static BigDecimal getClaimCost()
@@ -769,11 +769,26 @@ public class ConfigManager
 	{
 		if (teamName.equals("SafeZone") || teamName.equals("WarZone"))
 			return Integer.MAX_VALUE;
-		
+
 		int townSize = ConfigManager.getMembers(teamName).size() + ConfigManager.getExecutives(teamName).size() + 1;
-		return townSize * 5; //TODO link to some config ladder or a single config value for the multiplier, idk
+		return townSize * ConfigManager.getClaimCapMultiplier();
 	}
-	
+
+	public static int getClaimCapMultiplier()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(mainConfig).getNode("polis", "claims", "multiplier");
+
+		if (valueNode.getValue() != null)
+		{
+			return valueNode.getInt();
+		}
+		else
+		{
+			Configs.setValueAndSave(mainConfig, new Object[] { "polis", "claims", "multiplier" }, 5);
+			return 5;
+		}
+	}
+
 	public static void removeClaims(String teamName)
 	{
 		Configs.removeChild(claimsConfig, new Object[] { "claims" }, teamName);
