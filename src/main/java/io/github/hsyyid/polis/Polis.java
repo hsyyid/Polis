@@ -1,9 +1,36 @@
 package io.github.hsyyid.polis;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.entity.EntityType;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
+import org.spongepowered.api.plugin.Dependency;
+import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.service.economy.EconomyService;
+import org.spongepowered.api.text.Text;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+
 import io.github.hsyyid.polis.cmdexecutors.AddUsableExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminAutoClaimExecutor;
 import io.github.hsyyid.polis.cmdexecutors.AdminClaimExecutor;
@@ -52,6 +79,7 @@ import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.MessageConfig;
 import io.github.hsyyid.polis.config.TeamsConfig;
 import io.github.hsyyid.polis.listeners.ChatListener;
+import io.github.hsyyid.polis.listeners.ChunkListener;
 import io.github.hsyyid.polis.listeners.DropItemListener;
 import io.github.hsyyid.polis.listeners.EntityDamageListener;
 import io.github.hsyyid.polis.listeners.EntityMoveListener;
@@ -64,31 +92,6 @@ import io.github.hsyyid.polis.listeners.PlayerPlaceBlockListener;
 import io.github.hsyyid.polis.utils.Invite;
 import io.github.hsyyid.polis.utils.Utils;
 import me.flibio.updatifier.Updatifier;
-import org.slf4j.Logger;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.config.ConfigDir;
-import org.spongepowered.api.entity.EntityType;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameInitializationEvent;
-import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
-import org.spongepowered.api.plugin.Dependency;
-import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.service.economy.EconomyService;
-import org.spongepowered.api.text.Text;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 @Updatifier(repoName = "Polis", repoOwner = "hsyyid", version = "v" + PluginInfo.VERSION)
 @Plugin(id = PluginInfo.ID, name = PluginInfo.NAME, version = PluginInfo.VERSION, description = PluginInfo.DESCRIPTION, dependencies = @Dependency(id = "Updatifier", version = "1.0", optional = true) )
@@ -293,7 +296,8 @@ public class Polis
 		Sponge.getEventManager().registerListeners(this, new ExplosionEventListener());
 		Sponge.getEventManager().registerListeners(this, new EntityDamageListener());
 		Sponge.getEventManager().registerListeners(this, new DropItemListener());
-
+		Sponge.getEventManager().registerListeners(this, new ChunkListener());
+		
 		getLogger().info("-----------------------------");
 		getLogger().info("Polis was made by HassanS6000!");
 		getLogger().info("Please post all errors on the Sponge Thread or on GitHub!");
