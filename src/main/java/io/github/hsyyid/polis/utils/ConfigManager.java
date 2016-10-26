@@ -747,7 +747,15 @@ public class ConfigManager
 
 	public static int getClaims(String teamName)
 	{
-		return Configs.getConfig(claimsConfig).getNode("claims", teamName).getChildrenMap().keySet().size();
+		int numClaims = 0;
+		
+		for (Object o1 : claimsConfig.get().getNode("claims", teamName).getChildrenMap().keySet())
+			for (Object o2 : claimsConfig.get().getNode("claims", teamName, o1).getChildrenMap().keySet())
+				numClaims += claimsConfig.get().getNode("claims", teamName, o1, o2).getChildrenMap().size();
+		
+		return numClaims;
+		
+		//return Configs.getConfig(claimsConfig).getNode("claims", teamName).getChildrenMap().keySet().size();
 	}
 
 	public static int getClaimCapMax()
