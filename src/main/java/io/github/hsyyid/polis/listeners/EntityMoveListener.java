@@ -1,8 +1,5 @@
 package io.github.hsyyid.polis.listeners;
 
-import com.flowpowered.math.vector.Vector3i;
-import io.github.hsyyid.polis.Polis;
-import io.github.hsyyid.polis.utils.ConfigManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.monster.Monster;
 import org.spongepowered.api.entity.living.player.Player;
@@ -19,6 +16,11 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+
+import com.flowpowered.math.vector.Vector3i;
+
+import io.github.hsyyid.polis.Polis;
+import io.github.hsyyid.polis.utils.ConfigManager;
 
 public class EntityMoveListener {
 	@Listener(order = Order.POST)

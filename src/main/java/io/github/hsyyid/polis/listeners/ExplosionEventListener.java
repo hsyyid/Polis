@@ -17,12 +17,12 @@ public class ExplosionEventListener
 		{
 			Location<World> location = event.getExplosion().getSourceExplosive().get().getLocation();
 
-			if (ConfigManager.isClaimed(location).equals("SafeZone"))
-			{
+			String claim = ConfigManager.isClaimed(location);
+			
+			if (claim.equals("SafeZone"))
 				event.setCancelled(true);
-			}
 
-			else if (ConfigManager.isClaimed(location).equals("WarZone"))
+			else if (claim.equals("WarZone"))
 			{
 				if (event.getExplosion().shouldBreakBlocks())
 				{

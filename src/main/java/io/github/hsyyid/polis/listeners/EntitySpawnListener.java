@@ -17,12 +17,13 @@ public class EntitySpawnListener
 		event.filterEntities(entity -> {
 			if (entity != null)
 			{
-				if (ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone") && entity instanceof Monster)
+				String claim = ConfigManager.isClaimed(entity.getLocation());
+				if (claim.equals("SafeZone") && entity instanceof Monster)
 				{
 					return false;
 				}
 
-				if (ConfigManager.isClaimed(entity.getLocation()).equals("SafeZone"))
+				if (claim.equals("SafeZone"))
 				{
 					Map<EntityType, String> protectedMobs = ConfigManager.getMobs("safezone");
 
@@ -44,7 +45,7 @@ public class EntitySpawnListener
 						}
 					}
 				}
-				else if (ConfigManager.isClaimed(entity.getLocation()).equals("WarZone"))
+				else if (claim.equals("WarZone"))
 				{
 					Map<EntityType, String> protectedMobs = ConfigManager.getMobs("warzone");
 
