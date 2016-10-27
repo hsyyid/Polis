@@ -2,8 +2,10 @@ package io.github.hsyyid.polis.cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -13,7 +15,7 @@ import io.github.hsyyid.polis.utils.ConfigManager;
 
 public class ClaimCache
 {
-	private static HashMap<String, String> claimCache = new HashMap<String, String>();
+	public static HashMap<String, String> claimCache = new HashMap<String, String>();
 	
 	public synchronized static void onChunkLoad(Vector3i location, UUID world)
 	{
@@ -29,16 +31,15 @@ public class ClaimCache
 	
 	public synchronized static String getClaim(Location<World> location)
 	{
-		String townName = claimCache.get(location.getExtent().getUniqueId().toString() + "." + (int)location.getX() + "." + (int)location.getZ());
+		Optional<Vector3i> optionalChunk = Sponge.getServer().getChunkLayout().toChunk(location.getBlockPosition());
 		
-		return (townName == null ? "false" : townName);
-	}
-	
-	public synchronized static String getClaim(UUID world, Integer chunkX, Integer chunkZ)
-	{
-		String townName = claimCache.get(world.toString() + "." + chunkX + "." + chunkZ);
-		
-		return (townName == null ? "false" : townName);
+		if (optionalChunk.isPresent())
+		{
+			String townName = claimCache.get(location.getExtent().getUniqueId().toString() + "." + optionalChunk.get().getX() + "." + optionalChunk.get().getZ());
+			return (townName == null ? "false" : townName);
+		}
+		else
+			return "false";
 	}
 	
 	public synchronized static void claim(UUID world, Integer chunkX, Integer chunkZ, String teamName)

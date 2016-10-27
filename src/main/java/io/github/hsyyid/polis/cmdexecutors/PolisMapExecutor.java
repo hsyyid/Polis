@@ -2,6 +2,8 @@ package io.github.hsyyid.polis.cmdexecutors;
 
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Lists;
+
+import io.github.hsyyid.polis.cache.ClaimCache;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -82,7 +84,8 @@ public class PolisMapExecutor implements CommandExecutor
 					}
 
 					Vector3i chunkAtLocation = topLeftPs.add(dx, 0, dz);
-					String polisAtLocation = ConfigManager.isClaimed(new Location<World>(center.getExtent(), chunkAtLocation.getX(), chunkAtLocation.getY(), chunkAtLocation.getZ()));
+					String polisAtLocation = ClaimCache.claimCache.get(center.getExtent().getUniqueId().toString() + "." + chunkAtLocation.getX() + "." + chunkAtLocation.getZ());
+					//String polisAtLocation = ConfigManager.isClaimed(new Location<World>(center.getExtent(), chunkAtLocation.getX(), chunkAtLocation.getY(), chunkAtLocation.getZ()));
 
 					if (polisAtLocation == null)
 					{

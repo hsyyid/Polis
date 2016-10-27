@@ -36,7 +36,7 @@ public class PolisUnclaimExecutor implements CommandExecutor
 				{
 					Vector3i chunk = optionalChunk.get();
 
-					if (ConfigManager.isClaimed(playerTeamName, player.getLocation().getExtent().getUniqueId(), chunk.getX(), chunk.getZ()))
+					if (ConfigManager.isClaimed(playerTeamName, player.getLocation()))
 					{
 						TransactionResult transactionResult = Polis.economyService.getOrCreateAccount(playerTeamName).get().deposit(Polis.economyService.getDefaultCurrency(), ConfigManager.getClaimCost(), Cause.of(NamedCause.source(player)));
 

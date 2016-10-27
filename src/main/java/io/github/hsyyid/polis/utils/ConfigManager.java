@@ -819,13 +819,13 @@ public class ConfigManager
 		ClaimCache.unclaim(worldUUID, chunkX, chunkZ);
 	}
 
-	public static boolean isClaimed(String teamName, UUID worldUUID, int chunkX, int chunkZ)
+	public static boolean isClaimed(String teamName, Location<World> location)
 	{
 		try
 		{
 			//ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
 			//return valueNode.getBoolean();
-			return teamName.equals(ClaimCache.getClaim(worldUUID, chunkX, chunkZ));
+			return teamName.equals(isClaimed(location));
 		}
 		catch (Exception e)
 		{
