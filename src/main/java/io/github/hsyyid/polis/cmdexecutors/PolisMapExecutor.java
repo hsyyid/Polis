@@ -82,7 +82,7 @@ public class PolisMapExecutor implements CommandExecutor
 					}
 
 					Vector3i chunkAtLocation = topLeftPs.add(dx, 0, dz);
-					String polisAtLocation = ConfigManager.isClaimed(chunkAtLocation, center.getExtent().getUniqueId());
+					String polisAtLocation = ConfigManager.isClaimed(new Location<World>(center.getExtent(), chunkAtLocation.getX(), chunkAtLocation.getY(), chunkAtLocation.getZ()));
 
 					if (polisAtLocation == null)
 					{

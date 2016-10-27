@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import io.github.hsyyid.polis.cache.ClaimCache;
 import io.github.hsyyid.polis.config.ClaimsConfig;
 import io.github.hsyyid.polis.config.Config;
 import io.github.hsyyid.polis.config.Configs;
@@ -660,10 +661,13 @@ public class ConfigManager
 
 	public static void claim(String teamName, UUID worldUUID, int chunkX, int chunkZ, boolean save)
 	{
+		ClaimCache.claim(worldUUID, chunkX, chunkZ, teamName);
+		
 		if (save)
 			Configs.setValueAndSave(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
 		else
 			Configs.setValue(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, true);
+		
 	}
 
 	public static CanClaimResult canClaim(Player player)
@@ -800,19 +804,28 @@ public class ConfigManager
 	public static void removeClaims(String teamName)
 	{
 		Configs.removeChild(claimsConfig, new Object[] { "claims" }, teamName);
+		Sponge.getScheduler().createTaskBuilder().async().execute(new Runnable(){
+			@Override
+			public void run()
+			{
+				ClaimCache.unclaimAll(teamName);
+			}
+		});
 	}
 
 	public static void unclaim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
 		Configs.setValueAndSave(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, false);
+		ClaimCache.unclaim(worldUUID, chunkX, chunkZ);
 	}
 
 	public static boolean isClaimed(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
 		try
 		{
-			ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
-			return valueNode.getBoolean();
+			//ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunkX) + "." + String.valueOf(chunkZ)).split("\\."));
+			//return valueNode.getBoolean();
+			return teamName.equals(ClaimCache.getClaim(worldUUID, chunkX, chunkZ));
 		}
 		catch (Exception e)
 		{
@@ -822,37 +835,7 @@ public class ConfigManager
 
 	public static String isClaimed(Location<World> location)
 	{
-		String claimed = "false";
-		UUID worldUUID = location.getExtent().getUniqueId();
-		Optional<Vector3i> optionalChunk = Sponge.getServer().getChunkLayout().toChunk(location.getBlockPosition());
-
-		if (optionalChunk.isPresent())
-		{
-			Vector3i chunk = optionalChunk.get();
-
-			for (Object team : getTeams())
-			{
-				String teamName = String.valueOf(team);
-
-				try
-				{
-					ConfigurationNode valueNode = Configs.getConfig(claimsConfig).getNode((Object[]) ("claims." + teamName + "." + worldUUID.toString() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ())).split("\\."));
-					boolean value = valueNode.getBoolean();
-
-					if (value)
-					{
-						claimed = teamName;
-						break;
-					}
-				}
-				catch (Exception e)
-				{
-					;
-				}
-			}
-		}
-
-		return claimed;
+		return ClaimCache.getClaim(location);
 	}
 
 	public static String isClaimed(Vector3i chunk, UUID worldUUID)

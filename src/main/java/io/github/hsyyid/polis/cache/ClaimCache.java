@@ -1,5 +1,6 @@
 package io.github.hsyyid.polis.cache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -12,58 +13,53 @@ import io.github.hsyyid.polis.utils.ConfigManager;
 
 public class ClaimCache
 {
-	private static HashMap<UUID, HashMap<Integer, HashMap<Integer, String>>> claimCache = new HashMap<UUID, HashMap<Integer, HashMap<Integer, String>>>();
+	private static HashMap<String, String> claimCache = new HashMap<String, String>();
 	
 	public synchronized static void onChunkLoad(Vector3i location, UUID world)
 	{
-		if (!claimCache.containsKey(world))
-			claimCache.put(world, new HashMap<Integer, HashMap<Integer, String>>());
-		
-		HashMap<Integer, HashMap<Integer, String>> worldCache = claimCache.get(world);
-		
-		if (!worldCache.containsKey(location.getX()))
-			worldCache.put(location.getX(), new HashMap<Integer, String>());
-		
-		HashMap<Integer, String> chunkXCache = worldCache.get(location.getX());
-		
-		String townName = ConfigManager.isClaimed(location, world);
-		
-		if (townName.equals("false"))
-			return;
-		
-		chunkXCache.put(location.getZ(), townName);
+		String claim = ConfigManager.isClaimed(location, world);
+		if (!claim.equals("false"))
+			claimCache.put(world.toString() + "." + location.getX() + "." + location.getZ(), claim);
 	}
 	
 	public synchronized static void onChunkUnload(Vector3i location, UUID world)
 	{
-		try
-		{
-			claimCache.get(world).get(location.getX()).remove(location.getZ());	
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace(); // Don't think this would happen, but would be nice to see if it does
-		}
+		claimCache.remove(world.toString() + "." + location.getX() + "." + location.getZ());	
 	}
 	
 	public synchronized static String getClaim(Location<World> location)
 	{
-		HashMap<Integer, HashMap<Integer, String>> worldCache = claimCache.get(location.getExtent().getUniqueId());
-		
-		if (worldCache == null)
-			return "false";
-		
-		Integer chunkX = (int) location.getX();
-		
-		HashMap<Integer, String> chunkXCache = worldCache.get(chunkX);
-		
-		if (chunkXCache == null)
-			return "false";
-		
-		Integer chunkZ = (int) location.getZ();
-		
-		String townName = chunkXCache.get(chunkZ);
+		String townName = claimCache.get(location.getExtent().getUniqueId().toString() + "." + (int)location.getX() + "." + (int)location.getZ());
 		
 		return (townName == null ? "false" : townName);
+	}
+	
+	public synchronized static String getClaim(UUID world, Integer chunkX, Integer chunkZ)
+	{
+		String townName = claimCache.get(world.toString() + "." + chunkX + "." + chunkZ);
+		
+		return (townName == null ? "false" : townName);
+	}
+	
+	public synchronized static void claim(UUID world, Integer chunkX, Integer chunkZ, String teamName)
+	{
+		claimCache.put(world.toString() + "." + chunkX + "." + chunkZ, teamName);
+	}
+	
+	public synchronized static void unclaim(UUID world, Integer chunkX, Integer chunkZ)
+	{
+		claimCache.remove(world.toString() + "." + chunkX + "." + chunkZ);
+	}
+	
+	public synchronized static void unclaimAll(String teamName)
+	{
+		ArrayList<String> removeClaims = new ArrayList<String>();
+		
+		for (String claimKey : claimCache.keySet())
+			if (claimCache.get(claimKey).equals(teamName))
+				removeClaims.add(claimKey);
+		
+		for (String claim : removeClaims)
+			claimCache.remove(claim);
 	}
 }
