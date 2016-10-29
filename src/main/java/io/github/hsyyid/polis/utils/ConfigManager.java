@@ -1040,6 +1040,8 @@ public class ConfigManager
 		ConfigurationNode polisNode = Configs.getConfig(teamConfig).getNode("teams", oldPolisName);
 		Configs.setValueAndSave(teamConfig, new Object[] { "teams", newPolisName }, polisNode.getValue());
 		Configs.removeChild(teamConfig, new Object[] { "teams" }, oldPolisName);
+		
+		ClaimCache.renameTown(oldPolisName, newPolisName);
 	}
 
 	public static BigDecimal getPolisCreateCost()

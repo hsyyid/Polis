@@ -63,4 +63,15 @@ public class ClaimCache
 		for (String claim : removeClaims)
 			claimCache.remove(claim);
 	}
+	
+	public synchronized static void renameTown(String oldTownName, String newTownName)
+	{
+		ArrayList<String> keysToReplace = new ArrayList<String>();
+		for (String key : claimCache.keySet())
+			if (claimCache.get(key).equals(oldTownName))
+				keysToReplace.add(key);
+		
+		for (String key : keysToReplace)
+			claimCache.put(key, newTownName);
+	}
 }
