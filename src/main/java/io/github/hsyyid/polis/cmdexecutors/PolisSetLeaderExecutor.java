@@ -25,14 +25,15 @@ public class PolisSetLeaderExecutor implements CommandExecutor
 			
 			if (ConfigManager.getTeams().contains(townName))
 			{
-				if (ConfigManager.getLeader(townName).equals(player.getUniqueId().toString()))
+				if (ConfigManager.getLeader(townName).equals(player.getUniqueId().toString()) || player.hasPermission("polis.setleader.admin"))
 				{
 					try
 					{
 						if (ConfigManager.getMembers(townName).contains(p.getUniqueId().toString()))
 						{
+							ConfigManager.addTeamMember(townName, ConfigManager.getLeader(townName));
 							ConfigManager.setTeamLeader(townName, p.getUniqueId().toString());
-							ConfigManager.addTeamMember(townName, player.getUniqueId().toString());
+							
 							player.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Set " + townName + " leader to " + p.getName()));
 						}
 						else
