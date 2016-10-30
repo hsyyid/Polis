@@ -249,7 +249,7 @@ public class Polis
 
 		subcommands.put(Arrays.asList("delete"), CommandSpec.builder().description(Text.of("Delete Town Command")).permission("polis.delete").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))).executor(new PolisDeleteExecutor()).build());
 
-		subcommands.put(Arrays.asList("disband"), CommandSpec.builder().description(Text.of("Disband Town Command")).permission("polis.disband").executor(new PolisDisbandExecutor()).build());
+		subcommands.put(Arrays.asList("disband"), CommandSpec.builder().description(Text.of("Disband Town Command")).permission("polis.disband").arguments(GenericArguments.optional(GenericArguments.string(Text.of("town name")))).executor(new PolisDisbandExecutor()).build());
 
 		subcommands.put(Arrays.asList("info"), CommandSpec.builder().description(Text.of("Town Info Command")).permission("polis.info").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))).executor(new PolisInfoExecutor()).build());
 
