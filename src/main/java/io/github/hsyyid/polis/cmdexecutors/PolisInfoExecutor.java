@@ -22,8 +22,8 @@ public class PolisInfoExecutor implements CommandExecutor
 
 		int numExecs = ConfigManager.getExecutives(townName).size();
 		int numMembs = ConfigManager.getMembers(townName).size();
-		int numAlly = ConfigManager.getAllies(townName).size() - 1; //- safezone
-		int numEnemy = ConfigManager.getEnemies(townName).size() - 1; //- warzone
+		int numAlly = ConfigManager.getAllies(townName).size();
+		int numEnemy = ConfigManager.getEnemies(townName).size(); 
 		
 		if (ConfigManager.getTeams().contains(townName))
 		{
