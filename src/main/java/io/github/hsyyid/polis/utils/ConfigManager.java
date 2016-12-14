@@ -815,7 +815,8 @@ public class ConfigManager
 
 	public static void unclaim(String teamName, UUID worldUUID, int chunkX, int chunkZ)
 	{
-		Configs.setValueAndSave(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, false);
+		Configs.removeChild(claimsConfig, new Object[] {"claims", teamName, worldUUID.toString(), String.valueOf(chunkX)}, String.valueOf(chunkZ)); 
+		//Configs.setValueAndSave(claimsConfig, new Object[] { "claims", teamName, worldUUID.toString(), String.valueOf(chunkX), String.valueOf(chunkZ) }, false);
 		ClaimCache.unclaim(worldUUID, chunkX, chunkZ);
 	}
 
