@@ -4,6 +4,8 @@ import io.github.hsyyid.polis.PluginInfo;
 import io.github.hsyyid.polis.Polis;
 import io.github.hsyyid.polis.utils.ConfigManager;
 import io.github.hsyyid.polis.utils.Invite;
+import io.github.hsyyid.polis.utils.Utils;
+
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -11,6 +13,7 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -21,8 +24,14 @@ public class PolisInviteExecutor implements CommandExecutor
 {
 	public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException
 	{
-		Player p = ctx.<Player> getOne("player").get();
-
+		String playerName = ctx.<String> getOne("player").get();
+		User p = Utils.getOfflinePlayer(playerName);
+		if (p == null)
+		{
+			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Player not recognized"));
+			return CommandResult.success();
+		}
+		
 		if (src instanceof Player)
 		{
 			Player player = (Player) src;
@@ -32,7 +41,7 @@ public class PolisInviteExecutor implements CommandExecutor
 			{
 				final Invite invite = new Invite(teamName, p.getUniqueId().toString());
 				Polis.invites.add(invite);
-				p.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do ", TextColors.GRAY, "/polis join ", TextColors.RED, teamName, TextColors.GOLD, " to accept!"));
+				if (p.isOnline()) p.getCommandSource().get().sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.GOLD, teamName + " has invited you to join! You have 2 minutes to do ", TextColors.GRAY, "/polis join ", TextColors.RED, teamName, TextColors.GOLD, " to accept!"));
 
 				Task.Builder taskBuilder = Sponge.getScheduler().createTaskBuilder();
 
@@ -50,14 +59,10 @@ public class PolisInviteExecutor implements CommandExecutor
 				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.YELLOW, "Successfully invited " + p.getName()));
 			}
 			else if (teamName != null)
-			{
 				src.sendMessage(Text.of(TextColors.GREEN, "[Polis]: ", TextColors.DARK_RED, "Error! ", TextColors.RED, "You are not a leader of a Town! Please ask the leader of your town or an executive to invite " + p.getName()));
-			}
 		}
 		else
-		{
 			src.sendMessage(Text.of(TextColors.DARK_RED, "Error! ", TextColors.RED, "Must be an in-game player to use /p invite!"));
-		}
 
 		return CommandResult.success();
 	}

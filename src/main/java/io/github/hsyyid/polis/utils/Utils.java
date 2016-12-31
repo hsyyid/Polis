@@ -1,22 +1,41 @@
 package io.github.hsyyid.polis.utils;
 
-import io.github.hsyyid.polis.PluginInfo;
-import io.github.hsyyid.polis.Polis;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
 import org.spongepowered.api.service.economy.transaction.ResultType;
 import org.spongepowered.api.service.economy.transaction.TransactionResult;
+import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.world.World;
 
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import io.github.hsyyid.polis.PluginInfo;
+import io.github.hsyyid.polis.Polis;
 
 public class Utils
 {
+	public static World pokemonWorld = null; //This is for Hiroku's server optimisation sshhh
+	
+	public static User getOfflinePlayer(String lastKnownName)
+	{
+		Optional<UserStorageService> optUserService = Sponge.getServiceManager().provide(UserStorageService.class);
+		if (optUserService.isPresent())
+		{
+			Optional<User> optUser = optUserService.get().get(lastKnownName);
+			if (optUser.isPresent())
+				return optUser.get();
+		}
+		return null;
+	}
+	
 	public static void startTaxService()
 	{
 		for (Object t : ConfigManager.getTeams())

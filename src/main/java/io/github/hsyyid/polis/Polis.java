@@ -213,9 +213,9 @@ public class Polis
 
 		subcommands.put(Arrays.asList("hq"), CommandSpec.builder().description(Text.of("Teleport to Town HQ Command")).permission("polis.hq.use").executor(new PolisHQExecutor()).build());
 
-		subcommands.put(Arrays.asList("invite"), CommandSpec.builder().description(Text.of("Towny Invite Command")).permission("polis.invite").arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player")))).executor(new PolisInviteExecutor()).build());
+		subcommands.put(Arrays.asList("invite"), CommandSpec.builder().description(Text.of("Towny Invite Command")).permission("polis.invite").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("player")))).executor(new PolisInviteExecutor()).build());
 
-		subcommands.put(Arrays.asList("player"), CommandSpec.builder().description(Text.of("Player Info Command")).permission("polis.player").arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player")))).executor(new PolisPlayerInfoExecutor()).build());
+		subcommands.put(Arrays.asList("player"), CommandSpec.builder().description(Text.of("Player Info Command")).permission("polis.player").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("player")))).executor(new PolisPlayerInfoExecutor()).build());
 
 		subcommands.put(Arrays.asList("addusable"), CommandSpec.builder().description(Text.of("Polis Add Interactable Command")).permission("polis.safezone.addusable").arguments(GenericArguments.onlyOne(GenericArguments.remainingJoinedStrings(Text.of("id")))).executor(new AddUsableExecutor()).build());
 
@@ -227,7 +227,7 @@ public class Polis
 
 		subcommands.put(Arrays.asList("map"), CommandSpec.builder().description(Text.of("Polis Map Command")).permission("polis.map.use").executor(new PolisMapExecutor()).build());
 
-		subcommands.put(Arrays.asList("kick"), CommandSpec.builder().description(Text.of("Kick Member Command")).permission("polis.kick.use").arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player")))).executor(new PolisKickMemberExecutor()).build());
+		subcommands.put(Arrays.asList("kick"), CommandSpec.builder().description(Text.of("Kick Member Command")).permission("polis.kick.use").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("player")))).executor(new PolisKickMemberExecutor()).build());
 
 		subcommands.put(Arrays.asList("addally"), CommandSpec.builder().description(Text.of("Add Ally Command")).permission("polis.ally.add").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))).executor(new PolisAddAllyExecutor()).build());
 
@@ -257,11 +257,11 @@ public class Polis
 
 		subcommands.put(Arrays.asList("create"), CommandSpec.builder().description(Text.of("Create Town Command")).permission("polis.add").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("town name")))).executor(new PolisCreateExecutor()).build());
 
-		subcommands.put(Arrays.asList("setleader"), CommandSpec.builder().description(Text.of("Set Leader of Town Command")).permission("polis.leader.set").arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))), GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))).executor(new PolisSetLeaderExecutor()).build());
+		subcommands.put(Arrays.asList("setleader"), CommandSpec.builder().description(Text.of("Set Leader of Town Command")).permission("polis.leader.set").arguments(GenericArguments.seq(GenericArguments.onlyOne(GenericArguments.string(Text.of("player"))), GenericArguments.onlyOne(GenericArguments.string(Text.of("town name"))))).executor(new PolisSetLeaderExecutor()).build());
 
-		subcommands.put(Arrays.asList("addexecutive"), CommandSpec.builder().description(Text.of("Adds Executive of Town Command")).permission("polis.executive.add").arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player")))).executor(new PolisAddExecutiveExecutor()).build());
+		subcommands.put(Arrays.asList("addexecutive"), CommandSpec.builder().description(Text.of("Adds Executive of Town Command")).permission("polis.executive.add").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("player")))).executor(new PolisAddExecutiveExecutor()).build());
 
-		subcommands.put(Arrays.asList("removeexecutive"), CommandSpec.builder().description(Text.of("Remove Executive of Town Command")).permission("polis.executive.remove").arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player")))).executor(new PolisRemoveExecutiveExecutor()).build());
+		subcommands.put(Arrays.asList("removeexecutive"), CommandSpec.builder().description(Text.of("Remove Executive of Town Command")).permission("polis.executive.remove").arguments(GenericArguments.onlyOne(GenericArguments.string(Text.of("player")))).executor(new PolisRemoveExecutiveExecutor()).build());
 
 		subcommands.put(Arrays.asList("toggletax", "toggletaxes"), CommandSpec.builder().description(Text.of("Toggle Taxes Command")).permission("polis.taxes.toggle").arguments(GenericArguments.onlyOne(GenericArguments.bool(Text.of("toggle")))).executor(new PolisToggleTaxExecutor()).build());
 
